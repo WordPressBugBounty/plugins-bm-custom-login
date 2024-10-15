@@ -1,5 +1,5 @@
 === Custom Login ===
-Contributors: BinaryMoon
+Contributors: BinaryMoon, teydeastudio
 Tags: customise, customize, login, customisation, customization, admin
 Requires at least: 4.7
 Tested up to: 6.5.0
