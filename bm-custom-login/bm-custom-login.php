@@ -1,11 +1,10 @@
 <?php
 /**
- * Plugin Name: BM Custom Login
- * Plugin URI: http://wordpress.org/plugins/bm-custom-login/
+ * Plugin Name: Custom Login
  * Description: Display custom images on the WordPress login screen. Useful for branding.
- * Author: Ben Gillbanks
- * Version: 2.3.2
- * Author URI: http://prothemedesign.com/
+ * Author: Teydea Studio
+ * Author URI: https://teydeastudio.com/?utm_source=Custom+Login&utm_medium=WordPress.org&utm_campaign=Company+research&utm_content=Plugin+header
+ * Version: 2.4.0
  * License: GPLv2 or later
  * Text Domain: bm-custom-login
  *
@@ -65,8 +64,18 @@ if ( ! class_exists( 'BMCustomLogin' ) ) {
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_color_picker' ) );
 			add_action( 'admin_footer', array( $this, 'admin_foot_script' ) );
 
+			add_action( 'login_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+
 		}
 
+		/**
+		 * Enqueue scripts on the login form
+		 *
+		 * @return void
+		 */
+		public function enqueue_scripts(): void {
+			wp_enqueue_style( 'bm-custom-login-style', plugin_dir_url( __FILE__ ) . 'bm-custom-login.css', [], '2.4.0' );
+		}
 
 		/**
 		 * Get the login options
@@ -114,10 +123,7 @@ if ( ! class_exists( 'BMCustomLogin' ) ) {
 
 			$options = $this->custom_login_get_options();
 
-			$plugin_url = plugin_dir_url( __FILE__ ) . 'bm-custom-login.css';
-
 			// Output styles.
-			echo '<link rel="stylesheet" type="text/css" href="' . esc_url( $plugin_url ) . '" />';
 			echo '<style>';
 
 			$background = $options['cl_background'];
@@ -135,7 +141,7 @@ if ( ! class_exists( 'BMCustomLogin' ) ) {
 ?>
 			#login,
 			#login label {
-				color:<?php echo $this->sanitize_hex_color( $options['cl_color'] ); ?>;
+				color:<?php echo esc_html( $this->sanitize_hex_color( $options['cl_color'] ) ); ?>;
 			}
 <?php
 			}
@@ -166,7 +172,7 @@ if ( ! class_exists( 'BMCustomLogin' ) ) {
 			if ( count( $body_styles ) ) {
 ?>
 			html {
-				background:<?php echo implode( ' ', $body_styles ); ?> !important;
+				background:<?php echo esc_html( implode( ' ', $body_styles ) ); ?> !important;
 			}
 			body.login {
 				background:transparent !important;
@@ -178,18 +184,18 @@ if ( ! class_exists( 'BMCustomLogin' ) ) {
 			if ( ! empty( $options['cl_linkColor'] ) ) {
 ?>
 			.login #login a {
-				color:<?php echo $this->sanitize_hex_color( $options['cl_linkColor'] ); ?> !important;
+				color:<?php echo esc_html( $this->sanitize_hex_color( $options['cl_linkColor'] ) ); ?> !important;
 			}
 			.login #login a:hover {
-				color:<?php echo $this->adjust_brightness( $options['cl_linkColor'], -30 ); ?> !important;
+				color:<?php echo esc_html( $this->adjust_brightness( $options['cl_linkColor'], -30 ) ); ?> !important;
 			}
 			.submit #wp-submit {
-				background:<?php echo $this->sanitize_hex_color( $options['cl_linkColor'] ); ?>;
-				border-color:<?php echo $this->adjust_brightness( $options['cl_linkColor'], -60 ); ?>;
-				color:<?php echo $this->readable_colour( $options['cl_linkColor'] ); ?>
+				background:<?php echo esc_html( $this->sanitize_hex_color( $options['cl_linkColor'] ) ); ?>;
+				border-color:<?php echo esc_html( $this->adjust_brightness( $options['cl_linkColor'], -60 ) ); ?>;
+				color:<?php echo esc_html( $this->readable_colour( $options['cl_linkColor'] ) ); ?>
 			}
 			.submit #wp-submit:hover {
-				background:<?php echo $this->adjust_brightness( $options['cl_linkColor'], -30 ); ?>;
+				background:<?php echo esc_html( $this->adjust_brightness( $options['cl_linkColor'], -30 ) ); ?>;
 			}
 <?php
 			}
@@ -198,15 +204,14 @@ if ( ! class_exists( 'BMCustomLogin' ) ) {
 ?>
 			#login #nav,
 			#login #backtoblog {
-				text-shadow:0 1px 6px <?php echo $this->sanitize_hex_color( $options['cl_colorShadow'] ); ?>;
+				text-shadow:0 1px 6px <?php echo esc_html( $this->sanitize_hex_color( $options['cl_colorShadow'] ) ); ?>;
 			}
 <?php
 			}
 
 			// Custom CSS.
 			if ( ! empty( $options['cl_customCSS'] ) ) {
-				$css = $this->sanitize_css( $options['cl_customCSS'] );
-				echo str_replace( array( "\n", "\r", "\t" ), '', $css );
+				echo $this->sanitize_css( $options['cl_customCSS'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			}
 
 			echo '</style>';
@@ -221,27 +226,16 @@ if ( ! class_exists( 'BMCustomLogin' ) ) {
 		 * @param string $css A block of CSS to tidy up.
 		 */
 		public function sanitize_css( $css ) {
+			/**
+			 * Note that esc_html() cannot be used because `div &gt; span` is not interpreted properly.
+			 * This is the same approach as in core's "wp_custom_css_cb" function.
+			 */
+			$css = wp_strip_all_tags( $css );
 
-			if ( ! class_exists( 'csstidy' ) ) {
-				include_once 'csstidy/class.csstidy.php';
-			}
+			// Remove newline characters.
+			$css = str_replace( array( "\n", "\r", "\t" ), '', $css );
 
-			$csstidy = new csstidy();
-			$csstidy->set_cfg( 'remove_bslash', false );
-			$csstidy->set_cfg( 'compress_colors', false );
-			$csstidy->set_cfg( 'compress_font-weight', false );
-			$csstidy->set_cfg( 'discard_invalid_properties', true );
-			$csstidy->set_cfg( 'merge_selectors', false );
-			$csstidy->set_cfg( 'remove_last_;', false );
-			$csstidy->set_cfg( 'css_level', 'CSS3.0' );
-
-			$css = preg_replace( '/\\\\([0-9a-fA-F]{4})/', '\\\\\\\\$1', $css );
-			$css = wp_kses_split( $css, array(), array() );
-
-			$csstidy->parse( $css );
-
-			return $csstidy->print->plain();
-
+			return $css;
 		}
 
 
@@ -333,26 +327,6 @@ if ( ! class_exists( 'BMCustomLogin' ) ) {
 			.wrap {
 				position:relative;
 			}
-
-			.cl_notice {
-				padding:10px 20px;
-				-moz-border-radius:3px;
-				-webkit-border-radius:3px;
-				border-radius:3px;
-				background:lightyellow;
-				border:1px solid #e6db55;
-				margin:10px 5px 10px 0;
-			}
-
-			.cl_notice h3 {
-				margin-top:5px;
-				padding-top:0;
-			}
-
-			.cl_notice li {
-				list-style-type:disc;
-				margin-left:20px;
-			}
 		</style>
 
 		<div class="wrap">
@@ -366,15 +340,6 @@ if ( ! class_exists( 'BMCustomLogin' ) ) {
 			submit_button( esc_html__( 'Save Changes', 'bm-custom-login' ) );
 ?>
 			</form>
-
-			<div class="cl_notice">
-				<h3>More WordPress Goodies &rsaquo;</h3>
-				<p>If you like this plugin then you may also like my themes on <a href="http://prothemedesign.com" target="_blank">Pro Theme Design</a></p>
-				<ul>
-					<li><a href="http://twitter.com/prothemedesign">Pro Theme Design on Twitter</a></li>
-					<li><a href="http://facebook.com/ProThemeDesign">Pro Theme Design on Facebook</a></li>
-				</ul>
-			</div>
 
 		</div>
 
@@ -701,11 +666,12 @@ if ( ! class_exists( 'BMCustomLogin' ) ) {
 			if ( $options ) {
 				echo '<select id="' . esc_attr( $id ) . '" name="' . esc_attr( CL_OPTIONS ) . '[' . esc_attr( $id ) . ']">';
 				foreach ( $options as $o ) {
-					$selected = '';
-					if ( $o === $value ) {
-						$selected = ' selected="selected" ';
-					}
-					echo '<option value="' . esc_attr( $o ) . '" ' . $selected . '>' . esc_html( $o ) . '</option>';
+					echo sprintf(
+						'<option value="%1$s" %3$s>%2$s</option>',
+						esc_attr( $o ),
+						esc_html( $o ),
+						( $o === $value ? 'selected' : '' ),
+					);
 				}
 				echo '</select>';
 			}
@@ -744,7 +710,7 @@ if ( ! class_exists( 'BMCustomLogin' ) ) {
 			$id = $args['id'];
 
 ?>
-		<input type="text" id="<?php echo esc_attr( $id ); ?>" name="<?php echo esc_attr( CL_OPTIONS ); ?>[<?php echo esc_attr( $id ); ?>]" value="<?php echo $this->sanitize_hex_color( $value ); ?>" data-default-color="<?php echo $this->sanitize_hex_color( $args['default'] ); ?>" class="color-picker"/>
+		<input type="text" id="<?php echo esc_attr( $id ); ?>" name="<?php echo esc_attr( CL_OPTIONS ); ?>[<?php echo esc_attr( $id ); ?>]" value="<?php echo esc_attr( $this->sanitize_hex_color( $value ) ); ?>" data-default-color="<?php echo esc_attr( $this->sanitize_hex_color( $args['default'] ) ); ?>" class="color-picker"/>
 <?php
 			if ( ! empty( $description ) ) {
 				echo '<br /><span class="description">' . esc_html( $description ) . '</span>';
@@ -969,3 +935,30 @@ if ( ! class_exists( 'BMCustomLogin' ) ) {
 	new BMCustomLogin();
 
 }
+
+
+
+
+/**
+ * Validate style.css as valid CSS.
+ *
+ * Currently just checks for invalid markup.
+ *
+ * @since 6.2.0
+ * @since 6.4.0 Changed method visibility to protected.
+ *
+ * @param string $css CSS to validate.
+ * @return true|WP_Error True if the input was validated, otherwise WP_Error.
+ */
+/*
+protected function validate_custom_css( $css ) {
+	if ( preg_match( '#</?\w+#', $css ) ) {
+		return new WP_Error(
+			'rest_custom_css_illegal_markup',
+			__( 'Markup is not allowed in CSS.', 'gutenberg' ),
+			array( 'status' => 400 )
+		);
+	}
+	return true;
+}
+*/

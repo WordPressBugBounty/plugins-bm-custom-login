@@ -1,0 +1,120 @@
+= 2.4.0 (2024-10-16) =
+* Create changelog.txt file and add all missing records
+* Update readme.txt file, list of contributors, tags, and the plugin author data
+* Remove promotional contents
+* Drop CSSTidy dependency entirely and instead, use similar approach for CSS sanitization as in WordPress core
+* Remove invalid Plugin URI header
+* Bump tested-up-to version to WordPress 6.6
+* Fix security issues
+* Load plugin stylesheet through `login_enqueue_scripts` hook
+
+= 2.3.2 (2021-07-14) =
+* Fix errant comma that caused a 500 error on some servers
+
+= 2.3.1 (2021-07-13) =
+* Fix PHP error for missing settings
+
+= 2.3 (2021-03-09) =
+* Display the "powered by" text underneath the login form to ensure it is visible. It can be targetted with CSS using `.cl-powered-by`
+
+= 2.2.5 (2020-06-17) =
+* Fix implode parameter order
+
+= 2.2.4 (2020-03-05) =
+* Update CSSTidy to latest version
+
+= 2.2.3 (2019-08-23) =
+* Switch to submit_button function for settings form
+
+= 2.2.2 (2019-04-30) =
+* Replace deprecated filter
+* Update coding standards
+
+= 2.2.1 (2017-12-01) =
+* Remove text shadow on login button so that it's more consistently readable
+* Make it clearer what the text link colour changes
+* Change CSS label to match the core customizer label
+* Remove CSS vendor prefixes that are no longer needed
+
+= 2.2 (2017-11-30) =
+* Fix default colour values so that the default button works properly
+* Fix PHP 7 warnings in CSSTidy
+* Sanitize more things for extra security
+
+= 2.1 (2016-09-26) =
+* Make translations work properly
+* Improve coding standards, again :)
+
+= 2.0 (2016-03-04) =
+* Fix coding standards and improve security
+
+= 1.9 (2015-09-28) =
+* Update the localization strings so that the new language pack system will be able to translate the plugin
+
+= 1.8.2 (2015-05-04) =
+* Stop color picker from being loaded on every page in the admin - thanks to mgsisk for the report and code fix
+
+= 1.8.1 (2015-05-04) =
+* Update CSSTidy files to latest version
+* Change label on custom css box to make it clear it's for advanced users only
+
+= 1.8 (2015-04-25) =
+* New Feature: Custom CSS - now you can edit everything! :)
+
+= 1.7.4 (2015-04-07) =
+* Make link color affect login button to ensure things remain harmonious
+
+= 1.7.3 (2015-03-31) =
+* Improve data sanitization and add better support for html to the footer
+
+= 1.7.1 (2015-01-17) =
+* Make plugin path more flexible for people who move wp-content directory
+
+= 1.7 (2015-01-13) =
+* Security improvements
+* Color pickers and media uploaders added
+* Improve the plugin's admin page
+
+= 1.6.6 (2012-08-05) =
+* Make the title and link work properly
+* Bug fixes
+
+= 1.6.5 (2012-02-13) =
+* Add a shadow color option
+* Improve login url support
+* Change admin footer text
+* Add some ideas for future as "@todo" items
+
+= 1.6 (2012-01-22) =
+* Add a background image for the main body of the site
+* Tweaks to login styles, mostly for WP 3.3
+* Delete outdated images
+
+= 1.5.2 (2011-09-21) =
+* Fix message colors when loggin in or out
+* Update instructions
+* Force the background color to always be what is set in the admin
+* Make the register and lost password screens work properly (remove the white background etc.)
+
+= 1.5.1 (2011-07-25) =
+* Tweaks to the login layout: restore the old layout for the login, so that old graphics can be reused
+
+= 1.5 (2011-07-25) =
+* A total rewrite with a new options screen, and a redesigned page login layout
+* Customisation of link colors allowed
+
+= 1.4 (2009-06-14) =
+* Add new theme for the login form
+* Some small CSS tweaks for WP 2.9 and a minor PHP change
+
+= 1.3 (2008-05-22) =
+* IE footer fix, and support for WordPress versions > 2.5
+
+= 1.2 (2008-04-02) =
+* Updated to be more flexible with plugin folder names and to work with WordPress MU
+
+= 1.1 (2008-03-31) =
+* Big update to include changes needed for WordPress 2.5
+
+= 1.0 (2008-01-06) =
+* The first stable release
