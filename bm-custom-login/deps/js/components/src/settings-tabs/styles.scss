@@ -1,0 +1,67 @@
+@use "../variables" as *;
+
+/**
+ * Settings tabs
+ */
+.tsc-settings-tabs {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	margin: 0 auto;
+	max-width: 966px;
+	padding: 0 16px;
+
+	@media (min-width: 769px) {
+		flex-direction: row;
+	}
+
+	/**
+	 * Wrapper
+	 */
+	&__wrapper {
+		padding-top: 64px;
+		width: 100%;
+	}
+
+	.components-tab-panel__tabs {
+		background-color: #f0f0f1;
+		margin: 0 auto;
+		max-width: 968px;
+		position: fixed;
+		top: calc(65px + var(--wp-admin--admin-bar--height));
+		width: 100%;
+		z-index: 9500;
+
+		&::before {
+			background-color: $border-color;
+			content: "";
+			height: 1px;
+			position: fixed;
+			right: 0;
+			top: 145px;
+			width: calc(100% - var(--tsc-admin-menu-width));
+		}
+
+		&::after {
+			background: linear-gradient(180deg, rgba(240, 240, 241, 0.3) 0%, rgba(240, 240, 241, 0) 100%);
+			content: "";
+			height: 10px;
+			position: fixed;
+			right: 0;
+			top: 146px;
+			width: calc(100% - var(--tsc-admin-menu-width));
+		}
+	}
+
+	.components-tab-panel__tabs-item {
+		margin-right: 32px;
+		padding-left: 0;
+		padding-right: 0;
+	}
+
+	.components-tab-panel__tab-content {
+		.components-panel + .components-panel {
+			margin-top: 1rem;
+		}
+	}
+}

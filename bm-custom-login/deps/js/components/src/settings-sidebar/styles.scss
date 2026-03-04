@@ -1,0 +1,24 @@
+/**
+ * Settings sidebar
+ */
+.tsc-settings-sidebar {
+	@media (min-width: 769px) {
+		flex-shrink: 0;
+		width: 280px;
+	}
+
+	p:first-child {
+		margin-top: 0;
+	}
+
+	h2 + ul:last-child,
+	p:last-child {
+		margin-bottom: 0;
+	}
+}
+
+.tsc-settings-tabs .tsc-settings-sidebar {
+	@media (min-width: 769px) {
+		margin-top: 63px;
+	}
+}

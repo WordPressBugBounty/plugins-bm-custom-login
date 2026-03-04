@@ -1,0 +1,18 @@
+@use "../variables" as *;
+
+/**
+ * Alignment matrix control
+ */
+.tsc-alignment-matrix-control.tsc-fields-group {
+	// Specificity issue.
+	align-items: flex-end;
+	flex-direction: row;
+
+	& > .components-base-control {
+		flex: 1;
+	}
+
+	&__toggle {
+		border: 1px solid $border-color;
+	}
+}

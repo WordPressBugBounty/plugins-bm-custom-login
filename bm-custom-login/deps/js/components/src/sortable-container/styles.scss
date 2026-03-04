@@ -1,0 +1,99 @@
+@use "../variables" as *;
+
+/**
+ * Sortable container
+ */
+.tsc-sortable-container {
+	/**
+	 * Actions
+	 */
+	&__actions {
+		text-align: right;
+	}
+
+	/**
+	 * Placeholder for dynamically added
+	 * panels and elements
+	 */
+	&__placeholder {
+		border: 1px dashed $border-color;
+		padding: 18px 48px;
+		text-align: center;
+
+		p {
+			line-height: 1;
+			margin: 0;
+		}
+	}
+
+	/**
+	 * Items
+	 */
+	&__items {
+		display: flex;
+		flex-direction: column;
+		margin: 0 32px;
+		position: relative;
+		width: calc(100% - 64px);
+	}
+
+	/**
+	 * Item
+	 */
+	&__item {
+		background-color: #fff;
+		position: relative;
+
+		&[aria-pressed="true"] {
+			position: relative;
+			z-index: 20;
+
+			.components-panel__body {
+				background-color: $background-color--gray;
+			}
+		}
+
+		.components-panel__body {
+			border-top: 0;
+			border-bottom: 1px solid $border-color;
+		}
+
+		& > .components-panel > .components-panel__body:last-child {
+			border-bottom-width: 1px;
+		}
+	}
+
+	/**
+	 * Drag handle
+	 */
+	&__drag-handle-container {
+		position: relative;
+	}
+
+	&__drag-handle {
+		cursor: grab;
+		left: -34px;
+		top: 15px;
+		position: absolute;
+		z-index: 10;
+	}
+
+	/**
+	 * Delete button
+	 */
+	&__delete {
+		border: 0;
+		box-shadow: none !important;
+		color: $text-color--wp-admin-text !important;
+		height: 20px !important;
+		padding: 0;
+		position: absolute;
+		right: -35px;
+		top: 15px;
+
+		&:hover,
+		&:focus {
+			color: var(--wp-components-color-accent, $text-color--red) !important;
+		}
+	}
+}

@@ -1,0 +1,191 @@
+{
+    "deps/js/components/src/alignment-matrix-control/index.js": [
+        "build/settings-page/index.js"
+    ],
+    "deps/js/components/src/border-control/index.js": [
+        "build/settings-page/index.js"
+    ],
+    "deps/js/components/src/border-radius-control/index.js": [
+        "build/settings-page/index.js"
+    ],
+    "deps/js/components/src/color-control/index.js": [
+        "build/settings-page/index.js"
+    ],
+    "deps/js/components/src/detect-outside/index.js": [
+        "build/settings-page/index.js"
+    ],
+    "deps/js/components/src/field-notice/index.js": [
+        "build/settings-page/index.js"
+    ],
+    "deps/js/components/src/fields-group/index.js": [
+        "build/settings-page/index.js"
+    ],
+    "deps/js/components/src/font-control/index.js": [
+        "build/settings-page/index.js"
+    ],
+    "deps/js/components/src/icon-control/index.js": [
+        "build/settings-page/index.js"
+    ],
+    "deps/js/components/src/integer-control/index.js": [
+        "build/settings-page/index.js"
+    ],
+    "deps/js/components/src/line-height-control/index.js": [
+        "build/settings-page/index.js"
+    ],
+    "deps/js/components/src/media-control/index.js": [
+        "build/settings-page/index.js"
+    ],
+    "deps/js/components/src/media-upload-check/index.js": [
+        "build/settings-page/index.js"
+    ],
+    "deps/js/components/src/multilingual-text-control/index.js": [
+        "build/settings-page/index.js"
+    ],
+    "deps/js/components/src/panel-with-reset/index.js": [
+        "build/settings-page/index.js"
+    ],
+    "deps/js/components/src/product-icon/index.js": [
+        "build/settings-page/index.js"
+    ],
+    "deps/js/components/src/promoted-plugins-panel/index.js": [
+        "build/settings-page/index.js"
+    ],
+    "deps/js/components/src/settings-container/index.js": [
+        "build/settings-page/index.js"
+    ],
+    "deps/js/components/src/settings-sidebar/index.js": [
+        "build/settings-page/index.js"
+    ],
+    "deps/js/components/src/settings-tabs/index.js": [
+        "build/settings-page/index.js"
+    ],
+    "deps/js/components/src/shadow-control/index.js": [
+        "build/settings-page/index.js"
+    ],
+    "deps/js/components/src/sortable-container/index.js": [
+        "build/settings-page/index.js"
+    ],
+    "deps/js/components/src/upsell-panel/index.js": [
+        "build/settings-page/index.js"
+    ],
+    "deps/js/components/src/url-control/index.js": [
+        "build/settings-page/index.js"
+    ],
+    "deps/js/components/src/visual-effect-control/index.js": [
+        "build/settings-page/index.js"
+    ],
+    "deps/js/components/src/waiting-indicator/index.js": [
+        "build/settings-page/index.js"
+    ],
+    "deps/js/components/src/with-settings/index.js": [
+        "build/settings-page/index.js"
+    ],
+    "deps/js/utils/src/build-id.js": [
+        "build/settings-page/index.js"
+    ],
+    "deps/js/utils/src/compose-color-palettes.js": [
+        "build/settings-page/index.js"
+    ],
+    "deps/js/utils/src/compose-font-families.js": [
+        "build/settings-page/index.js"
+    ],
+    "deps/js/utils/src/compose-font-sizes.js": [
+        "build/settings-page/index.js"
+    ],
+    "deps/js/utils/src/compose-font-weight-name.js": [
+        "build/settings-page/index.js"
+    ],
+    "deps/js/utils/src/compose-font-weights.js": [
+        "build/settings-page/index.js"
+    ],
+    "deps/js/utils/src/compose-gradient-palettes.js": [
+        "build/settings-page/index.js"
+    ],
+    "deps/js/utils/src/compose-shadow-presets.js": [
+        "build/settings-page/index.js"
+    ],
+    "deps/js/utils/src/get-integer-within-range.js": [
+        "build/settings-page/index.js"
+    ],
+    "deps/js/utils/src/is-url.js": [
+        "build/settings-page/index.js"
+    ],
+    "deps/js/utils/src/render.js": [
+        "build/settings-page/index.js"
+    ],
+    "deps/js/utils/src/use-media.js": [
+        "build/settings-page/index.js"
+    ],
+    "src/modules/settings-page/components/component-panel-background.js": [
+        "build/settings-page/index.js"
+    ],
+    "src/modules/settings-page/components/component-panel-custom-css.js": [
+        "build/settings-page/index.js"
+    ],
+    "src/modules/settings-page/components/component-panel-footer.js": [
+        "build/settings-page/index.js"
+    ],
+    "src/modules/settings-page/components/component-panel-language-switcher.js": [
+        "build/settings-page/index.js"
+    ],
+    "src/modules/settings-page/components/component-panel-login-form-button-primary.js": [
+        "build/settings-page/index.js"
+    ],
+    "src/modules/settings-page/components/component-panel-login-form-button-secondary.js": [
+        "build/settings-page/index.js"
+    ],
+    "src/modules/settings-page/components/component-panel-login-form-checkbox-fields.js": [
+        "build/settings-page/index.js"
+    ],
+    "src/modules/settings-page/components/component-panel-login-form-container.js": [
+        "build/settings-page/index.js"
+    ],
+    "src/modules/settings-page/components/component-panel-login-form-input-fields.js": [
+        "build/settings-page/index.js"
+    ],
+    "src/modules/settings-page/components/component-panel-login-form-labels.js": [
+        "build/settings-page/index.js"
+    ],
+    "src/modules/settings-page/components/component-panel-login-form-remember-me-checkbox.js": [
+        "build/settings-page/index.js"
+    ],
+    "src/modules/settings-page/components/component-panel-logo.js": [
+        "build/settings-page/index.js"
+    ],
+    "src/modules/settings-page/components/component-panel-miscellaneous.js": [
+        "build/settings-page/index.js"
+    ],
+    "src/modules/settings-page/components/component-panel-notices.js": [
+        "build/settings-page/index.js"
+    ],
+    "src/modules/settings-page/components/component-panel-privacy-policy-link.js": [
+        "build/settings-page/index.js"
+    ],
+    "src/modules/settings-page/components/component-panel-social-media-links.js": [
+        "build/settings-page/index.js"
+    ],
+    "src/modules/settings-page/components/component-panel-templates.js": [
+        "build/settings-page/index.js"
+    ],
+    "src/modules/settings-page/components/component-panel-under-form-links.js": [
+        "build/settings-page/index.js"
+    ],
+    "src/modules/settings-page/components/component-preview.js": [
+        "build/settings-page/index.js"
+    ],
+    "src/modules/settings-page/components/component-social-media-link.js": [
+        "build/settings-page/index.js"
+    ],
+    "src/modules/settings-page/components/component-tab-design.js": [
+        "build/settings-page/index.js"
+    ],
+    "src/modules/settings-page/components/component-tab-functionality.js": [
+        "build/settings-page/index.js"
+    ],
+    "src/modules/settings-page/components/component-under-form-link.js": [
+        "build/settings-page/index.js"
+    ],
+    "src/modules/settings-page/index.js": [
+        "build/settings-page/index.js"
+    ]
+}

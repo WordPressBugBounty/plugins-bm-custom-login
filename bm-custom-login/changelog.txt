@@ -1,3 +1,21 @@
+== Changelog ==
+
+= 3.0.0 (2026-03-04) =
+* Complete plugin rebuild with a modern, React-based settings page and live preview
+* Add granular styling controls for form container, labels, input fields, checkboxes, and buttons (including separate hover and focus states)
+* Add primary and secondary button customization with font, color, size, width, and alignment options
+* Add notice and error message styling with support for custom persistent notices
+* Add social media icon links (23 platforms) with configurable placement
+* Add under-form link customization with custom links, separator styling, and option to disable the "Back to" link
+* Add custom footer with configurable text, font, color, and alignment
+* Add privacy policy link and language switcher visibility and styling controls
+* Add "Remember Me" checkbox show/hide toggle with custom label text
+* Add per-language text customization for labels, placeholders, button text, and notices
+* Add functionality options: disable autofocus, disable error shake, disable autocomplete
+* Add logo alignment, link configuration, and site icon as logo source option
+* Improve background image controls with focal point, size, and repeat options
+* Migrate existing settings from previous versions automatically
+
 = 2.4.0 (2024-10-16) =
 * Create changelog.txt file and add all missing records
 * Update readme.txt file, list of contributors, tags, and the plugin author data

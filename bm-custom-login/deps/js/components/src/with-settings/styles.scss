@@ -1,0 +1,14 @@
+.tsc-with-settings {
+	/**
+	 * Snackbar list
+	 */
+	.components-snackbar-list {
+		height: 100vh;
+		top: 0;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-end;
+		position: fixed;
+		padding: 0 0 24px 24px;
+	}
+}

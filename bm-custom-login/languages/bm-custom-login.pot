@@ -1,0 +1,1627 @@
+# Copyright (C) 2026 Teydea Studio
+# This file is distributed under the GPLv3.
+msgid ""
+msgstr ""
+"Project-Id-Version: WP Custom Login 3.0.0\n"
+"Report-Msgid-Bugs-To: Teydea Studio <hello@teydeastudio.com>\n"
+"Last-Translator: Teydea Studio <hello@teydeastudio.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.13.0-alpha\n"
+"X-Domain: bm-custom-login\n"
+
+#. Plugin Name of the plugin
+#: bm-custom-login.php
+#: src/modules/settings-page/class-module-settings-page.php:44
+msgid "WP Custom Login"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: bm-custom-login.php
+msgid "https://wpcustomlogin.com/?utm_source=WP+Custom+Login"
+msgstr ""
+
+#. Description of the plugin
+#: bm-custom-login.php
+msgid "Customize the WordPress login screen quickly and easily."
+msgstr ""
+
+#. Author of the plugin
+#: bm-custom-login.php
+msgid "Teydea Studio"
+msgstr ""
+
+#. Author URI of the plugin
+#: bm-custom-login.php
+msgid "https://teydeastudio.com/?utm_source=WP+Custom+Login"
+msgstr ""
+
+#: deps/php/universal-modules/class-module-endpoint-settings.php:67
+msgid "You do not have permission to read settings."
+msgstr ""
+
+#: deps/php/universal-modules/class-module-endpoint-settings.php:129
+msgid "Settings data is missing or invalid."
+msgstr ""
+
+#: deps/php/universal-modules/class-module-endpoint-settings.php:154
+msgid "You do not have permission to save settings."
+msgstr ""
+
+#: deps/php/universal-modules/class-module-endpoint-settings.php:182
+msgid "Can't get settings data; resolve validation errors first."
+msgstr ""
+
+#: deps/php/universal-modules/class-module-plugin-upgrade-action-link.php:52
+msgid "Upgrade"
+msgstr ""
+
+#: deps/php/universal-modules/class-module-settings-page.php:99
+#: deps/php/universal-modules/class-module-settings-page.php:222
+msgid "Settings"
+msgstr ""
+
+#: deps/php/utils/class-settings.php:243
+msgid "Sorry, you are not allowed to do that."
+msgstr ""
+
+#: deps/php/utils/class-settings.php:251
+#: deps/php/utils/class-settings.php:260
+msgid "Can't save settings into the database; resolve validation errors first."
+msgstr ""
+
+#: deps/php/utils/class-users.php:170
+msgid "Network Super Admin"
+msgstr ""
+
+#. Translators: %s - type of the value given.
+#: deps/php/validatable-fields/class-closures.php:88
+#: deps/php/validatable-fields/class-closures.php:474
+#: deps/php/validatable-fields/class-closures.php:555
+#, php-format
+msgid "Value must be an array, %s given."
+msgstr ""
+
+#. Translators: %s - invalid character token value.
+#: deps/php/validatable-fields/class-closures.php:100
+#, php-format
+msgid "\"%s\" is not a valid character token."
+msgstr ""
+
+#. Translators: %s - type of the value given.
+#: deps/php/validatable-fields/class-closures.php:192
+#: deps/php/validatable-fields/class-closures.php:324
+#: deps/php/validatable-fields/class-closures.php:394
+#, php-format
+msgid "Value must be a string, %s given."
+msgstr ""
+
+#. Translators: %s - invalid date value.
+#: deps/php/validatable-fields/class-closures.php:217
+#, php-format
+msgid "\"%s\" is not a valid date."
+msgstr ""
+
+#. Translators: %s - type of the value given.
+#: deps/php/validatable-fields/class-closures.php:246
+#, php-format
+msgid "Value must be an integer, %s given."
+msgstr ""
+
+#. Translators: %d - post ID.
+#: deps/php/validatable-fields/class-closures.php:265
+#, php-format
+msgid "Post with ID \"%d\" is not an attachment."
+msgstr ""
+
+#. Translators: %d - attachment ID.
+#: deps/php/validatable-fields/class-closures.php:279
+#, php-format
+msgid "MIME type of the attachment with ID \"%d\" is unknown."
+msgstr ""
+
+#. Translators: %d - attachment ID.
+#: deps/php/validatable-fields/class-closures.php:292
+#, php-format
+msgid "MIME type of the attachment with ID \"%d\" is not supported by this field."
+msgstr ""
+
+#. Translators: %s - invalid unit value.
+#: deps/php/validatable-fields/class-closures.php:337
+#, php-format
+msgid "\"%s\" is not a valid unit value."
+msgstr ""
+
+#. Translators: %s - invalid URL value.
+#: deps/php/validatable-fields/class-closures.php:413
+#, php-format
+msgid "\"%s\" is not a valid URL."
+msgstr ""
+
+#. Translators: %1$s - invalid role value, %2$s - list of known roles.
+#: deps/php/validatable-fields/class-closures.php:488
+#, php-format
+msgid "\"%1$s\" is not a value within \"%2$s\"."
+msgstr ""
+
+#. Translators: %s - unknown user value.
+#: deps/php/validatable-fields/class-closures.php:573
+#, php-format
+msgid "\"%s\" does not correspond to any known user."
+msgstr ""
+
+#. Translators: %s - invalid field key value.
+#: deps/php/validatable-fields/class-configuration.php:154
+#, php-format
+msgid "\"%s\" is not a valid key of the dynamic field."
+msgstr ""
+
+#. Translators: %s - expected exact value.
+#: deps/php/validatable-fields/class-configuration.php:200
+#, php-format
+msgid "Field's value must be exactly \"%s\"."
+msgstr ""
+
+#. Translators: %1$s - field name, %2$s - type of the value given.
+#: deps/php/validatable-fields/class-field-array-of-strings.php:55
+#, php-format
+msgid "Value of the \"%1$s\" field must be an array, %2$s given."
+msgstr ""
+
+#. Translators: %s - field name.
+#: deps/php/validatable-fields/class-field-array-of-strings.php:67
+#, php-format
+msgid "Value of the \"%s\" field must be an array of strings; non-string values given."
+msgstr ""
+
+#. Translators: %1$s - field name, %2$s - type of the value given.
+#: deps/php/validatable-fields/class-field-boolean.php:54
+#, php-format
+msgid "Value of the \"%1$s\" field must be a boolean, %2$s given."
+msgstr ""
+
+#. Translators: %1$s - field name, %2$s - invalid non-numeric string value.
+#: deps/php/validatable-fields/class-field-float.php:128
+#, php-format
+msgid "Value of the \"%1$s\" field must be a float, non-numeric string given: \"%2$s\"."
+msgstr ""
+
+#. Translators: %1$s - field name, %2$s - type of the value given.
+#: deps/php/validatable-fields/class-field-float.php:141
+#, php-format
+msgid "Value of the \"%1$s\" field must be a float, %2$s given."
+msgstr ""
+
+#. Translators: %1$f - given value, %2$f - minimum allowed value, %3$s - field name.
+#: deps/php/validatable-fields/class-field-float.php:154
+#, php-format
+msgid "Value %1$f must be greater than or equal to minimum allowed value: %2$f (field: \"%3$s\")."
+msgstr ""
+
+#. Translators: %1$f - given value, %2$f - maximum allowed value, %3$s - field name.
+#: deps/php/validatable-fields/class-field-float.php:167
+#, php-format
+msgid "Value %1$f must be less than or equal to maximum allowed value: %2$f (field: \"%3$s\")."
+msgstr ""
+
+#. Translators: %1$s - field name, %2$s - invalid non-numeric string value.
+#: deps/php/validatable-fields/class-field-integer.php:110
+#, php-format
+msgid "Value of the \"%1$s\" field must be an integer, non-numeric string given: \"%2$s\"."
+msgstr ""
+
+#. Translators: %1$s - field name, %2$s - type of the value given.
+#: deps/php/validatable-fields/class-field-integer.php:123
+#, php-format
+msgid "Value of the \"%1$s\" field must be an integer, %2$s given."
+msgstr ""
+
+#. Translators: %1$d - given value, %2$d - minimum allowed value, %3$s - field name.
+#: deps/php/validatable-fields/class-field-integer.php:136
+#, php-format
+msgid "Value %1$d must be greater than or equal to minimum allowed value: %2$d (field: \"%3$s\")."
+msgstr ""
+
+#. Translators: %1$d - given value, %2$d - maximum allowed value, %3$s - field name.
+#: deps/php/validatable-fields/class-field-integer.php:149
+#, php-format
+msgid "Value %1$d must be less than or equal to maximum allowed value: %2$d (field: \"%3$s\")."
+msgstr ""
+
+#. Translators: %1$s - field name, %2$s - type of the value given.
+#: deps/php/validatable-fields/class-field-string-of-choice.php:64
+#: deps/php/validatable-fields/class-field-string.php:55
+#, php-format
+msgid "Value of the \"%1$s\" field must be a string, %2$s given."
+msgstr ""
+
+#. Translators: %1$s - given value, %2$s - field name, %3$s - list of allowed values.
+#: deps/php/validatable-fields/class-field-string-of-choice.php:76
+#, php-format
+msgid "\"%1$s\" of the \"%2$s\" field is not a value within \"%3$s\"."
+msgstr ""
+
+#: src/class-styles.php:270
+#: deps/js/components/src/alignment-matrix-control/index.js:58
+#: deps/js/components/src/icon-control/index.js:32
+msgid "Default"
+msgstr ""
+
+#: src/modules/class-module-endpoint-preview.php:72
+msgid "You do not have permission to generate a preview."
+msgstr ""
+
+#: src/modules/settings-page/class-module-settings-page.php:47
+msgid "Custom Login"
+msgstr ""
+
+#: src/modules/settings-page/class-module-settings-page.php:53
+msgid "Support forum"
+msgstr ""
+
+#: src/modules/settings-page/class-module-settings-page.php:57
+msgid "Contact plugin author"
+msgstr ""
+
+#: src/modules/settings-page/class-module-settings-page.php:61
+msgid "Plugin on WordPress.org directory"
+msgstr ""
+
+#: src/modules/settings-page/class-module-settings-page.php:65
+msgid "Teydea Studio's website"
+msgstr ""
+
+#: deps/js/components/src/alignment-matrix-control/index.js:59
+#: src/modules/settings-page/components/component-panel-logo.js:127
+msgid "Custom"
+msgstr ""
+
+#: deps/js/components/src/color-control/index.js:45
+msgid "Color"
+msgstr ""
+
+#: deps/js/components/src/color-control/index.js:53
+msgid "Gradient"
+msgstr ""
+
+#: deps/js/components/src/font-control/index.js:69
+#: src/modules/settings-page/components/component-panel-login-form-button-secondary.js:272
+msgid "Font family"
+msgstr ""
+
+#: deps/js/components/src/font-control/index.js:92
+msgid "Font weight"
+msgstr ""
+
+#: deps/js/components/src/icon-control/index.js:41
+msgid "\"check\" (by Font Awesome)"
+msgstr ""
+
+#: deps/js/components/src/icon-control/index.js:58
+msgid "\"check\" (by Heroicons)"
+msgstr ""
+
+#: deps/js/components/src/icon-control/index.js:81
+msgid "\"facebook-f\" (by Font Awesome)"
+msgstr ""
+
+#: deps/js/components/src/icon-control/index.js:98
+msgid "\"twitter\" (by Font Awesome)"
+msgstr ""
+
+#: deps/js/components/src/icon-control/index.js:115
+msgid "\"instagram\" (by Font Awesome)"
+msgstr ""
+
+#: deps/js/components/src/icon-control/index.js:132
+msgid "\"tiktok\" (by Font Awesome)"
+msgstr ""
+
+#: deps/js/components/src/icon-control/index.js:149
+msgid "\"linkedin-in\" (by Font Awesome)"
+msgstr ""
+
+#: deps/js/components/src/icon-control/index.js:166
+msgid "\"github\" (by Font Awesome)"
+msgstr ""
+
+#: deps/js/components/src/icon-control/index.js:183
+msgid "\"discord\" (by Font Awesome)"
+msgstr ""
+
+#: deps/js/components/src/icon-control/index.js:200
+msgid "\"youtube\" (by Font Awesome)"
+msgstr ""
+
+#: deps/js/components/src/icon-control/index.js:217
+msgid "\"wordpress\" (by Font Awesome)"
+msgstr ""
+
+#: deps/js/components/src/icon-control/index.js:234
+msgid "\"slack\" (by Font Awesome)"
+msgstr ""
+
+#: deps/js/components/src/icon-control/index.js:251
+msgid "\"figma\" (by Font Awesome)"
+msgstr ""
+
+#: deps/js/components/src/icon-control/index.js:268
+msgid "\"dribbble\" (by Font Awesome)"
+msgstr ""
+
+#: deps/js/components/src/icon-control/index.js:285
+msgid "\"vimeo-v\" (by Font Awesome)"
+msgstr ""
+
+#: deps/js/components/src/icon-control/index.js:302
+msgid "\"whatsapp\" (by Font Awesome)"
+msgstr ""
+
+#: deps/js/components/src/icon-control/index.js:319
+msgid "\"pinterest-p\" (by Font Awesome)"
+msgstr ""
+
+#: deps/js/components/src/icon-control/index.js:336
+msgid "\"facebook-messenger\" (by Font Awesome)"
+msgstr ""
+
+#: deps/js/components/src/icon-control/index.js:353
+msgid "\"meetup\" (by Font Awesome)"
+msgstr ""
+
+#: deps/js/components/src/icon-control/index.js:370
+msgid "\"twitch\" (by Font Awesome)"
+msgstr ""
+
+#: deps/js/components/src/icon-control/index.js:387
+msgid "\"x-twitter\" (by Font Awesome)"
+msgstr ""
+
+#: deps/js/components/src/icon-control/index.js:404
+msgid "\"tumblr\" (by Font Awesome)"
+msgstr ""
+
+#: deps/js/components/src/icon-control/index.js:421
+msgid "\"threads\" (by Font Awesome)"
+msgstr ""
+
+#: deps/js/components/src/icon-control/index.js:438
+msgid "\"reddit\" (by Font Awesome)"
+msgstr ""
+
+#: deps/js/components/src/icon-control/index.js:455
+msgid "\"mastodon\" (by Font Awesome)"
+msgstr ""
+
+#: deps/js/components/src/icon-control/index.js:472
+msgid "\"flickr\" (by Font Awesome)"
+msgstr ""
+
+#: deps/js/components/src/icon-control/index.js:511
+msgid "Select icon"
+msgstr ""
+
+#. Translators: %1$s - field value, %2$d - minimum accepted value, %3$d - maximum accepted value.
+#: deps/js/components/src/integer-control/index.js:65
+#, js-format
+msgid "\"%1$s\" is not within the accepted range (%2$d-%3$d)."
+msgstr ""
+
+#. Translators: %1$s - field value, %2$d - minimum accepted value.
+#: deps/js/components/src/integer-control/index.js:75
+#, js-format
+msgid "\"%1$s\" must be greater than or equal to %2$d."
+msgstr ""
+
+#: deps/js/components/src/media-control/index.js:192
+msgid "The Media Library is not available in the Network Admin dashboard. To use custom images, configure image settings from an individual site's dashboard."
+msgstr ""
+
+#: deps/js/components/src/media-control/index.js:196
+msgid "You have no permissions to upload to the Media Library!"
+msgstr ""
+
+#. Translators: %s - label.
+#: deps/js/components/src/media-control/index.js:247
+#, js-format
+msgid "Replace %s"
+msgstr ""
+
+#. Translators: %s - label.
+#: deps/js/components/src/media-control/index.js:252
+#, js-format
+msgid "Set %s"
+msgstr ""
+
+#. Translators: %s - label.
+#: deps/js/components/src/media-control/index.js:267
+#, js-format
+msgid "Remove %s"
+msgstr ""
+
+#: deps/js/components/src/media-control/index.js:280
+msgid "Background image size & repeat"
+msgstr ""
+
+#: deps/js/components/src/media-control/index.js:285
+msgid "Size: auto; Repeat: yes"
+msgstr ""
+
+#: deps/js/components/src/media-control/index.js:289
+msgid "Size: auto; Repeat: no"
+msgstr ""
+
+#: deps/js/components/src/media-control/index.js:293
+msgid "Size: auto; Repeat: X"
+msgstr ""
+
+#: deps/js/components/src/media-control/index.js:297
+msgid "Size: auto; Repeat: Y"
+msgstr ""
+
+#: deps/js/components/src/media-control/index.js:301
+msgid "Size: auto; Repeat: round"
+msgstr ""
+
+#: deps/js/components/src/media-control/index.js:305
+msgid "Size: auto; Repeat: space"
+msgstr ""
+
+#: deps/js/components/src/media-control/index.js:309
+msgid "Size: contain; Repeat: yes"
+msgstr ""
+
+#: deps/js/components/src/media-control/index.js:313
+msgid "Size: contain; Repeat: no"
+msgstr ""
+
+#: deps/js/components/src/media-control/index.js:317
+msgid "Size: contain; Repeat: X"
+msgstr ""
+
+#: deps/js/components/src/media-control/index.js:321
+msgid "Size: contain; Repeat: Y"
+msgstr ""
+
+#: deps/js/components/src/media-control/index.js:325
+msgid "Size: cover"
+msgstr ""
+
+#: deps/js/components/src/media-upload-check/index.js:55
+msgid "Checking the media upload permissions…"
+msgstr ""
+
+#. Translators: %s - original text.
+#: deps/js/components/src/multilingual-text-control/index.js:54
+#, js-format
+msgid "Original: \"%s\""
+msgstr ""
+
+#: deps/js/components/src/panel-with-reset/index.js:85
+msgid "Reset to defaults"
+msgstr ""
+
+#: deps/js/components/src/promoted-plugins-panel/index.js:48
+msgid "Also by Teydea Studio"
+msgstr ""
+
+#: deps/js/components/src/settings-sidebar/index.js:47
+msgid "Help & support"
+msgstr ""
+
+#: deps/js/components/src/settings-sidebar/index.js:76
+#: deps/js/components/src/settings-sidebar/index.js:93
+msgid "Write a review"
+msgstr ""
+
+#. Translators: %s - either "plugin" or "theme".
+#: deps/js/components/src/settings-sidebar/index.js:80
+#, js-format
+msgid "If you like this %s, share it with your network and write a review on WordPress.org to help others find it. Thank you!"
+msgstr ""
+
+#: deps/js/components/src/settings-sidebar/index.js:96
+msgid "Share your feedback"
+msgstr ""
+
+#: deps/js/components/src/settings-sidebar/index.js:98
+msgid "We're eager to hear your feedback, feature requests, suggestions for improvements etc; we're waiting for a message from you!"
+msgstr ""
+
+#: deps/js/components/src/settings-sidebar/index.js:104
+msgid "Contact us"
+msgstr ""
+
+#: deps/js/components/src/shadow-control/index.js:40
+msgid "A CSS value for the box-shadow property."
+msgstr ""
+
+#: deps/js/components/src/sortable-container/index.js:62
+msgid "Delete item"
+msgstr ""
+
+#: deps/js/components/src/sortable-container/index.js:230
+msgid "Add new"
+msgstr ""
+
+#: deps/js/components/src/upsell-panel/index.js:37
+#: deps/js/components/src/upsell-panel/index.js:57
+msgid "Buy the PRO version"
+msgstr ""
+
+#. Translators: %s - field value.
+#: deps/js/components/src/url-control/index.js:63
+#, js-format
+msgid "\"%s\" is not a valid URL; field value has been emptied. Please put the valid URL or leave the field empty."
+msgstr ""
+
+#: deps/js/components/src/visual-effect-control/index.js:25
+msgid "Blur (px)"
+msgstr ""
+
+#: deps/js/components/src/visual-effect-control/index.js:26
+msgid "Applies a blur effect to the image/video. A larger value will create more blur. Defaults to \"0\"."
+msgstr ""
+
+#: deps/js/components/src/visual-effect-control/index.js:33
+msgid "Brightness (%)"
+msgstr ""
+
+#: deps/js/components/src/visual-effect-control/index.js:34
+msgid "Adjusts the brightness of the image/video. 0% will make the image completely black. 100% is default and represents the original image. Values over 100% will provide brighter results. Values under 100% will provide darker results."
+msgstr ""
+
+#: deps/js/components/src/visual-effect-control/index.js:44
+msgid "Contrast (%)"
+msgstr ""
+
+#: deps/js/components/src/visual-effect-control/index.js:47
+msgid "Adjusts the contrast of the image/video. 0% will make the image completely gray. 100% is default, and represents the original image. Values over 100% increases the contrast. Values under 100% decreases the contrast."
+msgstr ""
+
+#: deps/js/components/src/visual-effect-control/index.js:57
+msgid "Grayscale (%)"
+msgstr ""
+
+#: deps/js/components/src/visual-effect-control/index.js:58
+msgid "Converts the image to grayscale. 0% is default and represents the original image. 100% will make the image completely grayscale."
+msgstr ""
+
+#: deps/js/components/src/visual-effect-control/index.js:68
+msgid "Hue rotation (deg)"
+msgstr ""
+
+#: deps/js/components/src/visual-effect-control/index.js:69
+msgid "Applies a hue rotation on the image. The value defines the number of degrees around the color circle the image samples will be adjusted. 0deg is default, and represents the original image. Maximum value is 360deg."
+msgstr ""
+
+#: deps/js/components/src/visual-effect-control/index.js:79
+msgid "Invert (%)"
+msgstr ""
+
+#: deps/js/components/src/visual-effect-control/index.js:80
+msgid "Inverts the samples in the image. 0% is default and represents the original image. 100% will make the image completely inverted."
+msgstr ""
+
+#: deps/js/components/src/visual-effect-control/index.js:90
+msgid "Opacity (%)"
+msgstr ""
+
+#: deps/js/components/src/visual-effect-control/index.js:91
+msgid "Sets the opacity level for the image. The opacity-level describes the transparency-level, where 0% is completely transparent. 100% is default and represents the original image (no transparency)."
+msgstr ""
+
+#: deps/js/components/src/visual-effect-control/index.js:101
+msgid "Saturate (%)"
+msgstr ""
+
+#: deps/js/components/src/visual-effect-control/index.js:104
+msgid "Saturates the image. 0% will make the image completely un-saturated. 100% is default and represents the original image. Values over 100% provides super-saturated results."
+msgstr ""
+
+#: deps/js/components/src/visual-effect-control/index.js:114
+msgid "Sepia (%)"
+msgstr ""
+
+#: deps/js/components/src/visual-effect-control/index.js:115
+msgid "Converts the image to sepia. 0% is default and represents the original image. 100% will make the image completely sepia."
+msgstr ""
+
+#: deps/js/components/src/with-settings/index.js:75
+msgid "Settings saved"
+msgstr ""
+
+#: deps/js/components/src/with-settings/index.js:88
+msgid "Settings were not saved, something went wrong."
+msgstr ""
+
+#. Translators: %s - error message.
+#: deps/js/components/src/with-settings/index.js:94
+#, js-format
+msgid "Settings were not saved due to validation error: %s Please update the invalid field value and try again."
+msgstr ""
+
+#: deps/js/components/src/with-settings/index.js:248
+msgid "Saving…"
+msgstr ""
+
+#: deps/js/components/src/with-settings/index.js:248
+msgid "Save all settings"
+msgstr ""
+
+#: deps/js/components/src/with-settings/index.js:258
+msgid "Loading…"
+msgstr ""
+
+#: deps/js/components/src/with-settings/index.js:270
+msgid "Settings fetch failed."
+msgstr ""
+
+#: deps/js/components/src/with-settings/index.js:271
+msgid "Please try again; if the issue keeps repeating, reach out to our support team."
+msgstr ""
+
+#: deps/js/utils/src/compose-color-palettes.js:24
+msgid "Theme palette"
+msgstr ""
+
+#: deps/js/utils/src/compose-color-palettes.js:35
+msgid "Default core palette"
+msgstr ""
+
+#: deps/js/utils/src/compose-color-palettes.js:43
+msgid "WordPress colors"
+msgstr ""
+
+#: deps/js/utils/src/compose-color-palettes.js:46
+msgid "Accent"
+msgstr ""
+
+#: deps/js/utils/src/compose-color-palettes.js:51
+msgid "Accent (active)"
+msgstr ""
+
+#: deps/js/utils/src/compose-color-palettes.js:56
+msgid "Accent (active dark)"
+msgstr ""
+
+#: deps/js/utils/src/compose-color-palettes.js:61
+#: src/modules/settings-page/components/component-panel-background.js:63
+#: src/modules/settings-page/components/component-panel-background.js:68
+#: src/modules/settings-page/components/component-panel-login-form-button-primary.js:143
+#: src/modules/settings-page/components/component-panel-login-form-button-primary.js:185
+#: src/modules/settings-page/components/component-panel-login-form-button-primary.js:227
+#: src/modules/settings-page/components/component-panel-login-form-button-secondary.js:135
+#: src/modules/settings-page/components/component-panel-login-form-button-secondary.js:177
+#: src/modules/settings-page/components/component-panel-login-form-button-secondary.js:219
+#: src/modules/settings-page/components/component-panel-login-form-checkbox-fields.js:174
+#: src/modules/settings-page/components/component-panel-login-form-checkbox-fields.js:236
+#: src/modules/settings-page/components/component-panel-login-form-checkbox-fields.js:298
+#: src/modules/settings-page/components/component-panel-login-form-container.js:223
+#: src/modules/settings-page/components/component-panel-login-form-container.js:226
+#: src/modules/settings-page/components/component-panel-login-form-input-fields.js:143
+#: src/modules/settings-page/components/component-panel-login-form-input-fields.js:225
+#: src/modules/settings-page/components/component-panel-login-form-input-fields.js:287
+#: src/modules/settings-page/components/component-panel-notices.js:170
+#: src/modules/settings-page/components/component-panel-notices.js:212
+#: src/modules/settings-page/components/component-panel-notices.js:254
+#: src/modules/settings-page/components/component-panel-social-media-links.js:292
+#: src/modules/settings-page/components/component-panel-social-media-links.js:335
+#: src/modules/settings-page/components/component-panel-social-media-links.js:378
+msgid "Background"
+msgstr ""
+
+#: deps/js/utils/src/compose-color-palettes.js:66
+msgid "Border"
+msgstr ""
+
+#: deps/js/utils/src/compose-color-palettes.js:71
+msgid "Field's text"
+msgstr ""
+
+#: deps/js/utils/src/compose-color-palettes.js:76
+msgid "Label"
+msgstr ""
+
+#: deps/js/utils/src/compose-color-palettes.js:171
+msgid "Custom colors"
+msgstr ""
+
+#: deps/js/utils/src/compose-font-weight-name.js:15
+msgid "Thin 100"
+msgstr ""
+
+#: deps/js/utils/src/compose-font-weight-name.js:16
+msgid "Thin 100 Italic"
+msgstr ""
+
+#: deps/js/utils/src/compose-font-weight-name.js:17
+msgid "ExtraLight 200"
+msgstr ""
+
+#: deps/js/utils/src/compose-font-weight-name.js:18
+msgid "ExtraLight 200 Italic"
+msgstr ""
+
+#: deps/js/utils/src/compose-font-weight-name.js:19
+msgid "Light 300"
+msgstr ""
+
+#: deps/js/utils/src/compose-font-weight-name.js:20
+msgid "Light 300 Italic"
+msgstr ""
+
+#: deps/js/utils/src/compose-font-weight-name.js:21
+msgid "Regular 400"
+msgstr ""
+
+#: deps/js/utils/src/compose-font-weight-name.js:22
+msgid "Regular 400 Italic"
+msgstr ""
+
+#: deps/js/utils/src/compose-font-weight-name.js:23
+msgid "Medium 500"
+msgstr ""
+
+#: deps/js/utils/src/compose-font-weight-name.js:24
+msgid "Medium 500 Italic"
+msgstr ""
+
+#: deps/js/utils/src/compose-font-weight-name.js:25
+msgid "SemiBold 600"
+msgstr ""
+
+#: deps/js/utils/src/compose-font-weight-name.js:26
+msgid "SemiBold 600 Italic"
+msgstr ""
+
+#: deps/js/utils/src/compose-font-weight-name.js:27
+msgid "Bold 700"
+msgstr ""
+
+#: deps/js/utils/src/compose-font-weight-name.js:28
+msgid "Bold 700 Italic"
+msgstr ""
+
+#: deps/js/utils/src/compose-font-weight-name.js:29
+msgid "ExtraBold 800"
+msgstr ""
+
+#: deps/js/utils/src/compose-font-weight-name.js:30
+msgid "ExtraBold 800 Italic"
+msgstr ""
+
+#: deps/js/utils/src/compose-font-weight-name.js:31
+msgid "Black 900"
+msgstr ""
+
+#: deps/js/utils/src/compose-font-weight-name.js:32
+msgid "Black 900 Italic"
+msgstr ""
+
+#: deps/js/utils/src/compose-gradient-palettes.js:23
+msgid "Theme gradient palette"
+msgstr ""
+
+#: deps/js/utils/src/compose-gradient-palettes.js:34
+msgid "Default core gradient palette"
+msgstr ""
+
+#: deps/js/utils/src/compose-shadow-presets.js:17
+msgid "None"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-background.js:65
+#: src/modules/settings-page/components/component-panel-footer.js:137
+#: src/modules/settings-page/components/component-panel-language-switcher.js:97
+#: src/modules/settings-page/components/component-panel-login-form-button-primary.js:140
+#: src/modules/settings-page/components/component-panel-login-form-button-secondary.js:132
+#: src/modules/settings-page/components/component-panel-login-form-checkbox-fields.js:151
+#: src/modules/settings-page/components/component-panel-login-form-input-fields.js:140
+#: src/modules/settings-page/components/component-panel-login-form-labels.js:106
+#: src/modules/settings-page/components/component-panel-privacy-policy-link.js:145
+#: src/modules/settings-page/components/component-panel-social-media-links.js:289
+#: src/modules/settings-page/components/component-panel-under-form-links.js:214
+msgid "Colors"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-background.js:92
+#: src/modules/settings-page/components/component-panel-login-form-container.js:248
+msgid "background image"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-custom-css.js:52
+msgid "Custom CSS"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-custom-css.js:56
+msgid "Additional, custom CSS"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-footer.js:83
+msgid "Footer"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-footer.js:88
+msgid "Footer text"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-footer.js:107
+#: src/modules/settings-page/components/component-panel-privacy-policy-link.js:115
+#: src/modules/settings-page/components/component-panel-under-form-links.js:147
+msgid "Text alignment"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-footer.js:112
+#: src/modules/settings-page/components/component-panel-logo.js:90
+#: src/modules/settings-page/components/component-panel-privacy-policy-link.js:120
+#: src/modules/settings-page/components/component-panel-social-media-links.js:264
+#: src/modules/settings-page/components/component-panel-under-form-links.js:152
+msgid "Left"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-footer.js:116
+#: src/modules/settings-page/components/component-panel-logo.js:94
+#: src/modules/settings-page/components/component-panel-privacy-policy-link.js:124
+#: src/modules/settings-page/components/component-panel-social-media-links.js:268
+#: src/modules/settings-page/components/component-panel-under-form-links.js:156
+msgid "Center"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-footer.js:120
+#: src/modules/settings-page/components/component-panel-logo.js:98
+#: src/modules/settings-page/components/component-panel-privacy-policy-link.js:128
+#: src/modules/settings-page/components/component-panel-social-media-links.js:272
+#: src/modules/settings-page/components/component-panel-under-form-links.js:160
+msgid "Right"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-footer.js:140
+#: src/modules/settings-page/components/component-panel-login-form-button-primary.js:164
+#: src/modules/settings-page/components/component-panel-login-form-button-primary.js:206
+#: src/modules/settings-page/components/component-panel-login-form-button-primary.js:248
+#: src/modules/settings-page/components/component-panel-login-form-button-secondary.js:156
+#: src/modules/settings-page/components/component-panel-login-form-button-secondary.js:198
+#: src/modules/settings-page/components/component-panel-login-form-button-secondary.js:240
+#: src/modules/settings-page/components/component-panel-login-form-input-fields.js:163
+#: src/modules/settings-page/components/component-panel-login-form-input-fields.js:245
+#: src/modules/settings-page/components/component-panel-login-form-input-fields.js:307
+#: src/modules/settings-page/components/component-panel-login-form-labels.js:109
+#: src/modules/settings-page/components/component-panel-notices.js:190
+#: src/modules/settings-page/components/component-panel-notices.js:232
+#: src/modules/settings-page/components/component-panel-notices.js:274
+msgid "Text"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-footer.js:193
+#: src/modules/settings-page/components/component-panel-language-switcher.js:124
+#: src/modules/settings-page/components/component-panel-login-form-button-primary.js:561
+#: src/modules/settings-page/components/component-panel-login-form-button-secondary.js:497
+#: src/modules/settings-page/components/component-panel-login-form-container.js:486
+#: src/modules/settings-page/components/component-panel-login-form-input-fields.js:570
+#: src/modules/settings-page/components/component-panel-login-form-labels.js:160
+#: src/modules/settings-page/components/component-panel-notices.js:503
+#: src/modules/settings-page/components/component-panel-privacy-policy-link.js:299
+#: src/modules/settings-page/components/component-panel-social-media-links.js:653
+#: src/modules/settings-page/components/component-panel-under-form-links.js:387
+msgid "Padding"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-footer.js:230
+#: src/modules/settings-page/components/component-panel-language-switcher.js:161
+#: src/modules/settings-page/components/component-panel-login-form-button-primary.js:598
+#: src/modules/settings-page/components/component-panel-login-form-container.js:523
+#: src/modules/settings-page/components/component-panel-login-form-input-fields.js:607
+#: src/modules/settings-page/components/component-panel-login-form-labels.js:197
+#: src/modules/settings-page/components/component-panel-login-form-remember-me-checkbox.js:128
+#: src/modules/settings-page/components/component-panel-notices.js:540
+#: src/modules/settings-page/components/component-panel-privacy-policy-link.js:336
+#: src/modules/settings-page/components/component-panel-social-media-links.js:690
+#: src/modules/settings-page/components/component-panel-under-form-links.js:424
+msgid "Margin"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-language-switcher.js:65
+msgid "Language switcher"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-language-switcher.js:70
+msgid "Allow the language switcher/dropdown"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-language-switcher.js:71
+msgid "If your website supports multiple languages, users can switch to their preferred language using the dropdown below the login form; that functionality can be disabled here."
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-language-switcher.js:91
+msgid "Note: the select field's (language dropdown) styles inherit styles defined in the \"Login form input fields\" panel above."
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-language-switcher.js:100
+#: src/modules/settings-page/components/component-panel-login-form-checkbox-fields.js:154
+#: src/modules/settings-page/components/component-panel-login-form-checkbox-fields.js:216
+#: src/modules/settings-page/components/component-panel-login-form-checkbox-fields.js:278
+#: src/modules/settings-page/components/component-panel-social-media-links.js:312
+#: src/modules/settings-page/components/component-panel-social-media-links.js:355
+#: src/modules/settings-page/components/component-panel-social-media-links.js:398
+#: src/modules/settings-page/components/component-social-media-link.js:46
+msgid "Icon"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-button-primary.js:138
+msgid "Login form button (primary)"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-button-primary.js:182
+#: src/modules/settings-page/components/component-panel-login-form-button-secondary.js:174
+#: src/modules/settings-page/components/component-panel-login-form-checkbox-fields.js:213
+#: src/modules/settings-page/components/component-panel-login-form-input-fields.js:222
+#: src/modules/settings-page/components/component-panel-privacy-policy-link.js:168
+#: src/modules/settings-page/components/component-panel-social-media-links.js:332
+#: src/modules/settings-page/components/component-panel-under-form-links.js:256
+msgid "Colors (on hover)"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-button-primary.js:224
+#: src/modules/settings-page/components/component-panel-login-form-button-secondary.js:216
+#: src/modules/settings-page/components/component-panel-login-form-checkbox-fields.js:275
+#: src/modules/settings-page/components/component-panel-login-form-input-fields.js:284
+#: src/modules/settings-page/components/component-panel-privacy-policy-link.js:191
+#: src/modules/settings-page/components/component-panel-social-media-links.js:375
+#: src/modules/settings-page/components/component-panel-under-form-links.js:279
+msgid "Colors (on focus)"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-button-primary.js:310
+#: src/modules/settings-page/components/component-panel-login-form-button-secondary.js:303
+#: src/modules/settings-page/components/component-panel-login-form-checkbox-fields.js:353
+#: src/modules/settings-page/components/component-panel-login-form-container.js:305
+#: src/modules/settings-page/components/component-panel-login-form-input-fields.js:389
+#: src/modules/settings-page/components/component-panel-social-media-links.js:472
+msgid "Border style"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-button-primary.js:339
+#: src/modules/settings-page/components/component-panel-login-form-button-secondary.js:345
+#: src/modules/settings-page/components/component-panel-login-form-checkbox-fields.js:382
+#: src/modules/settings-page/components/component-panel-login-form-container.js:334
+#: src/modules/settings-page/components/component-panel-login-form-input-fields.js:418
+#: src/modules/settings-page/components/component-panel-social-media-links.js:501
+msgid "Border style (on hover)"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-button-primary.js:381
+#: src/modules/settings-page/components/component-panel-login-form-button-secondary.js:387
+#: src/modules/settings-page/components/component-panel-login-form-checkbox-fields.js:424
+#: src/modules/settings-page/components/component-panel-login-form-container.js:376
+#: src/modules/settings-page/components/component-panel-login-form-input-fields.js:460
+#: src/modules/settings-page/components/component-panel-social-media-links.js:543
+msgid "Border style (on focus)"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-button-primary.js:437
+#: src/modules/settings-page/components/component-panel-login-form-button-secondary.js:443
+#: src/modules/settings-page/components/component-panel-login-form-checkbox-fields.js:480
+#: src/modules/settings-page/components/component-panel-login-form-container.js:432
+#: src/modules/settings-page/components/component-panel-login-form-input-fields.js:516
+#: src/modules/settings-page/components/component-panel-privacy-policy-link.js:245
+#: src/modules/settings-page/components/component-panel-social-media-links.js:599
+#: src/modules/settings-page/components/component-panel-under-form-links.js:333
+msgid "Shadow"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-button-primary.js:454
+#: src/modules/settings-page/components/component-panel-login-form-button-secondary.js:460
+#: src/modules/settings-page/components/component-panel-login-form-checkbox-fields.js:497
+#: src/modules/settings-page/components/component-panel-login-form-container.js:449
+#: src/modules/settings-page/components/component-panel-login-form-input-fields.js:533
+#: src/modules/settings-page/components/component-panel-privacy-policy-link.js:262
+#: src/modules/settings-page/components/component-panel-social-media-links.js:616
+#: src/modules/settings-page/components/component-panel-under-form-links.js:350
+msgid "Shadow (on hover)"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-button-primary.js:471
+#: src/modules/settings-page/components/component-panel-login-form-button-secondary.js:477
+#: src/modules/settings-page/components/component-panel-login-form-checkbox-fields.js:514
+#: src/modules/settings-page/components/component-panel-login-form-container.js:466
+#: src/modules/settings-page/components/component-panel-login-form-input-fields.js:550
+#: src/modules/settings-page/components/component-panel-privacy-policy-link.js:279
+#: src/modules/settings-page/components/component-panel-social-media-links.js:633
+#: src/modules/settings-page/components/component-panel-under-form-links.js:367
+msgid "Shadow (on focus)"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-button-primary.js:491
+msgid "Width"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-button-primary.js:496
+msgid "Fit content (auto)"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-button-primary.js:500
+msgid "Full width (100%)"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-button-primary.js:522
+#: src/modules/settings-page/components/component-panel-social-media-links.js:259
+msgid "Alignment"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-button-primary.js:527
+msgid "Default (floating right)"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-button-primary.js:531
+msgid "Left, new line"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-button-primary.js:535
+msgid "Center, new line"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-button-primary.js:539
+msgid "Right, new line"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-button-primary.js:635
+msgid "\"Log In\" button text"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-button-primary.js:657
+msgid "\"Get New Password\" button text"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-button-primary.js:679
+msgid "\"Save Password\" button text"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-button-primary.js:703
+msgid "\"Register\" button text"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-button-secondary.js:130
+msgid "Login form button (secondary)"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-button-secondary.js:534
+msgid "\"Change\" button text"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-button-secondary.js:556
+msgid "\"Generate Password\" button text"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-checkbox-fields.js:131
+msgid "Login form checkbox field(s)"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-checkbox-fields.js:134
+msgid "\"Checked\" icon"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-checkbox-fields.js:194
+#: src/modules/settings-page/components/component-panel-login-form-checkbox-fields.js:256
+#: src/modules/settings-page/components/component-panel-login-form-checkbox-fields.js:318
+msgid "Background (when checked)"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-checkbox-fields.js:532
+msgid "Field size (width & height, in pixels)"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-checkbox-fields.js:553
+msgid "Field's margin"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-checkbox-fields.js:588
+msgid "Icon size (width & height, in pixels)"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-checkbox-fields.js:609
+msgid "Icon's margin"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-container.js:134
+msgid "Login form container"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-container.js:139
+msgid "Place logo inside the form container"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-container.js:155
+msgid "Place footer links inside the form container"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-container.js:169
+msgid "Position / alignment"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-container.js:188
+msgid "Wrapper's padding"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-container.js:270
+msgid "Container width (px)"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-container.js:271
+msgid "Default is 320px."
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-input-fields.js:138
+msgid "Login form input fields"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-input-fields.js:183
+#: src/modules/settings-page/components/component-panel-login-form-input-fields.js:265
+#: src/modules/settings-page/components/component-panel-login-form-input-fields.js:327
+msgid "Eye icon (show/hide password)"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-input-fields.js:203
+msgid "Placeholder"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-input-fields.js:644
+msgid "\"Username or Email Address\" field's placeholder"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-input-fields.js:670
+msgid "\"Password\" field's placeholder"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-input-fields.js:693
+msgid "\"Username\" field's placeholder"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-input-fields.js:716
+msgid "\"Email\" field's placeholder"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-labels.js:86
+msgid "Login form labels"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-labels.js:91
+msgid "Show labels above the login form fields"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-labels.js:234
+msgid "\"Username or Email Address\" field's label"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-labels.js:258
+msgid "\"Password\" field's label"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-labels.js:284
+msgid "\"Username\" field's label"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-labels.js:308
+msgid "\"Email\" field's label"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-remember-me-checkbox.js:64
+msgid "Login form's \"Remember Me\" checkbox"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-remember-me-checkbox.js:69
+msgid "\"Remember Me\" checkbox visibility"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-remember-me-checkbox.js:74
+msgid "Visible (default)"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-remember-me-checkbox.js:78
+msgid "Hidden, checked"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-remember-me-checkbox.js:82
+msgid "Hidden, unchecked"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-login-form-remember-me-checkbox.js:104
+msgid "Field's label"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-logo.js:62
+msgid "Logo"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-logo.js:67
+msgid "Show logo above the login form"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-logo.js:85
+msgid "Logo image alignment"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-logo.js:118
+msgid "Logo source"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-logo.js:123
+msgid "Core (default WordPress.org logo)"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-logo.js:131
+msgid "Site icon"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-logo.js:155
+msgid "logo image"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-logo.js:172
+msgid "Strict width of the logo image (px)"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-logo.js:173
+msgid "Set to \"0\" to use the original image width."
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-logo.js:199
+msgid "Make logo a link"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-logo.js:217
+#: src/modules/settings-page/components/component-social-media-link.js:102
+#: src/modules/settings-page/components/component-under-form-link.js:83
+msgid "Open link in new tab"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-logo.js:231
+msgid "Logo link"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-logo.js:232
+msgid "Leave empty to remove the link entirely and only render the image."
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-logo.js:250
+msgid "Logo link title"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-miscellaneous.js:53
+msgid "Miscellaneous"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-miscellaneous.js:58
+msgid "Disable autocomplete on the login form fields"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-miscellaneous.js:59
+msgid "Ask the browser not to remember the values for the login form fields. This is a hint to browsers; some may not comply with this choice."
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-miscellaneous.js:78
+msgid "Disable autofocus on the \"username\" login form field"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-miscellaneous.js:79
+msgid "When entering the login screen, the \"username\" field of the login form field is automatically focused; that functionality can be disabled here."
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-miscellaneous.js:98
+msgid "Disable shake effect on login form fields"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-miscellaneous.js:99
+msgid "The \"shake\" effect comes from a WordPress core and is used if a value of a field is incorrect."
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-notices.js:138
+msgid "Notices"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-notices.js:167
+msgid "Colors (error)"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-notices.js:209
+msgid "Colors (notice)"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-notices.js:251
+msgid "Colors (success)"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-notices.js:309
+msgid "Border style (error)"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-notices.js:351
+msgid "Border style (notice)"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-notices.js:393
+msgid "Border style (success)"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-notices.js:449
+msgid "Shadow (error)"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-notices.js:466
+msgid "Shadow (notice)"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-notices.js:483
+msgid "Shadow (success)"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-notices.js:577
+msgid "Notice content for the password reset screen"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-notices.js:605
+msgid "\"Register For This Site\" notice content"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-notices.js:631
+msgid "Show custom notice above the login form"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-notices.js:649
+msgid "Custom notice type"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-notices.js:654
+msgid "Error"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-notices.js:658
+msgid "Notice"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-notices.js:662
+msgid "Success"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-notices.js:681
+msgid "Content of the custom notice"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-privacy-policy-link.js:90
+msgid "Privacy Policy link"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-privacy-policy-link.js:95
+msgid "Allow the \"Privacy Policy\" link"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-privacy-policy-link.js:96
+msgid "Link is auto-generated by WordPress and points to your site's privacy policy page."
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-privacy-policy-link.js:148
+#: src/modules/settings-page/components/component-panel-privacy-policy-link.js:171
+#: src/modules/settings-page/components/component-panel-privacy-policy-link.js:194
+#: src/modules/settings-page/components/component-panel-under-form-links.js:217
+#: src/modules/settings-page/components/component-panel-under-form-links.js:259
+#: src/modules/settings-page/components/component-panel-under-form-links.js:282
+msgid "Link"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-social-media-links.js:139
+#: src/modules/settings-page/components/component-panel-social-media-links.js:165
+msgid "Social media links"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-social-media-links.js:144
+msgid "Display social media links"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-social-media-links.js:145
+msgid "Social media links will be displayed at the bottom of the login screen."
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-social-media-links.js:162
+msgid "Add new social media link"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-social-media-links.js:208
+msgid "No social media links set yet."
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-social-media-links.js:214
+msgid "Placement"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-social-media-links.js:219
+msgid "Above logo"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-social-media-links.js:223
+msgid "Above form"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-social-media-links.js:227
+msgid "Above inline links"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-social-media-links.js:231
+msgid "Above privacy policy link"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-social-media-links.js:235
+msgid "Above language switcher"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-social-media-links.js:239
+msgid "At the bottom"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-social-media-links.js:422
+msgid "Icon width & height"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-social-media-links.js:441
+msgid "Gap between the icons"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-templates.js:23
+msgid "Core Default"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-templates.js:27
+msgid "Polished Core Default"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-templates.js:31
+msgid "Clean & Minimal"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-templates.js:35
+msgid "Clean & Minimal - Dark"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-templates.js:39
+msgid "Clean & Minimal with Animated Gradient"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-templates.js:43
+msgid "Purple Nature"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-templates.js:54
+msgid "Templates (Quick Start)"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-templates.js:55
+msgid "Apply a preset style instantly. All settings remain editable."
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-templates.js:58
+msgid "Image-related features are limited in the Network Admin because the Media Library is not available in this context."
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-templates.js:82
+msgid "Use this template"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-templates.js:96
+msgid "Unlock with PRO"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-under-form-links.js:98
+msgid "Under form links"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-under-form-links.js:101
+msgid "Add new link"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-under-form-links.js:104
+msgid "Additional links under the form"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-under-form-links.js:141
+msgid "No additional links under the form set yet."
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-under-form-links.js:180
+#: src/modules/settings-page/components/component-panel-under-form-links.js:238
+msgid "Separator"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-under-form-links.js:199
+msgid "Disable the \"← Go to…\" back link"
+msgstr ""
+
+#: src/modules/settings-page/components/component-panel-under-form-links.js:200
+msgid "This link redirects to the home page."
+msgstr ""
+
+#: src/modules/settings-page/components/component-preview.js:116
+msgid "Preview"
+msgstr ""
+
+#: src/modules/settings-page/components/component-preview.js:131
+msgid "Loading preview…"
+msgstr ""
+
+#: src/modules/settings-page/components/component-preview.js:140
+msgid "Login Screen Preview"
+msgstr ""
+
+#: src/modules/settings-page/components/component-preview.js:149
+msgid "Updating preview…"
+msgstr ""
+
+#: src/modules/settings-page/components/component-social-media-link.js:36
+msgid "Social media link"
+msgstr ""
+
+#. Translators: %s - link's ARIA label.
+#: src/modules/settings-page/components/component-social-media-link.js:39
+#, js-format
+msgid "\"%s\" social media link"
+msgstr ""
+
+#: src/modules/settings-page/components/component-social-media-link.js:64
+#: src/modules/settings-page/components/component-under-form-link.js:64
+msgid "Link URL"
+msgstr ""
+
+#: src/modules/settings-page/components/component-social-media-link.js:83
+msgid "Link's \"aria-label\""
+msgstr ""
+
+#: src/modules/settings-page/components/component-under-form-link.js:35
+msgid "Link under form"
+msgstr ""
+
+#. Translators: %s - link text (anchor).
+#: src/modules/settings-page/components/component-under-form-link.js:38
+#, js-format
+msgid "\"%s\" link under form"
+msgstr ""
+
+#: src/modules/settings-page/components/component-under-form-link.js:47
+msgid "Link text (anchor)"
+msgstr ""
+
+#: src/modules/settings-page/index.js:62
+msgid "Design"
+msgstr ""
+
+#: src/modules/settings-page/index.js:68
+msgid "Functionality"
+msgstr ""
+
+#: src/modules/settings-page/index.js:93
+msgid "WP Password Policy"
+msgstr ""
+
+#: src/modules/settings-page/index.js:94
+msgid "Define advanced password policies, enforce strong password requirements, and improve your WordPress site's security."
+msgstr ""
+
+#: src/modules/settings-page/index.js:125
+msgid "20+ predefined templates to choose from for a quick start"
+msgstr ""
+
+#: src/modules/settings-page/index.js:126
+msgid "Advanced background customization options for a unique login experience"
+msgstr ""
+
+#: src/modules/settings-page/index.js:127
+msgid "Configurable post-login redirects for all users, specific users, or based on user roles"
+msgstr ""
+
+#: src/modules/settings-page/index.js:128
+msgid "Custom login path to replace the default wp-login.php for improved security"
+msgstr ""
+
+#: src/modules/settings-page/index.js:129
+msgid "Access to PRO updates and our premium support"
+msgstr ""

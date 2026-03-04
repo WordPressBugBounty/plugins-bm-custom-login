@@ -1,0 +1,59 @@
+/**
+ * Upsell panel
+ */
+.tsc-upsell-panel {
+	background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(233, 156, 38, 0.05) 90%);
+	overflow: hidden;
+	position: relative;
+
+	.components-panel__body-title {
+		color: #b2710e;
+
+		.components-panel__body-toggle.components-button {
+			color: inherit;
+		}
+	}
+
+	ul {
+		list-style: none;
+		margin: 0 0 2rem;
+
+		li {
+			padding-left: 24px;
+			position: relative;
+
+			&::before {
+				background-image: url(data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNTIwIDUyMCIgd2lkdGg9IjIwIiBoZWlnaHQ9IjIwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGlkPSJmaV81MjkwMDU4Ij48ZyBpZD0iXzE1LUNoZWNrZWQiIGRhdGEtbmFtZT0iMTUtQ2hlY2tlZCI+PGNpcmNsZSBjeD0iMjA4LjUyIiBjeT0iMjg4LjUiIGZpbGw9IiNiMGVmOGYiIHI9IjE3Ni41MiI+PC9jaXJjbGU+PHBhdGggZD0ibTIxMC41MTYgNDI0LjkzNy0yLjIzOS0zLjgxNWMtMzQuMi01OC4yNy0xMjUuMDgyLTE4MS45MjgtMTI2LTE4My4xN2wtMS4zMTEtMS43ODEgMzAuOTYzLTMwLjYgOTguMDEyIDY4LjQzOWM2MS43MTEtODAuMDc5IDExOS4yODMtMTM1LjA4MSAxNTYuODM3LTE2Ny4yIDQxLjA4MS0zNS4xMzUgNjcuODIyLTUxLjMxIDY4LjA5Mi01MS40NjVsLjYwOC0uMzY0aDUyLjUyMmwtNS4wMTcgNC40NjhjLTEyOS4wMjkgMTE0LjkyNi0yNjguODgzIDM1OS4xOS0yNzAuMjc2IDM2MS42NDR6IiBmaWxsPSIjMDA5MDQ1Ij48L3BhdGg+PC9nPjwvc3ZnPg==);
+				background-repeat: no-repeat;
+				content: "";
+				display: block;
+				height: 20px;
+				left: 0;
+				margin-top: 1px;
+				position: absolute;
+				top: 0;
+				width: 20px;
+			}
+		}
+	}
+
+	p {
+		margin-top: 1rem;
+	}
+
+	a.components-button {
+		--wp-components-color-accent: #262626;
+		--wp-components-color-accent-darker-10: #111;
+		position: relative;
+	}
+
+	&__background-icon {
+		bottom: -18px;
+		height: 96px;
+		opacity: 0.5;
+		position: absolute;
+		right: -18px;
+		transform: rotate(-15deg);
+		width: 96px;
+	}
+}

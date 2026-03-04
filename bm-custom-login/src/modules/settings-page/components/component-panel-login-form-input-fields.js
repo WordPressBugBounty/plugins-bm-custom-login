@@ -1,0 +1,750 @@
+/**
+ * External dependencies
+ */
+import { BorderControl } from '@teydeastudio/components/src/border-control/index.js';
+import { BorderRadiusControl } from '@teydeastudio/components/src/border-radius-control/index.js';
+import { ColorControl } from '@teydeastudio/components/src/color-control/index.js';
+import { FieldsGroup } from '@teydeastudio/components/src/fields-group/index.js';
+import { FontControl } from '@teydeastudio/components/src/font-control/index.js';
+import { MultilingualTextControl } from '@teydeastudio/components/src/multilingual-text-control/index.js';
+import { ShadowControl } from '@teydeastudio/components/src/shadow-control/index.js';
+import PropTypes from 'prop-types';
+
+/**
+ * WordPress dependencies
+ */
+import {
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalBoxControl as BoxControl,
+	PanelBody,
+} from '@wordpress/components';
+import { Fragment } from '@wordpress/element';
+import { __, sprintf } from '@wordpress/i18n';
+
+/**
+ * PanelLoginFormInputFields component
+ *
+ * @param {Object}   properties             Component properties object.
+ * @param {Object}   properties.context     Additional context object.
+ * @param {Object}   properties.presets     Presets to use in components.
+ * @param {Object}   properties.settings    Plugin settings.
+ * @param {Function} properties.setSettings Function (callback) used to update the settings.
+ *
+ * @return {JSX} PanelLoginFormInputFields component.
+ */
+export const PanelLoginFormInputFields = ( { context, presets, settings, setSettings } ) => {
+	// Destructure the settings object.
+	const { loginFormInputFields } = settings.data;
+	const {
+		backgroundColor,
+		backgroundColorOnFocus,
+		backgroundColorOnHover,
+		borderBottomColor,
+		borderBottomColorOnFocus,
+		borderBottomColorOnHover,
+		borderBottomLeftRadius,
+		borderBottomRightRadius,
+		borderBottomStyle,
+		borderBottomStyleOnFocus,
+		borderBottomStyleOnHover,
+		borderBottomWidth,
+		borderBottomWidthOnFocus,
+		borderBottomWidthOnHover,
+		borderLeftColor,
+		borderLeftColorOnFocus,
+		borderLeftColorOnHover,
+		borderLeftStyle,
+		borderLeftStyleOnFocus,
+		borderLeftStyleOnHover,
+		borderLeftWidth,
+		borderLeftWidthOnFocus,
+		borderLeftWidthOnHover,
+		borderRightColor,
+		borderRightColorOnFocus,
+		borderRightColorOnHover,
+		borderRightStyle,
+		borderRightStyleOnFocus,
+		borderRightStyleOnHover,
+		borderRightWidth,
+		borderRightWidthOnFocus,
+		borderRightWidthOnHover,
+		borderTopColor,
+		borderTopColorOnFocus,
+		borderTopColorOnHover,
+		borderTopLeftRadius,
+		borderTopRightRadius,
+		borderTopStyle,
+		borderTopStyleOnFocus,
+		borderTopStyleOnHover,
+		borderTopWidth,
+		borderTopWidthOnFocus,
+		borderTopWidthOnHover,
+		eyeIconColor,
+		eyeIconColorOnFocus,
+		eyeIconColorOnHover,
+		fontFamily,
+		fontSize,
+		fontWeight,
+		lineHeight,
+		marginBottom,
+		marginLeft,
+		marginRight,
+		marginTop,
+		paddingBottom,
+		paddingLeft,
+		paddingRight,
+		paddingTop,
+		placeholderColor,
+		shadow,
+		shadowOnFocus,
+		shadowOnHover,
+		textColor,
+		textColorOnFocus,
+		textColorOnHover,
+	} = loginFormInputFields;
+
+	// Destructure the presets object.
+	const { colorPalettes, fontFamilies, fontSizes, fontWeights, gradientPalettes, shadowPresets } = presets;
+
+	// Destructure the context object.
+	const { anyoneCanRegister, languages } = context;
+
+	/**
+	 * Helper setter
+	 *
+	 * @param {Object} setting Setting to update.
+	 *
+	 * @return {void}
+	 */
+	const setSetting = ( setting ) => {
+		setSettings( {
+			...settings,
+			data: {
+				...settings.data,
+				loginFormInputFields: {
+					...loginFormInputFields,
+					...setting,
+				},
+			},
+		} );
+	};
+
+	/**
+	 * Return the component
+	 *
+	 * @return {JSX} PanelLoginFormInputFields component.
+	 */
+	return (
+		<PanelBody initialOpen={ false } title={ __( 'Login form input fields', 'bm-custom-login' ) }>
+			<FieldsGroup>
+				<FieldsGroup label={ __( 'Colors', 'bm-custom-login' ) } withBoxBorder withBaseControl>
+					<ColorControl
+						value={ backgroundColor }
+						label={ __( 'Background', 'bm-custom-login' ) }
+						/**
+						 * Update the value
+						 *
+						 * @param {string} updatedValue Updated value.
+						 *
+						 * @return {void}
+						 */
+						onChange={ ( updatedValue ) => {
+							setSetting( {
+								backgroundColor: updatedValue,
+							} );
+						} }
+						colorPalettes={ colorPalettes }
+						withAlpha
+						withColor
+						withGradient
+					/>
+					<ColorControl
+						value={ textColor }
+						label={ __( 'Text', 'bm-custom-login' ) }
+						/**
+						 * Update the value
+						 *
+						 * @param {string} updatedValue Updated value.
+						 *
+						 * @return {void}
+						 */
+						onChange={ ( updatedValue ) => {
+							setSetting( {
+								textColor: updatedValue,
+							} );
+						} }
+						gradientPalettes={ gradientPalettes }
+						colorPalettes={ colorPalettes }
+						withAlpha
+						withColor
+					/>
+					<ColorControl
+						value={ eyeIconColor }
+						label={ __( 'Eye icon (show/hide password)', 'bm-custom-login' ) }
+						/**
+						 * Update the value
+						 *
+						 * @param {string} updatedValue Updated value.
+						 *
+						 * @return {void}
+						 */
+						onChange={ ( updatedValue ) => {
+							setSetting( {
+								eyeIconColor: updatedValue,
+							} );
+						} }
+						gradientPalettes={ gradientPalettes }
+						colorPalettes={ colorPalettes }
+						withAlpha
+						withColor
+					/>
+					<ColorControl
+						value={ placeholderColor }
+						label={ __( 'Placeholder', 'bm-custom-login' ) }
+						/**
+						 * Update the value
+						 *
+						 * @param {string} updatedValue Updated value.
+						 *
+						 * @return {void}
+						 */
+						onChange={ ( updatedValue ) => {
+							setSetting( {
+								placeholderColor: updatedValue,
+							} );
+						} }
+						gradientPalettes={ gradientPalettes }
+						colorPalettes={ colorPalettes }
+						withAlpha
+						withColor
+					/>
+				</FieldsGroup>
+				<FieldsGroup label={ __( 'Colors (on hover)', 'bm-custom-login' ) } withBoxBorder withBaseControl>
+					<ColorControl
+						value={ backgroundColorOnHover }
+						label={ __( 'Background', 'bm-custom-login' ) }
+						/**
+						 * Update the value
+						 *
+						 * @param {string} updatedValue Updated value.
+						 *
+						 * @return {void}
+						 */
+						onChange={ ( updatedValue ) => {
+							setSetting( {
+								backgroundColorOnHover: updatedValue,
+							} );
+						} }
+						colorPalettes={ colorPalettes }
+						withAlpha
+						withColor
+						withGradient
+					/>
+					<ColorControl
+						value={ textColorOnHover }
+						label={ __( 'Text', 'bm-custom-login' ) }
+						/**
+						 * Update the value
+						 *
+						 * @param {string} updatedValue Updated value.
+						 *
+						 * @return {void}
+						 */
+						onChange={ ( updatedValue ) => {
+							setSetting( {
+								textColorOnHover: updatedValue,
+							} );
+						} }
+						gradientPalettes={ gradientPalettes }
+						colorPalettes={ colorPalettes }
+						withAlpha
+						withColor
+					/>
+					<ColorControl
+						value={ eyeIconColorOnHover }
+						label={ __( 'Eye icon (show/hide password)', 'bm-custom-login' ) }
+						/**
+						 * Update the value
+						 *
+						 * @param {string} updatedValue Updated value.
+						 *
+						 * @return {void}
+						 */
+						onChange={ ( updatedValue ) => {
+							setSetting( {
+								eyeIconColorOnHover: updatedValue,
+							} );
+						} }
+						gradientPalettes={ gradientPalettes }
+						colorPalettes={ colorPalettes }
+						withAlpha
+						withColor
+					/>
+				</FieldsGroup>
+				<FieldsGroup label={ __( 'Colors (on focus)', 'bm-custom-login' ) } withBoxBorder withBaseControl>
+					<ColorControl
+						value={ backgroundColorOnFocus }
+						label={ __( 'Background', 'bm-custom-login' ) }
+						/**
+						 * Update the value
+						 *
+						 * @param {string} updatedValue Updated value.
+						 *
+						 * @return {void}
+						 */
+						onChange={ ( updatedValue ) => {
+							setSetting( {
+								backgroundColorOnFocus: updatedValue,
+							} );
+						} }
+						colorPalettes={ colorPalettes }
+						withAlpha
+						withColor
+						withGradient
+					/>
+					<ColorControl
+						value={ textColorOnFocus }
+						label={ __( 'Text', 'bm-custom-login' ) }
+						/**
+						 * Update the value
+						 *
+						 * @param {string} updatedValue Updated value.
+						 *
+						 * @return {void}
+						 */
+						onChange={ ( updatedValue ) => {
+							setSetting( {
+								textColorOnFocus: updatedValue,
+							} );
+						} }
+						gradientPalettes={ gradientPalettes }
+						colorPalettes={ colorPalettes }
+						withAlpha
+						withColor
+					/>
+					<ColorControl
+						value={ eyeIconColorOnFocus }
+						label={ __( 'Eye icon (show/hide password)', 'bm-custom-login' ) }
+						/**
+						 * Update the value
+						 *
+						 * @param {string} updatedValue Updated value.
+						 *
+						 * @return {void}
+						 */
+						onChange={ ( updatedValue ) => {
+							setSetting( {
+								eyeIconColorOnFocus: updatedValue,
+							} );
+						} }
+						gradientPalettes={ gradientPalettes }
+						colorPalettes={ colorPalettes }
+						withAlpha
+						withColor
+					/>
+				</FieldsGroup>
+				<hr />
+				<FontControl
+					values={ {
+						fontFamily,
+						fontSize,
+						fontWeight,
+						lineHeight,
+					} }
+					options={ {
+						fallbackSize: '24px',
+						fontFamilies,
+						fontSizes,
+						fontWeights,
+						withDecoration: false,
+						withLetterCase: false,
+					} }
+					/**
+					 * Update the values
+					 *
+					 * @param {Object} updatedValues Updated values.
+					 *
+					 * @return {void}
+					 */
+					onChange={ ( updatedValues ) => {
+						setSetting( updatedValues );
+					} }
+				/>
+				<hr />
+				<BorderControl
+					values={ {
+						borderBottomColor,
+						borderBottomStyle,
+						borderBottomWidth,
+						borderLeftColor,
+						borderLeftStyle,
+						borderLeftWidth,
+						borderRightColor,
+						borderRightStyle,
+						borderRightWidth,
+						borderTopColor,
+						borderTopStyle,
+						borderTopWidth,
+					} }
+					label={ __( 'Border style', 'bm-custom-login' ) }
+					/**
+					 * Update the value
+					 *
+					 * @param {Object} updatedValues Updated values.
+					 *
+					 * @return {void}
+					 */
+					onChange={ ( updatedValues ) => {
+						setSetting( updatedValues );
+					} }
+					colorPalettes={ colorPalettes }
+					withAlpha
+				/>
+				<BorderControl
+					values={ {
+						borderBottomColor: borderBottomColorOnHover,
+						borderBottomStyle: borderBottomStyleOnHover,
+						borderBottomWidth: borderBottomWidthOnHover,
+						borderLeftColor: borderLeftColorOnHover,
+						borderLeftStyle: borderLeftStyleOnHover,
+						borderLeftWidth: borderLeftWidthOnHover,
+						borderRightColor: borderRightColorOnHover,
+						borderRightStyle: borderRightStyleOnHover,
+						borderRightWidth: borderRightWidthOnHover,
+						borderTopColor: borderTopColorOnHover,
+						borderTopStyle: borderTopStyleOnHover,
+						borderTopWidth: borderTopWidthOnHover,
+					} }
+					label={ __( 'Border style (on hover)', 'bm-custom-login' ) }
+					/**
+					 * Update the value
+					 *
+					 * @param {Object} updatedValues Updated values.
+					 *
+					 * @return {void}
+					 */
+					onChange={ ( updatedValues ) => {
+						setSetting( {
+							borderBottomColorOnHover: updatedValues.borderBottomColor,
+							borderBottomStyleOnHover: updatedValues.borderBottomStyle,
+							borderBottomWidthOnHover: updatedValues.borderBottomWidth,
+							borderLeftColorOnHover: updatedValues.borderLeftColor,
+							borderLeftStyleOnHover: updatedValues.borderLeftStyle,
+							borderLeftWidthOnHover: updatedValues.borderLeftWidth,
+							borderRightColorOnHover: updatedValues.borderRightColor,
+							borderRightStyleOnHover: updatedValues.borderRightStyle,
+							borderRightWidthOnHover: updatedValues.borderRightWidth,
+							borderTopColorOnHover: updatedValues.borderTopColor,
+							borderTopStyleOnHover: updatedValues.borderTopStyle,
+							borderTopWidthOnHover: updatedValues.borderTopWidth,
+						} );
+					} }
+					colorPalettes={ colorPalettes }
+					withAlpha
+				/>
+				<BorderControl
+					values={ {
+						borderBottomColor: borderBottomColorOnFocus,
+						borderBottomStyle: borderBottomStyleOnFocus,
+						borderBottomWidth: borderBottomWidthOnFocus,
+						borderLeftColor: borderLeftColorOnFocus,
+						borderLeftStyle: borderLeftStyleOnFocus,
+						borderLeftWidth: borderLeftWidthOnFocus,
+						borderRightColor: borderRightColorOnFocus,
+						borderRightStyle: borderRightStyleOnFocus,
+						borderRightWidth: borderRightWidthOnFocus,
+						borderTopColor: borderTopColorOnFocus,
+						borderTopStyle: borderTopStyleOnFocus,
+						borderTopWidth: borderTopWidthOnFocus,
+					} }
+					label={ __( 'Border style (on focus)', 'bm-custom-login' ) }
+					/**
+					 * Update the value
+					 *
+					 * @param {Object} updatedValues Updated values.
+					 *
+					 * @return {void}
+					 */
+					onChange={ ( updatedValues ) => {
+						setSetting( {
+							borderBottomColorOnFocus: updatedValues.borderBottomColor,
+							borderBottomStyleOnFocus: updatedValues.borderBottomStyle,
+							borderBottomWidthOnFocus: updatedValues.borderBottomWidth,
+							borderLeftColorOnFocus: updatedValues.borderLeftColor,
+							borderLeftStyleOnFocus: updatedValues.borderLeftStyle,
+							borderLeftWidthOnFocus: updatedValues.borderLeftWidth,
+							borderRightColorOnFocus: updatedValues.borderRightColor,
+							borderRightStyleOnFocus: updatedValues.borderRightStyle,
+							borderRightWidthOnFocus: updatedValues.borderRightWidth,
+							borderTopColorOnFocus: updatedValues.borderTopColor,
+							borderTopStyleOnFocus: updatedValues.borderTopStyle,
+							borderTopWidthOnFocus: updatedValues.borderTopWidth,
+						} );
+					} }
+					colorPalettes={ colorPalettes }
+					withAlpha
+				/>
+				<BorderRadiusControl
+					value={ {
+						bottomLeft: borderBottomLeftRadius,
+						bottomRight: borderBottomRightRadius,
+						topLeft: borderTopLeftRadius,
+						topRight: borderTopRightRadius,
+					} }
+					/**
+					 * Update the value
+					 *
+					 * @param {Object} updatedValue             Updated value.
+					 * @param {string} updatedValue.bottomLeft  Value for bottom left corner.
+					 * @param {string} updatedValue.bottomRight Value for bottom right corner.
+					 * @param {string} updatedValue.topLeft     Value for top left corner.
+					 * @param {string} updatedValue.topRight    Value for top right corner.
+					 *
+					 * @return {void}
+					 */
+					onChange={ ( { bottomLeft, bottomRight, topLeft, topRight } ) => {
+						setSetting( {
+							borderBottomLeftRadius: bottomLeft,
+							borderBottomRightRadius: bottomRight,
+							borderTopLeftRadius: topLeft,
+							borderTopRightRadius: topRight,
+						} );
+					} }
+				/>
+				<hr />
+				<ShadowControl
+					label={ __( 'Shadow', 'bm-custom-login' ) }
+					value={ shadow }
+					presets={ shadowPresets }
+					/**
+					 * Update the value
+					 *
+					 * @param {string} updatedValue Updated value.
+					 *
+					 * @return {void}
+					 */
+					onChange={ ( updatedValue ) => {
+						setSetting( {
+							shadow: updatedValue,
+						} );
+					} }
+				/>
+				<ShadowControl
+					label={ __( 'Shadow (on hover)', 'bm-custom-login' ) }
+					value={ shadowOnHover }
+					presets={ shadowPresets }
+					/**
+					 * Update the value
+					 *
+					 * @param {string} updatedValue Updated value.
+					 *
+					 * @return {void}
+					 */
+					onChange={ ( updatedValue ) => {
+						setSetting( {
+							shadowOnHover: updatedValue,
+						} );
+					} }
+				/>
+				<ShadowControl
+					label={ __( 'Shadow (on focus)', 'bm-custom-login' ) }
+					value={ shadowOnFocus }
+					presets={ shadowPresets }
+					/**
+					 * Update the value
+					 *
+					 * @param {string} updatedValue Updated value.
+					 *
+					 * @return {void}
+					 */
+					onChange={ ( updatedValue ) => {
+						setSetting( {
+							shadowOnFocus: updatedValue,
+						} );
+					} }
+				/>
+				<hr />
+				<BoxControl
+					__nextHasNoMarginBottom
+					__next40pxDefaultSize
+					label={ __( 'Padding', 'bm-custom-login' ) }
+					values={ {
+						top: paddingTop,
+						right: paddingRight,
+						bottom: paddingBottom,
+						left: paddingLeft,
+					} }
+					/**
+					 * Update the values
+					 *
+					 * @param {Object} updatedValues        Updated values.
+					 * @param {string} updatedValues.top    Value for "top" side.
+					 * @param {string} updatedValues.right  Value for "right" side.
+					 * @param {string} updatedValues.bottom Value for "bottom" side.
+					 * @param {string} updatedValues.left   Value for "left" side.
+					 *
+					 * @return {void}
+					 */
+					onChange={ ( { top, right, bottom, left } ) => {
+						setSetting( {
+							paddingTop: 'undefined' === typeof top ? '0px' : top,
+							paddingRight: 'undefined' === typeof right ? '0px' : right,
+							paddingBottom: 'undefined' === typeof bottom ? '0px' : bottom,
+							paddingLeft: 'undefined' === typeof left ? '0px' : left,
+						} );
+					} }
+					resetValues={ {
+						top: '.1875rem',
+						right: '.3125rem',
+						bottom: '.1875rem',
+						left: '.3125rem',
+					} }
+				/>
+				<hr />
+				<BoxControl
+					__nextHasNoMarginBottom
+					__next40pxDefaultSize
+					label={ __( 'Margin', 'bm-custom-login' ) }
+					values={ {
+						top: marginTop,
+						right: marginRight,
+						bottom: marginBottom,
+						left: marginLeft,
+					} }
+					/**
+					 * Update the values
+					 *
+					 * @param {Object} updatedValues        Updated values.
+					 * @param {string} updatedValues.top    Value for "top" side.
+					 * @param {string} updatedValues.right  Value for "right" side.
+					 * @param {string} updatedValues.bottom Value for "bottom" side.
+					 * @param {string} updatedValues.left   Value for "left" side.
+					 *
+					 * @return {void}
+					 */
+					onChange={ ( { top, right, bottom, left } ) => {
+						setSetting( {
+							marginTop: 'undefined' === typeof top ? '0px' : top,
+							marginRight: 'undefined' === typeof right ? '0px' : right,
+							marginBottom: 'undefined' === typeof bottom ? '0px' : bottom,
+							marginLeft: 'undefined' === typeof left ? '0px' : left,
+						} );
+					} }
+					resetValues={ {
+						top: '0px',
+						right: '6px',
+						bottom: '16px',
+						left: '0px',
+					} }
+				/>
+				<hr />
+				<MultilingualTextControl
+					__nextHasNoMarginBottom
+					__next40pxDefaultSize
+					label={ __( '"Username or Email Address" field\'s placeholder', 'bm-custom-login' ) }
+					values={ Object.fromEntries(
+						languages.map( ( language ) => [
+							language,
+							loginFormInputFields?.[ sprintf( 'placeholderUsernameOrEmailAddress.%s', language ) ] ?? '',
+						] )
+					) }
+					/**
+					 * Update the values
+					 *
+					 * @param {Object} updatedValues Updated values.
+					 *
+					 * @return {void}
+					 */
+					onChange={ ( updatedValues ) => {
+						setSetting(
+							Object.fromEntries(
+								languages.map( ( language ) => [ sprintf( 'placeholderUsernameOrEmailAddress.%s', language ), updatedValues[ language ] ] )
+							)
+						);
+					} }
+				/>
+				<hr />
+				<MultilingualTextControl
+					__nextHasNoMarginBottom
+					__next40pxDefaultSize
+					label={ __( '"Password" field\'s placeholder', 'bm-custom-login' ) }
+					values={ Object.fromEntries(
+						languages.map( ( language ) => [ language, loginFormInputFields?.[ sprintf( 'placeholderPassword.%s', language ) ] ?? '' ] )
+					) }
+					/**
+					 * Update the values
+					 *
+					 * @param {Object} updatedValues Updated values.
+					 *
+					 * @return {void}
+					 */
+					onChange={ ( updatedValues ) => {
+						setSetting(
+							Object.fromEntries( languages.map( ( language ) => [ sprintf( 'placeholderPassword.%s', language ), updatedValues[ language ] ] ) )
+						);
+					} }
+				/>
+				{ anyoneCanRegister && (
+					<Fragment>
+						<hr />
+						<MultilingualTextControl
+							__nextHasNoMarginBottom
+							__next40pxDefaultSize
+							label={ __( '"Username" field\'s placeholder', 'bm-custom-login' ) }
+							values={ Object.fromEntries(
+								languages.map( ( language ) => [ language, loginFormInputFields?.[ sprintf( 'placeholderUsername.%s', language ) ] ?? '' ] )
+							) }
+							/**
+							 * Update the values
+							 *
+							 * @param {Object} updatedValues Updated values.
+							 *
+							 * @return {void}
+							 */
+							onChange={ ( updatedValues ) => {
+								setSetting(
+									Object.fromEntries(
+										languages.map( ( language ) => [ sprintf( 'placeholderUsername.%s', language ), updatedValues[ language ] ] )
+									)
+								);
+							} }
+						/>
+						<hr />
+						<MultilingualTextControl
+							__nextHasNoMarginBottom
+							__next40pxDefaultSize
+							label={ __( '"Email" field\'s placeholder', 'bm-custom-login' ) }
+							values={ Object.fromEntries(
+								languages.map( ( language ) => [ language, loginFormInputFields?.[ sprintf( 'placeholderEmail.%s', language ) ] ?? '' ] )
+							) }
+							/**
+							 * Update the values
+							 *
+							 * @param {Object} updatedValues Updated values.
+							 *
+							 * @return {void}
+							 */
+							onChange={ ( updatedValues ) => {
+								setSetting(
+									Object.fromEntries(
+										languages.map( ( language ) => [ sprintf( 'placeholderEmail.%s', language ), updatedValues[ language ] ] )
+									)
+								);
+							} }
+						/>
+					</Fragment>
+				) }
+			</FieldsGroup>
+		</PanelBody>
+	);
+};
+
+/**
+ * Props validation
+ */
+PanelLoginFormInputFields.propTypes = {
+	context: PropTypes.object.isRequired,
+	presets: PropTypes.object.isRequired,
+	settings: PropTypes.object.isRequired,
+	setSettings: PropTypes.func.isRequired,
+};

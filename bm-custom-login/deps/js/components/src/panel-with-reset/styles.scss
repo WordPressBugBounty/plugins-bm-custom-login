@@ -1,0 +1,40 @@
+/**
+ * Panel with reset
+ */
+.tsc-panel-with-reset {
+	position: relative;
+	margin-top: -1px;
+
+	& > .components-panel__body.is-opened > .components-panel__body-title,
+	& > .components-panel__body.is-opened > .components-panel__body-title:hover,
+	& > .components-panel__body.is-opened > .components-panel__body-title:focus {
+		border-bottom: 1px solid #f4f4f4;
+		margin-bottom: 16px;
+	}
+
+	& > .components-panel__body:not(.is-opened) > .components-panel__body-title {
+		margin-right: 50px;
+	}
+
+	& > .components-panel__body.is-opened > .components-panel__body-title {
+		margin-right: 34px;
+	}
+}
+
+/**
+ * Reset button
+ */
+.components-button.has-icon.tsc-panel-with-reset__button {
+	border-left: 1px solid #f4f4f4;
+	height: 50px;
+	margin: 0;
+	padding: 13px;
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 50px;
+}
+
+.tsc-panel-with-reset:has(> .components-panel__body.is-opened) .components-button.has-icon.tsc-panel-with-reset__button {
+	border-bottom: 1px solid #f4f4f4;
+}

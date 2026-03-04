@@ -1,0 +1,75 @@
+@use "../variables" as *;
+
+/**
+ * Icon control
+ */
+.tsc-icon-control {
+	display: flex;
+	flex-direction: row;
+
+	&__options {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		min-width: 466px;
+	}
+
+	&__option {
+		background-color: #fff;
+		border-radius: 2px;
+		border: 1px solid $border-color;
+		cursor: pointer;
+		margin: 0;
+		padding: 10px;
+		position: relative;
+		width: 150px;
+
+		&--selected {
+			border-color: var(--wp-admin-theme-color);
+
+			&::before {
+				background: transparent;
+				border: 1px solid var(--wp-admin-theme-color);
+				content: "";
+				height: 100%;
+				left: 0;
+				position: absolute;
+				top: 0;
+				width: 100%;
+			}
+		}
+
+		&--edited {
+			background-color: $background-color--gray;
+		}
+
+		&:hover .tsc-icon-control__label,
+		&:focus .tsc-icon-control__label,
+		&--edited > .tsc-icon-control__label {
+			color: var(--wp-components-color-accent, var(--wp-admin-theme-color, #3858e9));
+		}
+	}
+
+	&__icon {
+		display: block;
+		font-size: 0;
+		margin-bottom: 10px;
+
+		svg {
+			color: $text-color--wp-admin-text;
+			height: 32px;
+			width: 32px;
+		}
+	}
+
+	&__label {
+		color: $text-color--black;
+		display: block;
+		font-size: 13px;
+		font-weight: normal;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+}

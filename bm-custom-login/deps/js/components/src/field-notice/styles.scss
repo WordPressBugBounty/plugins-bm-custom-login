@@ -1,0 +1,14 @@
+@use "../variables" as *;
+
+/**
+ * Field notice
+ */
+.tsc-field-notice {
+	margin: 8px 0 0;
+
+	p {
+		color: $text-color--red;
+		font-size: 12px;
+		margin: 0;
+	}
+}

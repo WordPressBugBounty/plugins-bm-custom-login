@@ -1,0 +1,29 @@
+@use "../variables" as *;
+
+/**
+ * Media control
+ */
+.tsc-media-control {
+	&__thumbnail {
+		background: transparent;
+		border: 1px solid $border-color;
+		border-radius: 2px;
+		cursor: pointer;
+		font-size: 0;
+		margin: 0;
+		padding: 4px;
+		width: fit-content;
+	}
+
+	.components-focal-point-picker-wrapper {
+		border: 1px solid $border-color;
+		border-radius: 2px;
+		padding: 4px;
+		margin: 0;
+		width: fit-content;
+
+		.components-focal-point-picker::after {
+			box-shadow: none;
+		}
+	}
+}

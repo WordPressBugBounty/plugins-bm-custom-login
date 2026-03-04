@@ -1,0 +1,21 @@
+/**
+ * Border radius control
+ */
+.tsc-border-radius-control {
+	.components-border-radius-control {
+		margin-bottom: 0;
+
+		.components-border-radius-control__input-controls-wrapper {
+			display: flex;
+			width: 100%;
+		}
+
+		.components-border-radius-control__tooltip-wrapper {
+			width: 84px;
+		}
+
+		.components-border-radius-control__wrapper .components-border-radius-control__unit-control {
+			width: 116px;
+		}
+	}
+}

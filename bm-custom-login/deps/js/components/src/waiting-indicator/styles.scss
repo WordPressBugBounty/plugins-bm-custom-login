@@ -1,0 +1,22 @@
+/**
+ * Waiting indicator
+ */
+.tsc-waiting-indicator {
+	align-items: center;
+	display: flex;
+	gap: 16px;
+	padding: 0;
+
+	&--centered {
+		justify-content: center;
+	}
+
+	&--with-padding {
+		padding: 14px 0;
+	}
+
+	svg,
+	p {
+		margin: 0;
+	}
+}
