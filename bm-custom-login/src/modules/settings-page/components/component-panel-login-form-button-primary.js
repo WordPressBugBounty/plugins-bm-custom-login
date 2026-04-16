@@ -31,7 +31,7 @@ import { __, sprintf } from '@wordpress/i18n';
  * @param {Object}   properties.settings    Plugin settings.
  * @param {Function} properties.setSettings Function (callback) used to update the settings.
  *
- * @return {JSX} PanelLoginFormButtonPrimary component.
+ * @return {Element} PanelLoginFormButtonPrimary component.
  */
 export const PanelLoginFormButtonPrimary = ( { context, presets, settings, setSettings } ) => {
 	// Destructure the settings object.
@@ -132,7 +132,7 @@ export const PanelLoginFormButtonPrimary = ( { context, presets, settings, setSe
 	/**
 	 * Return the component
 	 *
-	 * @return {JSX} PanelLoginFormButtonPrimary component.
+	 * @return {Element} PanelLoginFormButtonPrimary component.
 	 */
 	return (
 		<PanelBody initialOpen={ false } title={ __( 'Login form button (primary)', 'bm-custom-login' ) }>
@@ -141,6 +141,7 @@ export const PanelLoginFormButtonPrimary = ( { context, presets, settings, setSe
 					<ColorControl
 						value={ backgroundColor }
 						label={ __( 'Background', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -162,6 +163,7 @@ export const PanelLoginFormButtonPrimary = ( { context, presets, settings, setSe
 					<ColorControl
 						value={ textColor }
 						label={ __( 'Text', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -183,6 +185,7 @@ export const PanelLoginFormButtonPrimary = ( { context, presets, settings, setSe
 					<ColorControl
 						value={ backgroundColorOnHover }
 						label={ __( 'Background', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -204,6 +207,7 @@ export const PanelLoginFormButtonPrimary = ( { context, presets, settings, setSe
 					<ColorControl
 						value={ textColorOnHover }
 						label={ __( 'Text', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -225,6 +229,7 @@ export const PanelLoginFormButtonPrimary = ( { context, presets, settings, setSe
 					<ColorControl
 						value={ backgroundColorOnFocus }
 						label={ __( 'Background', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -246,6 +251,7 @@ export const PanelLoginFormButtonPrimary = ( { context, presets, settings, setSe
 					<ColorControl
 						value={ textColorOnFocus }
 						label={ __( 'Text', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -280,6 +286,7 @@ export const PanelLoginFormButtonPrimary = ( { context, presets, settings, setSe
 						withDecoration: false,
 						withLetterCase: true,
 					} }
+
 					/**
 					 * Update the values
 					 *
@@ -308,6 +315,7 @@ export const PanelLoginFormButtonPrimary = ( { context, presets, settings, setSe
 						borderTopWidth,
 					} }
 					label={ __( 'Border style', 'bm-custom-login' ) }
+
 					/**
 					 * Update the value
 					 *
@@ -337,6 +345,7 @@ export const PanelLoginFormButtonPrimary = ( { context, presets, settings, setSe
 						borderTopWidth: borderTopWidthOnHover,
 					} }
 					label={ __( 'Border style (on hover)', 'bm-custom-login' ) }
+
 					/**
 					 * Update the value
 					 *
@@ -379,6 +388,7 @@ export const PanelLoginFormButtonPrimary = ( { context, presets, settings, setSe
 						borderTopWidth: borderTopWidthOnFocus,
 					} }
 					label={ __( 'Border style (on focus)', 'bm-custom-login' ) }
+
 					/**
 					 * Update the value
 					 *
@@ -412,6 +422,7 @@ export const PanelLoginFormButtonPrimary = ( { context, presets, settings, setSe
 						topLeft: borderTopLeftRadius,
 						topRight: borderTopRightRadius,
 					} }
+
 					/**
 					 * Update the value
 					 *
@@ -437,6 +448,7 @@ export const PanelLoginFormButtonPrimary = ( { context, presets, settings, setSe
 					label={ __( 'Shadow', 'bm-custom-login' ) }
 					value={ shadow }
 					presets={ shadowPresets }
+
 					/**
 					 * Update the value
 					 *
@@ -454,6 +466,7 @@ export const PanelLoginFormButtonPrimary = ( { context, presets, settings, setSe
 					label={ __( 'Shadow (on hover)', 'bm-custom-login' ) }
 					value={ shadowOnHover }
 					presets={ shadowPresets }
+
 					/**
 					 * Update the value
 					 *
@@ -471,6 +484,7 @@ export const PanelLoginFormButtonPrimary = ( { context, presets, settings, setSe
 					label={ __( 'Shadow (on focus)', 'bm-custom-login' ) }
 					value={ shadowOnFocus }
 					presets={ shadowPresets }
+
 					/**
 					 * Update the value
 					 *
@@ -500,6 +514,7 @@ export const PanelLoginFormButtonPrimary = ( { context, presets, settings, setSe
 							label: __( 'Full width (100%)', 'bm-custom-login' ),
 						},
 					] }
+
 					/**
 					 * Update the value
 					 *
@@ -539,6 +554,7 @@ export const PanelLoginFormButtonPrimary = ( { context, presets, settings, setSe
 									label: __( 'Right, new line', 'bm-custom-login' ),
 								},
 							] }
+
 							/**
 							 * Update the value
 							 *
@@ -565,6 +581,7 @@ export const PanelLoginFormButtonPrimary = ( { context, presets, settings, setSe
 						bottom: paddingBottom,
 						left: paddingLeft,
 					} }
+
 					/**
 					 * Update the value
 					 *
@@ -602,6 +619,7 @@ export const PanelLoginFormButtonPrimary = ( { context, presets, settings, setSe
 						bottom: marginBottom,
 						left: marginLeft,
 					} }
+
 					/**
 					 * Update the value
 					 *
@@ -635,8 +653,9 @@ export const PanelLoginFormButtonPrimary = ( { context, presets, settings, setSe
 					label={ __( '"Log In" button text', 'bm-custom-login' ) }
 					original={ translations?.[ 'Log In' ] }
 					values={ Object.fromEntries(
-						languages.map( ( language ) => [ language, loginFormButtonPrimary?.[ sprintf( 'labelLogIn.%s', language ) ] ?? '' ] )
+						languages.map( ( language ) => [ language, loginFormButtonPrimary?.[ sprintf( 'labelLogIn.%s', language ) ] ?? '' ] ),
 					) }
+
 					/**
 					 * Update the values
 					 *
@@ -646,7 +665,7 @@ export const PanelLoginFormButtonPrimary = ( { context, presets, settings, setSe
 					 */
 					onChange={ ( updatedValues ) => {
 						setSetting(
-							Object.fromEntries( languages.map( ( language ) => [ sprintf( 'labelLogIn.%s', language ), updatedValues[ language ] ] ) )
+							Object.fromEntries( languages.map( ( language ) => [ sprintf( 'labelLogIn.%s', language ), updatedValues[ language ] ] ) ),
 						);
 					} }
 				/>
@@ -657,8 +676,9 @@ export const PanelLoginFormButtonPrimary = ( { context, presets, settings, setSe
 					label={ __( '"Get New Password" button text', 'bm-custom-login' ) }
 					original={ translations?.[ 'Get New Password' ] }
 					values={ Object.fromEntries(
-						languages.map( ( language ) => [ language, loginFormButtonPrimary?.[ sprintf( 'labelGetNewPassword.%s', language ) ] ?? '' ] )
+						languages.map( ( language ) => [ language, loginFormButtonPrimary?.[ sprintf( 'labelGetNewPassword.%s', language ) ] ?? '' ] ),
 					) }
+
 					/**
 					 * Update the values
 					 *
@@ -668,7 +688,7 @@ export const PanelLoginFormButtonPrimary = ( { context, presets, settings, setSe
 					 */
 					onChange={ ( updatedValues ) => {
 						setSetting(
-							Object.fromEntries( languages.map( ( language ) => [ sprintf( 'labelGetNewPassword.%s', language ), updatedValues[ language ] ] ) )
+							Object.fromEntries( languages.map( ( language ) => [ sprintf( 'labelGetNewPassword.%s', language ), updatedValues[ language ] ] ) ),
 						);
 					} }
 				/>
@@ -679,8 +699,9 @@ export const PanelLoginFormButtonPrimary = ( { context, presets, settings, setSe
 					label={ __( '"Save Password" button text', 'bm-custom-login' ) }
 					original={ translations?.[ 'Save Password' ] }
 					values={ Object.fromEntries(
-						languages.map( ( language ) => [ language, loginFormButtonPrimary?.[ sprintf( 'labelSavePassword.%s', language ) ] ?? '' ] )
+						languages.map( ( language ) => [ language, loginFormButtonPrimary?.[ sprintf( 'labelSavePassword.%s', language ) ] ?? '' ] ),
 					) }
+
 					/**
 					 * Update the values
 					 *
@@ -690,7 +711,7 @@ export const PanelLoginFormButtonPrimary = ( { context, presets, settings, setSe
 					 */
 					onChange={ ( updatedValues ) => {
 						setSetting(
-							Object.fromEntries( languages.map( ( language ) => [ sprintf( 'labelSavePassword.%s', language ), updatedValues[ language ] ] ) )
+							Object.fromEntries( languages.map( ( language ) => [ sprintf( 'labelSavePassword.%s', language ), updatedValues[ language ] ] ) ),
 						);
 					} }
 				/>
@@ -703,8 +724,9 @@ export const PanelLoginFormButtonPrimary = ( { context, presets, settings, setSe
 							label={ __( '"Register" button text', 'bm-custom-login' ) }
 							original={ translations?.Register }
 							values={ Object.fromEntries(
-								languages.map( ( language ) => [ language, loginFormButtonPrimary?.[ sprintf( 'labelRegister.%s', language ) ] ?? '' ] )
+								languages.map( ( language ) => [ language, loginFormButtonPrimary?.[ sprintf( 'labelRegister.%s', language ) ] ?? '' ] ),
 							) }
+
 							/**
 							 * Update the values
 							 *
@@ -715,8 +737,8 @@ export const PanelLoginFormButtonPrimary = ( { context, presets, settings, setSe
 							onChange={ ( updatedValues ) => {
 								setSetting(
 									Object.fromEntries(
-										languages.map( ( language ) => [ sprintf( 'labelRegister.%s', language ), updatedValues[ language ] ] )
-									)
+										languages.map( ( language ) => [ sprintf( 'labelRegister.%s', language ), updatedValues[ language ] ] ),
+									),
 								);
 							} }
 						/>

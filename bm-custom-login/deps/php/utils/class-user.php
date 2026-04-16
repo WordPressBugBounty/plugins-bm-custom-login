@@ -11,7 +11,7 @@ use WP_Session_Tokens;
 use WP_User;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit; // @codeCoverageIgnore
 }
 
 /**

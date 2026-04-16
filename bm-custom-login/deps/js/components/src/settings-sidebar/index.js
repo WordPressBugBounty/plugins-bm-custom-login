@@ -23,7 +23,7 @@ import './styles.scss';
  * @param {Object} properties.product  Product's data object.
  * @param {Object} properties.settings Settings object.
  *
- * @return {JSX} Settings component.
+ * @return {Element} Settings component.
  */
 export const SettingsSidebar = ( { product, settings } ) => {
 	// Destructure the product object.
@@ -61,7 +61,7 @@ export const SettingsSidebar = ( { product, settings } ) => {
 					/**
 					 * Slot for the "upsell" panel
 					 *
-					 * @param {JSX} panel The "upsell" panel.
+					 * @param {Element} panel The "upsell" panel.
 					 */
 					applyFilters( 'custom_login__upsell_panel', <Fragment /> )
 				}
@@ -69,7 +69,7 @@ export const SettingsSidebar = ( { product, settings } ) => {
 					/**
 					 * Slot for the "promoted plugins" panel
 					 *
-					 * @param {JSX} panel The "promoted plugins" panel.
+					 * @param {Element} panel The "promoted plugins" panel.
 					 */
 					applyFilters( 'custom_login__promoted_plugins_panel', <Fragment /> )
 				}
@@ -79,9 +79,9 @@ export const SettingsSidebar = ( { product, settings } ) => {
 							// Translators: %s - either "plugin" or "theme".
 							__(
 								'If you like this %s, share it with your network and write a review on WordPress.org to help others find it. Thank you!',
-								'bm-custom-login'
+								'bm-custom-login',
 							),
-							productType
+							productType,
 						) }
 					</p>
 					<a
@@ -97,7 +97,7 @@ export const SettingsSidebar = ( { product, settings } ) => {
 					<p>
 						{ __(
 							"We're eager to hear your feedback, feature requests, suggestions for improvements etc; we're waiting for a message from you!",
-							'bm-custom-login'
+							'bm-custom-login',
 						) }
 					</p>
 					<a className="components-button is-secondary is-compact" href="https://teydeastudio.com/contact/" rel="noopener noreferrer" target="_blank">
@@ -109,8 +109,8 @@ export const SettingsSidebar = ( { product, settings } ) => {
 				/**
 				 * Slot for the "after sidebar" panel
 				 *
-				 * @param {JSX}    panel    The "after sidebar" panel.
-				 * @param {Object} settings Settings object.
+				 * @param {Element} panel    The "after sidebar" panel.
+				 * @param {Object}  settings Settings object.
 				 */
 				applyFilters( 'custom_login__after_sidebar_panel', <Fragment />, settings )
 			}

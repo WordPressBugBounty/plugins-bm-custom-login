@@ -26,11 +26,10 @@ use Teydea_Studio\Custom_Login\Modules\Adjustments\Adjuster_Notices;
 use Teydea_Studio\Custom_Login\Modules\Adjustments\Adjuster_Privacy_Policy_Link;
 use Teydea_Studio\Custom_Login\Modules\Adjustments\Adjuster_Social_Media_Links;
 use Teydea_Studio\Custom_Login\Modules\Adjustments\Adjuster_Under_Form_Links;
-use Teydea_Studio\Custom_Login\Settings;
 use Teydea_Studio\Custom_Login\Styles;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit; // @codeCoverageIgnore
 }
 
 /**
@@ -43,13 +42,6 @@ final class Module_Adjustments extends Utils\Module {
 	 * @var ?Adjuster[]
 	 */
 	protected ?array $adjusters = null;
-
-	/**
-	 * Hold the Settings instance
-	 *
-	 * @var ?Settings
-	 */
-	protected ?object $settings = null;
 
 	/**
 	 * Hold the Styles instance
@@ -160,19 +152,6 @@ final class Module_Adjustments extends Utils\Module {
 		$css = $fields_group->get_field_value( 'css' ) ?? '';
 
 		return $css;
-	}
-
-	/**
-	 * Get the settings class instance
-	 *
-	 * @return Settings Settings class instance.
-	 */
-	protected function get_settings(): Settings {
-		if ( null === $this->settings ) {
-			$this->settings = new Settings( $this->container );
-		}
-
-		return $this->settings;
 	}
 
 	/**

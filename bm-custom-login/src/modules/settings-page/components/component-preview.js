@@ -18,7 +18,7 @@ import { __ } from '@wordpress/i18n';
  * @param {Object} properties          Component properties object.
  * @param {Object} properties.settings Plugin settings.
  *
- * @return {JSX} Preview component.
+ * @return {Element} Preview component.
  */
 export const Preview = ( { settings } ) => {
 	// Get the necessary data from global object.
@@ -110,7 +110,7 @@ export const Preview = ( { settings } ) => {
 	/**
 	 * Return the component
 	 *
-	 * @return {JSX} PanelUnderFormLinks component.
+	 * @return {Element} PanelUnderFormLinks component.
 	 */
 	return (
 		<Panel className="bm-custom-login-settings-page__preview-panel" header={ __( 'Preview', 'bm-custom-login' ) }>

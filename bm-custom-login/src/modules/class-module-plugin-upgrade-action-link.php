@@ -10,7 +10,7 @@ namespace Teydea_Studio\Custom_Login\Modules;
 use Teydea_Studio\Custom_Login\Dependencies\Universal_Modules;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit; // @codeCoverageIgnore
 }
 
 /**

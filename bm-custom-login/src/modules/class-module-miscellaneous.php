@@ -11,10 +11,9 @@ use DOMDocument;
 use DOMElement;
 use DOMXPath;
 use Teydea_Studio\Custom_Login\Dependencies\Utils;
-use Teydea_Studio\Custom_Login\Settings;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit; // @codeCoverageIgnore
 }
 
 /**
@@ -50,10 +49,8 @@ final class Module_Miscellaneous extends Utils\Module {
 	 */
 	protected function get_config(): ?array {
 		if ( null === $this->config ) {
-			$settings = new Settings( $this->container );
-
 			// Get the fields group.
-			$fields_group = $settings->get_fields_group( 'miscellaneous' );
+			$fields_group = $this->get_settings()->get_fields_group( 'miscellaneous' );
 
 			if ( null === $fields_group ) {
 				return null;
@@ -83,6 +80,7 @@ final class Module_Miscellaneous extends Utils\Module {
 		 * Maybe disable the autofocus on the login form
 		 */
 		if ( true === $config['disable_autofocus'] ) {
+			// Disable the autofocus on the login form.
 			add_filter( 'enable_login_autofocus', '__return_false' );
 		}
 
@@ -90,6 +88,7 @@ final class Module_Miscellaneous extends Utils\Module {
 		 * Maybe disable the shake effect on the login form
 		 */
 		if ( true === $config['disable_shake_effect'] ) {
+			// Disable the shake effect on the login form.
 			add_filter( 'shake_error_codes', '__return_empty_array' );
 		}
 	}

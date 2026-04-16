@@ -33,7 +33,7 @@ const controls = [
 		label: __( 'Brightness (%)', 'bm-custom-login' ),
 		help: __(
 			'Adjusts the brightness of the image/video. 0% will make the image completely black. 100% is default and represents the original image. Values over 100% will provide brighter results. Values under 100% will provide darker results.',
-			'bm-custom-login'
+			'bm-custom-login',
 		),
 		min: 0,
 		max: 500,
@@ -46,7 +46,7 @@ const controls = [
 		// eslint-disable-next-line @wordpress/i18n-translator-comments
 		help: __(
 			'Adjusts the contrast of the image/video. 0% will make the image completely gray. 100% is default, and represents the original image. Values over 100% increases the contrast. Values under 100% decreases the contrast.',
-			'bm-custom-login'
+			'bm-custom-login',
 		),
 		min: 0,
 		max: 500,
@@ -57,7 +57,7 @@ const controls = [
 		label: __( 'Grayscale (%)', 'bm-custom-login' ),
 		help: __(
 			'Converts the image to grayscale. 0% is default and represents the original image. 100% will make the image completely grayscale.',
-			'bm-custom-login'
+			'bm-custom-login',
 		),
 		min: 0,
 		max: 100,
@@ -68,7 +68,7 @@ const controls = [
 		label: __( 'Hue rotation (deg)', 'bm-custom-login' ),
 		help: __(
 			'Applies a hue rotation on the image. The value defines the number of degrees around the color circle the image samples will be adjusted. 0deg is default, and represents the original image. Maximum value is 360deg.',
-			'bm-custom-login'
+			'bm-custom-login',
 		),
 		min: 0,
 		max: 360,
@@ -79,7 +79,7 @@ const controls = [
 		label: __( 'Invert (%)', 'bm-custom-login' ),
 		help: __(
 			'Inverts the samples in the image. 0% is default and represents the original image. 100% will make the image completely inverted.',
-			'bm-custom-login'
+			'bm-custom-login',
 		),
 		min: 0,
 		max: 100,
@@ -90,7 +90,7 @@ const controls = [
 		label: __( 'Opacity (%)', 'bm-custom-login' ),
 		help: __(
 			'Sets the opacity level for the image. The opacity-level describes the transparency-level, where 0% is completely transparent. 100% is default and represents the original image (no transparency).',
-			'bm-custom-login'
+			'bm-custom-login',
 		),
 		min: 0,
 		max: 100,
@@ -103,7 +103,7 @@ const controls = [
 		// eslint-disable-next-line @wordpress/i18n-translator-comments
 		help: __(
 			'Saturates the image. 0% will make the image completely un-saturated. 100% is default and represents the original image. Values over 100% provides super-saturated results.',
-			'bm-custom-login'
+			'bm-custom-login',
 		),
 		min: 0,
 		max: 500,
@@ -125,7 +125,7 @@ const controls = [
  * @param {Function} properties.onChange Function callback to trigger on value change.
  * @param {Object}   properties.values   Field's values object.
  *
- * @return {JSX} VisualEffectControl component.
+ * @return {Element} VisualEffectControl component.
  */
 export const VisualEffectControl = ( { onChange, values } ) => (
 	<FieldsGroup>
@@ -139,6 +139,7 @@ export const VisualEffectControl = ( { onChange, values } ) => (
 					label={ label }
 					help={ help }
 					value={ values[ key ] }
+
 					/**
 					 * Update the value
 					 *

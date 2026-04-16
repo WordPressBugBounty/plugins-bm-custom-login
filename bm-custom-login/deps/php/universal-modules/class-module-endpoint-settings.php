@@ -15,20 +15,13 @@ use WP_REST_Response;
 use WP_REST_Server;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit; // @codeCoverageIgnore
 }
 
 /**
  * The "Module_Endpoint_Settings" class
  */
 class Module_Endpoint_Settings extends Utils\Module {
-	/**
-	 * Hold the Settings instance
-	 *
-	 * @var ?Settings
-	 */
-	protected ?Settings $settings = null;
-
 	/**
 	 * Register hooks
 	 *
@@ -50,7 +43,7 @@ class Module_Endpoint_Settings extends Utils\Module {
 			'/settings',
 			[
 				'methods'             => WP_REST_Server::READABLE,
-				'callback'            => [ $this, 'get_settings' ],
+				'callback'            => [ $this, 'get_saved_settings' ],
 
 				/**
 				 * Ensure that user is logged in and has the required
@@ -108,11 +101,7 @@ class Module_Endpoint_Settings extends Utils\Module {
 						 * @return Settings Instance of a Settings class.
 						 */
 						'sanitize_callback' => function (): Settings {
-							if ( null === $this->settings ) {
-								$this->settings = new Settings( $this->container );
-							}
-
-							return $this->settings;
+							return $this->get_settings();
 						},
 
 						/**
@@ -163,11 +152,11 @@ class Module_Endpoint_Settings extends Utils\Module {
 	}
 
 	/**
-	 * Get plugin settings
+	 * Get saved settings of the plugin
 	 *
 	 * @return WP_Error|WP_REST_Response Instance of WP_REST_Response on success, instance of WP_Error on failure.
 	 */
-	public function get_settings() {
+	public function get_saved_settings() {
 		$settings = new Settings( $this->container );
 
 		if ( $settings->has_validation_errors() ) {

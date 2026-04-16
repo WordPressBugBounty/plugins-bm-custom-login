@@ -11,7 +11,7 @@ use Closure;
 use WP_Error;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit; // @codeCoverageIgnore
 }
 
 /**
@@ -186,6 +186,7 @@ final class Dynamic_Fields_Group extends Fields_Group {
 					);
 
 					break;
+
 				case 'boolean':
 					/** @var ?bool $default_value */
 					$default_value = $group->get_field_value( 'default_value' );
@@ -198,6 +199,7 @@ final class Dynamic_Fields_Group extends Fields_Group {
 					);
 
 					break;
+
 				case 'date':
 				case 'salary':
 				case 'text':
@@ -213,6 +215,7 @@ final class Dynamic_Fields_Group extends Fields_Group {
 					);
 
 					break;
+
 				case 'integer':
 					/** @var ?int $default_value */
 					$default_value = $group->get_field_value( 'default_value' );
@@ -260,6 +263,32 @@ final class Dynamic_Fields_Group extends Fields_Group {
 
 		/** @var Type_Fields_Config $fields_config */
 		return new Fields_Group( $key, $fields_config );
+	}
+
+	/**
+	 * Get a template Fields_Group for a given type
+	 *
+	 * Creates a Fields_Group from the type's field configuration
+	 * with default values loaded. Useful for schema generation
+	 * without requiring actual data.
+	 *
+	 * @param string $type The dynamic field type key.
+	 *
+	 * @return ?Fields_Group Template Fields_Group, or null if type not found.
+	 */
+	public function get_template_fields_group( string $type ): ?Fields_Group {
+		if ( ! isset( $this->fields_config[ $type ] ) ) {
+			return null;
+		}
+
+		$group  = new Fields_Group( $type, $this->fields_config[ $type ]['fields'] );
+		$loaded = $group->load_values( [], true );
+
+		if ( $loaded instanceof WP_Error ) {
+			return null;
+		}
+
+		return $group;
 	}
 
 	/**

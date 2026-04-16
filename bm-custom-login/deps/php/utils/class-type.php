@@ -11,7 +11,7 @@ use DateTime;
 use Exception;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit; // @codeCoverageIgnore
 }
 
 /**
@@ -246,7 +246,7 @@ final class Type {
 			return true;
 		}
 
-		if ( is_string( $value ) && preg_match( '/^\d+$/', $value ) ) {
+		if ( is_string( $value ) && preg_match( '/^[1-9]\d*$/', $value ) ) {
 			return true;
 		}
 

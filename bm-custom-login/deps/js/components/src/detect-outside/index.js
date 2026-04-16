@@ -29,12 +29,12 @@ export const DetectOutside = withFocusOutside(
 		/**
 		 * Render the component.
 		 *
-		 * @return {JSX} Component to render.
+		 * @return {Element} Component to render.
 		 */
 		render() {
 			return this.props.children; // eslint-disable-line react/prop-types
 		}
-	}
+	},
 );
 
 /**

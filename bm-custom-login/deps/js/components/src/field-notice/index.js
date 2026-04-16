@@ -14,7 +14,7 @@ import './styles.scss';
  * @param {Object} properties         Component properties object.
  * @param {string} properties.message Message to display in the notice.
  *
- * @return {JSX} FieldNotice component.
+ * @return {Element} FieldNotice component.
  */
 export const FieldNotice = ( { message } ) => (
 	<div className="tsc-field-notice">

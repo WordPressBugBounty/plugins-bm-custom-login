@@ -20,12 +20,13 @@ import './styles.scss';
  * @param {Function} properties.onChange Function callback to trigger on value change.
  * @param {Object}   properties.value    Field's value.
  *
- * @return {JSX} BorderRadiusControl component.
+ * @return {Element} BorderRadiusControl component.
  */
 export const BorderRadiusControl = ( { onChange, value } ) => (
 	<div className="tsc-border-radius-control">
 		<CoreBorderRadiusControl
 			values={ value }
+
 			/**
 			 * Update the value
 			 *

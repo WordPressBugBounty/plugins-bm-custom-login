@@ -13,7 +13,7 @@ use Teydea_Studio\Custom_Login\Adjuster;
 use Teydea_Studio\Custom_Login\Dependencies\Utils;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit; // @codeCoverageIgnore
 }
 
 /**
@@ -183,6 +183,7 @@ final class Adjuster_Login_Form_Input_Fields extends Adjuster {
 					],
 				),
 			),
+			'.login input[type=password] { font-family: Consolas, Monaco, monospace; }', // Duplicate core styles to avoid specificity issues.
 			sprintf(
 				'.login form .input:hover, .login input[type=password]:hover, .login input[type=email]:hover, .login input[type=text]:hover { background: %s; %s; box-shadow: %s; color: %s; }',
 				$this->styles->compose_color( $config['background_color_on_hover'], 'initial' ),

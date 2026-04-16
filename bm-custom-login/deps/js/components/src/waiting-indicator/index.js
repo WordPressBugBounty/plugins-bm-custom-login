@@ -21,7 +21,7 @@ import './styles.scss';
  * @param {boolean} properties.isCentered  Whether to center the whole element.
  * @param {boolean} properties.withPadding Whether to render additional top & bottom padding.
  *
- * @return {JSX} WaitingIndicator component.
+ * @return {Element} WaitingIndicator component.
  */
 export const WaitingIndicator = ( { message, isCentered = false, withPadding = false } ) => {
 	const classNames = [ 'tsc-waiting-indicator' ];

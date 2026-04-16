@@ -12,7 +12,7 @@ use DOMXPath;
 use Teydea_Studio\Custom_Login\Adjuster;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit; // @codeCoverageIgnore
 }
 
 /**

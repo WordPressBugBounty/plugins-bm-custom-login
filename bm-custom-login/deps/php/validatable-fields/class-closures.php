@@ -13,7 +13,7 @@ use WP_Error;
 use WP_User;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit; // @codeCoverageIgnore
 }
 
 /**
@@ -418,6 +418,100 @@ final class Closures {
 	}
 
 	/**
+	 * Return the post types field restorer closure function
+	 *
+	 * @param array<string,mixed> $query_args Query arguments used for getting a list of post types.
+	 *
+	 * @return Closure Field restorer closure function.
+	 */
+	public static function post_types_field_restorer( array $query_args ): Closure {
+		/**
+		 * Value restorer for the "post_types" field
+		 *
+		 * @param mixed $values Current values.
+		 *
+		 * @return array Restored values array.
+		 */
+		return function ( $values ) use ( $query_args ): array {
+			if ( ! is_array( $values ) ) {
+				return [];
+			}
+
+			if ( isset( $query_args['post_type__in'] ) && is_array( $query_args['post_type__in'] ) ) {
+				$known_post_types = $query_args['post_type__in'];
+			} else {
+				/** @var array<string,string> $found_post_types */
+				$found_post_types = get_post_types( $query_args );
+				$known_post_types = array_values( $found_post_types );
+			}
+
+			$valid_post_types = [];
+
+			foreach ( $values as $value ) {
+				if ( in_array( $value, $known_post_types, true ) ) {
+					$valid_post_types[] = $value;
+				}
+			}
+
+			return $valid_post_types;
+		};
+	}
+
+	/**
+	 * Return the post types field validator closure function
+	 *
+	 * @param array<string,mixed> $query_args Query arguments used for getting a list of post types.
+	 *
+	 * @return Closure Field validator closure function.
+	 */
+	public static function post_types_field_validator( array $query_args ): Closure {
+		/**
+		 * Validator for the "post_types" field
+		 *
+		 * @param mixed $values Values to validate.
+		 *
+		 * @return true|WP_Error Boolean "true" on success, instance of WP_Error otherwise.
+		 */
+		return function ( $values ) use ( $query_args ) {
+			if ( ! is_array( $values ) ) {
+				return new WP_Error(
+					'non_array_value',
+					sprintf(
+						// Translators: %s - type of the value given.
+						__( 'Value must be an array, %s given.', 'bm-custom-login' ),
+						gettype( $values ),
+					),
+				);
+			}
+
+			if ( isset( $query_args['post_type__in'] ) && is_array( $query_args['post_type__in'] ) ) {
+				$known_post_types = $query_args['post_type__in'];
+			} else {
+				/** @var array<string,string> $found_post_types */
+				$found_post_types = get_post_types( $query_args );
+				$known_post_types = array_values( $found_post_types );
+			}
+
+			foreach ( $values as $value ) {
+				if ( ! in_array( $value, $known_post_types, true ) ) {
+					/** @var string[] $known_post_types */
+					return new WP_Error(
+						'field_value_out_of_scope',
+						sprintf(
+							// Translators: %1$s - invalid value, %2$s - list of known values.
+							__( '"%1$s" is not a value within "%2$s".', 'bm-custom-login' ),
+							Utils\Type::ensure_string( $value ),
+							implode( ', ', $known_post_types ),
+						),
+					);
+				}
+			}
+
+			return true;
+		};
+	}
+
+	/**
 	 * Return the user roles restorer closure function
 	 *
 	 * @param Utils\Users $users Users utility instance.
@@ -484,7 +578,7 @@ final class Closures {
 					return new WP_Error(
 						'field_value_out_of_scope',
 						sprintf(
-							// Translators: %1$s - invalid role value, %2$s - list of known roles.
+							// Translators: %1$s - invalid value, %2$s - list of known values.
 							__( '"%1$s" is not a value within "%2$s".', 'bm-custom-login' ),
 							Utils\Type::ensure_string( $value ),
 							implode( ', ', $known_roles ),

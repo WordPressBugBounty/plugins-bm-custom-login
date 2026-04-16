@@ -12,7 +12,7 @@ use WP_Site;
 use WP_User;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit; // @codeCoverageIgnore
 }
 
 /**
@@ -195,7 +195,7 @@ final class Cache {
 			 */
 			case 'file':
 				if ( null !== $this->file ) {
-					$modified_at = filemtime( $this->file );
+					$modified_at = File::get_modified_time( $this->file );
 
 					if ( false === $modified_at ) {
 						$modified_at = 0;

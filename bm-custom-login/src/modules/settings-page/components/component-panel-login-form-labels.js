@@ -28,7 +28,7 @@ import { __, sprintf } from '@wordpress/i18n';
  * @param {Object}   properties.settings    Plugin settings.
  * @param {Function} properties.setSettings Function (callback) used to update the settings.
  *
- * @return {JSX} PanelLoginFormLabels component.
+ * @return {Element} PanelLoginFormLabels component.
  */
 export const PanelLoginFormLabels = ( { context, presets, settings, setSettings } ) => {
 	// Destructure the settings object.
@@ -80,7 +80,7 @@ export const PanelLoginFormLabels = ( { context, presets, settings, setSettings 
 	/**
 	 * Return the component
 	 *
-	 * @return {JSX} PanelLoginFormLabels component.
+	 * @return {Element} PanelLoginFormLabels component.
 	 */
 	return (
 		<PanelBody initialOpen={ false } title={ __( 'Login form labels', 'bm-custom-login' ) }>
@@ -90,6 +90,7 @@ export const PanelLoginFormLabels = ( { context, presets, settings, setSettings 
 					__next40pxDefaultSize
 					label={ __( 'Show labels above the login form fields', 'bm-custom-login' ) }
 					checked={ show }
+
 					/**
 					 * Update the value
 					 *
@@ -107,6 +108,7 @@ export const PanelLoginFormLabels = ( { context, presets, settings, setSettings 
 							<ColorControl
 								value={ textColor }
 								label={ __( 'Text', 'bm-custom-login' ) }
+
 								/**
 								 * Update the value
 								 *
@@ -142,6 +144,7 @@ export const PanelLoginFormLabels = ( { context, presets, settings, setSettings 
 								withDecoration: false,
 								withLetterCase: true,
 							} }
+
 							/**
 							 * Update the values
 							 *
@@ -164,6 +167,7 @@ export const PanelLoginFormLabels = ( { context, presets, settings, setSettings 
 								bottom: paddingBottom,
 								left: paddingLeft,
 							} }
+
 							/**
 							 * Update the values
 							 *
@@ -201,6 +205,7 @@ export const PanelLoginFormLabels = ( { context, presets, settings, setSettings 
 								bottom: marginBottom,
 								left: marginLeft,
 							} }
+
 							/**
 							 * Update the values
 							 *
@@ -234,8 +239,9 @@ export const PanelLoginFormLabels = ( { context, presets, settings, setSettings 
 							label={ __( '"Username or Email Address" field\'s label', 'bm-custom-login' ) }
 							original={ translations?.[ 'Username or Email Address' ] }
 							values={ Object.fromEntries(
-								languages.map( ( language ) => [ language, loginFormLabels?.[ sprintf( 'labelUsernameOrEmailAddress.%s', language ) ] ?? '' ] )
+								languages.map( ( language ) => [ language, loginFormLabels?.[ sprintf( 'labelUsernameOrEmailAddress.%s', language ) ] ?? '' ] ),
 							) }
+
 							/**
 							 * Update the values
 							 *
@@ -246,8 +252,8 @@ export const PanelLoginFormLabels = ( { context, presets, settings, setSettings 
 							onChange={ ( updatedValues ) => {
 								setSetting(
 									Object.fromEntries(
-										languages.map( ( language ) => [ sprintf( 'labelUsernameOrEmailAddress.%s', language ), updatedValues[ language ] ] )
-									)
+										languages.map( ( language ) => [ sprintf( 'labelUsernameOrEmailAddress.%s', language ), updatedValues[ language ] ] ),
+									),
 								);
 							} }
 						/>
@@ -258,8 +264,9 @@ export const PanelLoginFormLabels = ( { context, presets, settings, setSettings 
 							label={ __( '"Password" field\'s label', 'bm-custom-login' ) }
 							original={ translations?.Password }
 							values={ Object.fromEntries(
-								languages.map( ( language ) => [ language, loginFormLabels?.[ sprintf( 'labelPassword.%s', language ) ] ?? '' ] )
+								languages.map( ( language ) => [ language, loginFormLabels?.[ sprintf( 'labelPassword.%s', language ) ] ?? '' ] ),
 							) }
+
 							/**
 							 * Update the values
 							 *
@@ -270,8 +277,8 @@ export const PanelLoginFormLabels = ( { context, presets, settings, setSettings 
 							onChange={ ( updatedValues ) => {
 								setSetting(
 									Object.fromEntries(
-										languages.map( ( language ) => [ sprintf( 'labelPassword.%s', language ), updatedValues[ language ] ] )
-									)
+										languages.map( ( language ) => [ sprintf( 'labelPassword.%s', language ), updatedValues[ language ] ] ),
+									),
 								);
 							} }
 						/>
@@ -284,8 +291,9 @@ export const PanelLoginFormLabels = ( { context, presets, settings, setSettings 
 									label={ __( '"Username" field\'s label', 'bm-custom-login' ) }
 									original={ translations?.Username }
 									values={ Object.fromEntries(
-										languages.map( ( language ) => [ language, loginFormLabels?.[ sprintf( 'labelUsername.%s', language ) ] ?? '' ] )
+										languages.map( ( language ) => [ language, loginFormLabels?.[ sprintf( 'labelUsername.%s', language ) ] ?? '' ] ),
 									) }
+
 									/**
 									 * Update the values
 									 *
@@ -296,8 +304,8 @@ export const PanelLoginFormLabels = ( { context, presets, settings, setSettings 
 									onChange={ ( updatedValues ) => {
 										setSetting(
 											Object.fromEntries(
-												languages.map( ( language ) => [ sprintf( 'labelUsername.%s', language ), updatedValues[ language ] ] )
-											)
+												languages.map( ( language ) => [ sprintf( 'labelUsername.%s', language ), updatedValues[ language ] ] ),
+											),
 										);
 									} }
 								/>
@@ -308,8 +316,9 @@ export const PanelLoginFormLabels = ( { context, presets, settings, setSettings 
 									label={ __( '"Email" field\'s label', 'bm-custom-login' ) }
 									original={ translations?.Email }
 									values={ Object.fromEntries(
-										languages.map( ( language ) => [ language, loginFormLabels?.[ sprintf( 'labelEmail.%s', language ) ] ?? '' ] )
+										languages.map( ( language ) => [ language, loginFormLabels?.[ sprintf( 'labelEmail.%s', language ) ] ?? '' ] ),
 									) }
+
 									/**
 									 * Update the values
 									 *
@@ -320,8 +329,8 @@ export const PanelLoginFormLabels = ( { context, presets, settings, setSettings 
 									onChange={ ( updatedValues ) => {
 										setSetting(
 											Object.fromEntries(
-												languages.map( ( language ) => [ sprintf( 'labelEmail.%s', language ), updatedValues[ language ] ] )
-											)
+												languages.map( ( language ) => [ sprintf( 'labelEmail.%s', language ), updatedValues[ language ] ] ),
+											),
 										);
 									} }
 								/>

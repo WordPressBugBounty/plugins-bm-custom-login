@@ -11,7 +11,7 @@ namespace Teydea_Studio\Custom_Login\Modules;
 use Teydea_Studio\Custom_Login\Dependencies\Utils;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit; // @codeCoverageIgnore
 }
 
 /**
@@ -67,9 +67,11 @@ final class Module_Settings_Adopter extends Utils\Module {
 				case 'left':
 					$focal_point_x = 0;
 					break;
+
 				case 'right':
 					$focal_point_x = 1;
 					break;
+
 				// No need for center case, as it's the default value.
 			}
 		}
@@ -82,9 +84,11 @@ final class Module_Settings_Adopter extends Utils\Module {
 				case 'top':
 					$focal_point_y = 0;
 					break;
+
 				case 'bottom':
 					$focal_point_y = 1;
 					break;
+
 				// No need for center case, as it's the default value.
 			}
 		}
@@ -97,12 +101,15 @@ final class Module_Settings_Adopter extends Utils\Module {
 				case 'no-repeat':
 					$size_repeat = 'size-auto--no-repeat';
 					break;
+
 				case 'repeat-x':
 					$size_repeat = 'size-auto--repeat-x';
 					break;
+
 				case 'repeat-y':
 					$size_repeat = 'size-auto--repeat-y';
 					break;
+
 				case 'repeat':
 					$size_repeat = 'size-auto--repeat';
 					break;

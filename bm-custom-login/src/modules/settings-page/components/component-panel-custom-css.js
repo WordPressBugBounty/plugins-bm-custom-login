@@ -16,7 +16,7 @@ import { __ } from '@wordpress/i18n';
  * @param {Object}   properties.settings    Plugin settings.
  * @param {Function} properties.setSettings Function (callback) used to update the settings.
  *
- * @return {JSX} PanelCustomCSS component.
+ * @return {Element} PanelCustomCSS component.
  */
 export const PanelCustomCSS = ( { settings, setSettings } ) => {
 	// Destructure the settings object.
@@ -46,7 +46,7 @@ export const PanelCustomCSS = ( { settings, setSettings } ) => {
 	/**
 	 * Return the component
 	 *
-	 * @return {JSX} PanelCustomCSS component.
+	 * @return {Element} PanelCustomCSS component.
 	 */
 	return (
 		<PanelBody initialOpen={ false } title={ __( 'Custom CSS', 'bm-custom-login' ) }>
@@ -55,6 +55,7 @@ export const PanelCustomCSS = ( { settings, setSettings } ) => {
 				__next40pxDefaultSize
 				label={ __( 'Additional, custom CSS', 'bm-custom-login' ) }
 				value={ css }
+
 				/**
 				 * Update the value
 				 *

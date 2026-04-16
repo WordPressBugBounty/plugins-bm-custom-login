@@ -30,7 +30,7 @@ import { __ } from '@wordpress/i18n';
  * @param {Object}   properties.settings    Plugin settings.
  * @param {Function} properties.setSettings Function (callback) used to update the settings.
  *
- * @return {JSX} PanelLoginFormContainer component.
+ * @return {Element} PanelLoginFormContainer component.
  */
 export const PanelLoginFormContainer = ( { presets, settings, setSettings } ) => {
 	// Destructure the settings object.
@@ -128,7 +128,7 @@ export const PanelLoginFormContainer = ( { presets, settings, setSettings } ) =>
 	/**
 	 * Return the component
 	 *
-	 * @return {JSX} PanelLoginFormContainer component.
+	 * @return {Element} PanelLoginFormContainer component.
 	 */
 	return (
 		<PanelBody initialOpen={ false } title={ __( 'Login form container', 'bm-custom-login' ) }>
@@ -138,6 +138,7 @@ export const PanelLoginFormContainer = ( { presets, settings, setSettings } ) =>
 					__next40pxDefaultSize
 					label={ __( 'Place logo inside the form container', 'bm-custom-login' ) }
 					checked={ wrapLogoInContainer }
+
 					/**
 					 * Update the value
 					 *
@@ -154,6 +155,7 @@ export const PanelLoginFormContainer = ( { presets, settings, setSettings } ) =>
 					__next40pxDefaultSize
 					label={ __( 'Place footer links inside the form container', 'bm-custom-login' ) }
 					checked={ wrapLinksInContainer }
+
 					/**
 					 * Update the value
 					 *
@@ -168,6 +170,7 @@ export const PanelLoginFormContainer = ( { presets, settings, setSettings } ) =>
 				<AlignmentMatrixControl
 					label={ __( 'Position / alignment', 'bm-custom-login' ) }
 					value={ alignment }
+
 					/**
 					 * Update the value
 					 *
@@ -192,6 +195,7 @@ export const PanelLoginFormContainer = ( { presets, settings, setSettings } ) =>
 							bottom: wrapperPaddingBottom,
 							left: wrapperPaddingLeft,
 						} }
+
 						/**
 						 * Update the value
 						 *
@@ -224,6 +228,7 @@ export const PanelLoginFormContainer = ( { presets, settings, setSettings } ) =>
 					<ColorControl
 						value={ backgroundColor }
 						label={ __( 'Background', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -273,6 +278,7 @@ export const PanelLoginFormContainer = ( { presets, settings, setSettings } ) =>
 					max={ 1000 }
 					value={ width }
 					defaultValue={ 320 }
+
 					/**
 					 * Update the value
 					 *
@@ -303,6 +309,7 @@ export const PanelLoginFormContainer = ( { presets, settings, setSettings } ) =>
 						borderTopWidth,
 					} }
 					label={ __( 'Border style', 'bm-custom-login' ) }
+
 					/**
 					 * Update the value
 					 *
@@ -332,6 +339,7 @@ export const PanelLoginFormContainer = ( { presets, settings, setSettings } ) =>
 						borderTopWidth: borderTopWidthOnHover,
 					} }
 					label={ __( 'Border style (on hover)', 'bm-custom-login' ) }
+
 					/**
 					 * Update the value
 					 *
@@ -374,6 +382,7 @@ export const PanelLoginFormContainer = ( { presets, settings, setSettings } ) =>
 						borderTopWidth: borderTopWidthOnFocus,
 					} }
 					label={ __( 'Border style (on focus)', 'bm-custom-login' ) }
+
 					/**
 					 * Update the value
 					 *
@@ -407,6 +416,7 @@ export const PanelLoginFormContainer = ( { presets, settings, setSettings } ) =>
 						topLeft: borderTopLeftRadius,
 						topRight: borderTopRightRadius,
 					} }
+
 					/**
 					 * Update the value
 					 *
@@ -432,6 +442,7 @@ export const PanelLoginFormContainer = ( { presets, settings, setSettings } ) =>
 					label={ __( 'Shadow', 'bm-custom-login' ) }
 					value={ shadow }
 					presets={ shadowPresets }
+
 					/**
 					 * Update the value
 					 *
@@ -449,6 +460,7 @@ export const PanelLoginFormContainer = ( { presets, settings, setSettings } ) =>
 					label={ __( 'Shadow (on hover)', 'bm-custom-login' ) }
 					value={ shadowOnHover }
 					presets={ shadowPresets }
+
 					/**
 					 * Update the value
 					 *
@@ -466,6 +478,7 @@ export const PanelLoginFormContainer = ( { presets, settings, setSettings } ) =>
 					label={ __( 'Shadow (on focus)', 'bm-custom-login' ) }
 					value={ shadowOnFocus }
 					presets={ shadowPresets }
+
 					/**
 					 * Update the value
 					 *
@@ -490,6 +503,7 @@ export const PanelLoginFormContainer = ( { presets, settings, setSettings } ) =>
 						bottom: paddingBottom,
 						left: paddingLeft,
 					} }
+
 					/**
 					 * Update the value
 					 *
@@ -527,6 +541,7 @@ export const PanelLoginFormContainer = ( { presets, settings, setSettings } ) =>
 						bottom: marginBottom,
 						left: marginLeft,
 					} }
+
 					/**
 					 * Update the value
 					 *

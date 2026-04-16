@@ -37,7 +37,7 @@ import { SocialMediaLink } from './component-social-media-link.js';
  * @param {Object}   properties.settings    Plugin settings.
  * @param {Function} properties.setSettings Function (callback) used to update the settings.
  *
- * @return {JSX} PanelSocialMediaLinks component.
+ * @return {Element} PanelSocialMediaLinks component.
  */
 export const PanelSocialMediaLinks = ( { presets, settings, setSettings } ) => {
 	// Destructure the settings object.
@@ -133,7 +133,7 @@ export const PanelSocialMediaLinks = ( { presets, settings, setSettings } ) => {
 	/**
 	 * Return the component
 	 *
-	 * @return {JSX} PanelSocialMediaLinks component.
+	 * @return {Element} PanelSocialMediaLinks component.
 	 */
 	return (
 		<PanelBody initialOpen={ false } title={ __( 'Social media links', 'bm-custom-login' ) }>
@@ -144,6 +144,7 @@ export const PanelSocialMediaLinks = ( { presets, settings, setSettings } ) => {
 					label={ __( 'Display social media links', 'bm-custom-login' ) }
 					help={ __( 'Social media links will be displayed at the bottom of the login screen.', 'bm-custom-login' ) }
 					checked={ show }
+
 					/**
 					 * Update the value
 					 *
@@ -163,6 +164,7 @@ export const PanelSocialMediaLinks = ( { presets, settings, setSettings } ) => {
 							ItemComponent={ SocialMediaLink }
 							items={ socialMediaLinksList }
 							label={ __( 'Social media links', 'bm-custom-login' ) }
+
 							/**
 							 * Handle adding new item
 							 *
@@ -183,12 +185,13 @@ export const PanelSocialMediaLinks = ( { presets, settings, setSettings } ) => {
 												{
 													key: itemKey,
 													...itemTemplate,
-												}
+												},
 											),
 										},
 									},
 								} );
 							} }
+
 							/**
 							 * Update the value
 							 *
@@ -239,6 +242,7 @@ export const PanelSocialMediaLinks = ( { presets, settings, setSettings } ) => {
 									label: __( 'At the bottom', 'bm-custom-login' ),
 								},
 							] }
+
 							/**
 							 * Update the value
 							 *
@@ -272,6 +276,7 @@ export const PanelSocialMediaLinks = ( { presets, settings, setSettings } ) => {
 									label: __( 'Right', 'bm-custom-login' ),
 								},
 							] }
+
 							/**
 							 * Update the value
 							 *
@@ -290,6 +295,7 @@ export const PanelSocialMediaLinks = ( { presets, settings, setSettings } ) => {
 							<ColorControl
 								value={ backgroundColor }
 								label={ __( 'Background', 'bm-custom-login' ) }
+
 								/**
 								 * Update the value
 								 *
@@ -310,6 +316,7 @@ export const PanelSocialMediaLinks = ( { presets, settings, setSettings } ) => {
 							<ColorControl
 								value={ iconColor }
 								label={ __( 'Icon', 'bm-custom-login' ) }
+
 								/**
 								 * Update the value
 								 *
@@ -333,6 +340,7 @@ export const PanelSocialMediaLinks = ( { presets, settings, setSettings } ) => {
 							<ColorControl
 								value={ backgroundColorOnHover }
 								label={ __( 'Background', 'bm-custom-login' ) }
+
 								/**
 								 * Update the value
 								 *
@@ -353,6 +361,7 @@ export const PanelSocialMediaLinks = ( { presets, settings, setSettings } ) => {
 							<ColorControl
 								value={ iconColorOnHover }
 								label={ __( 'Icon', 'bm-custom-login' ) }
+
 								/**
 								 * Update the value
 								 *
@@ -376,6 +385,7 @@ export const PanelSocialMediaLinks = ( { presets, settings, setSettings } ) => {
 							<ColorControl
 								value={ backgroundColorOnFocus }
 								label={ __( 'Background', 'bm-custom-login' ) }
+
 								/**
 								 * Update the value
 								 *
@@ -396,6 +406,7 @@ export const PanelSocialMediaLinks = ( { presets, settings, setSettings } ) => {
 							<ColorControl
 								value={ iconColorOnFocus }
 								label={ __( 'Icon', 'bm-custom-login' ) }
+
 								/**
 								 * Update the value
 								 *
@@ -420,6 +431,7 @@ export const PanelSocialMediaLinks = ( { presets, settings, setSettings } ) => {
 							__nextHasNoMarginBottom
 							__next40pxDefaultSize
 							label={ __( 'Icon width & height', 'bm-custom-login' ) }
+
 							/**
 							 * Update the value
 							 *
@@ -439,6 +451,7 @@ export const PanelSocialMediaLinks = ( { presets, settings, setSettings } ) => {
 							__nextHasNoMarginBottom
 							__next40pxDefaultSize
 							label={ __( 'Gap between the icons', 'bm-custom-login' ) }
+
 							/**
 							 * Update the value
 							 *
@@ -470,6 +483,7 @@ export const PanelSocialMediaLinks = ( { presets, settings, setSettings } ) => {
 								borderTopWidth,
 							} }
 							label={ __( 'Border style', 'bm-custom-login' ) }
+
 							/**
 							 * Update the value
 							 *
@@ -499,6 +513,7 @@ export const PanelSocialMediaLinks = ( { presets, settings, setSettings } ) => {
 								borderTopWidth: borderTopWidthOnHover,
 							} }
 							label={ __( 'Border style (on hover)', 'bm-custom-login' ) }
+
 							/**
 							 * Update the value
 							 *
@@ -541,6 +556,7 @@ export const PanelSocialMediaLinks = ( { presets, settings, setSettings } ) => {
 								borderTopWidth: borderTopWidthOnFocus,
 							} }
 							label={ __( 'Border style (on focus)', 'bm-custom-login' ) }
+
 							/**
 							 * Update the value
 							 *
@@ -574,6 +590,7 @@ export const PanelSocialMediaLinks = ( { presets, settings, setSettings } ) => {
 								topLeft: borderTopLeftRadius,
 								topRight: borderTopRightRadius,
 							} }
+
 							/**
 							 * Update the value
 							 *
@@ -599,6 +616,7 @@ export const PanelSocialMediaLinks = ( { presets, settings, setSettings } ) => {
 							label={ __( 'Shadow', 'bm-custom-login' ) }
 							value={ shadow }
 							presets={ shadowPresets }
+
 							/**
 							 * Update the value
 							 *
@@ -616,6 +634,7 @@ export const PanelSocialMediaLinks = ( { presets, settings, setSettings } ) => {
 							label={ __( 'Shadow (on hover)', 'bm-custom-login' ) }
 							value={ shadowOnHover }
 							presets={ shadowPresets }
+
 							/**
 							 * Update the value
 							 *
@@ -633,6 +652,7 @@ export const PanelSocialMediaLinks = ( { presets, settings, setSettings } ) => {
 							label={ __( 'Shadow (on focus)', 'bm-custom-login' ) }
 							value={ shadowOnFocus }
 							presets={ shadowPresets }
+
 							/**
 							 * Update the value
 							 *
@@ -657,6 +677,7 @@ export const PanelSocialMediaLinks = ( { presets, settings, setSettings } ) => {
 								bottom: paddingBottom,
 								left: paddingLeft,
 							} }
+
 							/**
 							 * Update the values
 							 *
@@ -694,6 +715,7 @@ export const PanelSocialMediaLinks = ( { presets, settings, setSettings } ) => {
 								bottom: marginBottom,
 								left: marginLeft,
 							} }
+
 							/**
 							 * Update the value
 							 *

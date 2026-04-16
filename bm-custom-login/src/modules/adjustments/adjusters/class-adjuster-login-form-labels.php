@@ -14,7 +14,7 @@ use Teydea_Studio\Custom_Login\Adjuster;
 use Teydea_Studio\Custom_Login\Dependencies\Utils;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit; // @codeCoverageIgnore
 }
 
 /**
@@ -107,7 +107,7 @@ final class Adjuster_Login_Form_Labels extends Adjuster {
 				. '//form[@id="loginform"]//label[@for="user_pass"] | '
 				. '//form[@id="registerform"]//label[@for="user_login"] | '
 				. '//form[@id="registerform"]//label[@for="user_email"] | '
-				. '//form[@id="lostpasswordform"]//label[@for="user_login"]'
+				. '//form[@id="lostpasswordform"]//label[@for="user_login"]',
 			);
 
 			if ( false !== $labels_to_remove ) {

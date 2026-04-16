@@ -8,7 +8,7 @@
 namespace Teydea_Studio\Custom_Login\Dependencies\Utils;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit; // @codeCoverageIgnore
 }
 
 /**
@@ -76,6 +76,47 @@ final class Environment {
 	 */
 	public static function is_local_dev_environment(): bool {
 		return 'development' === wp_get_environment_type() && '1' === getenv( 'TEYDEASTUDIO_IS_LOCAL' );
+	}
+
+	/**
+	 * Get the WordPress version
+	 *
+	 * Uses wp_get_wp_version() when available (WP 6.7+),
+	 * falls back to loading the version from version.php
+	 * for older WordPress versions.
+	 *
+	 * @return string WordPress version string.
+	 */
+	public static function get_wp_version(): string {
+		if ( function_exists( 'wp_get_wp_version' ) ) {
+			return wp_get_wp_version();
+		}
+
+		// Fallback for WP < 6.7: mirror the wp_get_wp_version() implementation.
+		static $wp_version;
+
+		if ( ! isset( $wp_version ) ) {
+			require_once ABSPATH . WPINC . '/version.php';
+		}
+
+		return Type::ensure_string( $wp_version );
+	}
+
+	/**
+	 * Compare the current WordPress version against a given version
+	 *
+	 * Strips pre-release suffixes (e.g. '-RC2') before comparing,
+	 * so development and release-candidate builds are treated as their
+	 * base version.
+	 *
+	 * @param string $version  Version to compare against (e.g. '7.0').
+	 * @param string $operator Comparison operator ('>', '>=', '<', '<=', '==', '!=').
+	 *
+	 * @return bool Whether the comparison is true.
+	 */
+	public static function compare_wp_version( string $version, string $operator ): bool {
+		$wp_version = Type::ensure_string( preg_replace( '/-.*$/', '', self::get_wp_version() ) );
+		return version_compare( $wp_version, $version, $operator );
 	}
 
 	/**

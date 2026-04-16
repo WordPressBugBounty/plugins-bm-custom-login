@@ -10,13 +10,13 @@ namespace Teydea_Studio\Custom_Login\Modules\Adjustments;
 use Teydea_Studio\Custom_Login\Adjuster;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit; // @codeCoverageIgnore
 }
 
 /**
  * The "Adjuster_Login_Form_Checkbox_Fields" class
  *
- * @phpstan-type Type_Adjuster_Login_Form_Checkbox_Fields_Config ?array{background_color:string,background_color_checked:string,background_color_on_focus:string,background_color_on_focus_checked:string,background_color_on_hover:string,background_color_on_hover_checked:string,border_bottom_color:string,border_bottom_color_on_focus:string,border_bottom_color_on_hover:string,border_bottom_left_radius:string,border_bottom_right_radius:string,border_bottom_style:string,border_bottom_style_on_focus:string,border_bottom_style_on_hover:string,border_bottom_width:string,border_bottom_width_on_focus:string,border_bottom_width_on_hover:string,border_left_color:string,border_left_color_on_focus:string,border_left_color_on_hover:string,border_left_style:string,border_left_style_on_focus:string,border_left_style_on_hover:string,border_left_width:string,border_left_width_on_focus:string,border_left_width_on_hover:string,border_right_color:string,border_right_color_on_focus:string,border_right_color_on_hover:string,border_right_style:string,border_right_style_on_focus:string,border_right_style_on_hover:string,border_right_width:string,border_right_width_on_focus:string,border_right_width_on_hover:string,border_top_color:string,border_top_color_on_focus:string,border_top_color_on_hover:string,border_top_left_radius:string,border_top_right_radius:string,border_top_style:string,border_top_style_on_focus:string,border_top_style_on_hover:string,border_top_width:string,border_top_width_on_focus:string,border_top_width_on_hover:string,field_size:int,field_margin_bottom:string,field_margin_left:string,field_margin_right:string,field_margin_top:string,icon:string,icon_color:string,icon_color_on_focus:string,icon_color_on_hover:string,icon_size:int,icon_margin_bottom:string,icon_margin_left:string,icon_margin_right:string,icon_margin_top:string,shadow:string,shadow_on_focus:string,shadow_on_hover:string}
+ * @phpstan-type Type_Adjuster_Login_Form_Checkbox_Fields_Config ?array{background_color:string,background_color_checked:string,background_color_on_focus:string,background_color_on_focus_checked:string,background_color_on_hover:string,background_color_on_hover_checked:string,border_bottom_color:string,border_bottom_color_checked:string,border_bottom_color_on_focus:string,border_bottom_color_on_focus_checked:string,border_bottom_color_on_hover:string,border_bottom_color_on_hover_checked:string,border_bottom_left_radius:string,border_bottom_right_radius:string,border_bottom_style:string,border_bottom_style_checked:string,border_bottom_style_on_focus:string,border_bottom_style_on_focus_checked:string,border_bottom_style_on_hover:string,border_bottom_style_on_hover_checked:string,border_bottom_width:string,border_bottom_width_checked:string,border_bottom_width_on_focus:string,border_bottom_width_on_focus_checked:string,border_bottom_width_on_hover:string,border_bottom_width_on_hover_checked:string,border_left_color:string,border_left_color_checked:string,border_left_color_on_focus:string,border_left_color_on_focus_checked:string,border_left_color_on_hover:string,border_left_color_on_hover_checked:string,border_left_style:string,border_left_style_checked:string,border_left_style_on_focus:string,border_left_style_on_focus_checked:string,border_left_style_on_hover:string,border_left_style_on_hover_checked:string,border_left_width:string,border_left_width_checked:string,border_left_width_on_focus:string,border_left_width_on_focus_checked:string,border_left_width_on_hover:string,border_left_width_on_hover_checked:string,border_right_color:string,border_right_color_checked:string,border_right_color_on_focus:string,border_right_color_on_focus_checked:string,border_right_color_on_hover:string,border_right_color_on_hover_checked:string,border_right_style:string,border_right_style_checked:string,border_right_style_on_focus:string,border_right_style_on_focus_checked:string,border_right_style_on_hover:string,border_right_style_on_hover_checked:string,border_right_width:string,border_right_width_checked:string,border_right_width_on_focus:string,border_right_width_on_focus_checked:string,border_right_width_on_hover:string,border_right_width_on_hover_checked:string,border_top_color:string,border_top_color_checked:string,border_top_color_on_focus:string,border_top_color_on_focus_checked:string,border_top_color_on_hover:string,border_top_color_on_hover_checked:string,border_top_left_radius:string,border_top_right_radius:string,border_top_style:string,border_top_style_checked:string,border_top_style_on_focus:string,border_top_style_on_focus_checked:string,border_top_style_on_hover:string,border_top_style_on_hover_checked:string,border_top_width:string,border_top_width_checked:string,border_top_width_on_focus:string,border_top_width_on_focus_checked:string,border_top_width_on_hover:string,border_top_width_on_hover_checked:string,field_size:int,field_margin_bottom:string,field_margin_left:string,field_margin_right:string,field_margin_top:string,icon:string,icon_color:string,icon_color_on_focus:string,icon_color_on_hover:string,icon_size:int,icon_margin_bottom:string,icon_margin_left:string,icon_margin_right:string,icon_margin_top:string,shadow:string,shadow_checked:string,shadow_on_focus:string,shadow_on_focus_checked:string,shadow_on_hover:string,shadow_on_hover_checked:string}
  */
 final class Adjuster_Login_Form_Checkbox_Fields extends Adjuster {
 	/**
@@ -39,8 +39,9 @@ final class Adjuster_Login_Form_Checkbox_Fields extends Adjuster {
 			return null;
 		}
 
-		/** @var array{background_color:string,background_color_checked:string,background_color_on_focus:string,background_color_on_focus_checked:string,background_color_on_hover:string,background_color_on_hover_checked:string,border_bottom_color:string,border_bottom_color_on_focus:string,border_bottom_color_on_hover:string,border_bottom_left_radius:string,border_bottom_right_radius:string,border_bottom_style:string,border_bottom_style_on_focus:string,border_bottom_style_on_hover:string,border_bottom_width:string,border_bottom_width_on_focus:string,border_bottom_width_on_hover:string,border_left_color:string,border_left_color_on_focus:string,border_left_color_on_hover:string,border_left_style:string,border_left_style_on_focus:string,border_left_style_on_hover:string,border_left_width:string,border_left_width_on_focus:string,border_left_width_on_hover:string,border_right_color:string,border_right_color_on_focus:string,border_right_color_on_hover:string,border_right_style:string,border_right_style_on_focus:string,border_right_style_on_hover:string,border_right_width:string,border_right_width_on_focus:string,border_right_width_on_hover:string,border_top_color:string,border_top_color_on_focus:string,border_top_color_on_hover:string,border_top_left_radius:string,border_top_right_radius:string,border_top_style:string,border_top_style_on_focus:string,border_top_style_on_hover:string,border_top_width:string,border_top_width_on_focus:string,border_top_width_on_hover:string,field_size:int,field_margin_bottom:string,field_margin_left:string,field_margin_right:string,field_margin_top:string,icon:string,icon_color:string,icon_color_on_focus:string,icon_color_on_hover:string,icon_size:int,icon_margin_bottom:string,icon_margin_left:string,icon_margin_right:string,icon_margin_top:string,shadow:string,shadow_on_focus:string,shadow_on_hover:string} $results */
+		/** @var array{background_color:string,background_color_checked:string,background_color_on_focus:string,background_color_on_focus_checked:string,background_color_on_hover:string,background_color_on_hover_checked:string,border_bottom_color:string,border_bottom_color_checked:string,border_bottom_color_on_focus:string,border_bottom_color_on_focus_checked:string,border_bottom_color_on_hover:string,border_bottom_color_on_hover_checked:string,border_bottom_left_radius:string,border_bottom_right_radius:string,border_bottom_style:string,border_bottom_style_checked:string,border_bottom_style_on_focus:string,border_bottom_style_on_focus_checked:string,border_bottom_style_on_hover:string,border_bottom_style_on_hover_checked:string,border_bottom_width:string,border_bottom_width_checked:string,border_bottom_width_on_focus:string,border_bottom_width_on_focus_checked:string,border_bottom_width_on_hover:string,border_bottom_width_on_hover_checked:string,border_left_color:string,border_left_color_checked:string,border_left_color_on_focus:string,border_left_color_on_focus_checked:string,border_left_color_on_hover:string,border_left_color_on_hover_checked:string,border_left_style:string,border_left_style_checked:string,border_left_style_on_focus:string,border_left_style_on_focus_checked:string,border_left_style_on_hover:string,border_left_style_on_hover_checked:string,border_left_width:string,border_left_width_checked:string,border_left_width_on_focus:string,border_left_width_on_focus_checked:string,border_left_width_on_hover:string,border_left_width_on_hover_checked:string,border_right_color:string,border_right_color_checked:string,border_right_color_on_focus:string,border_right_color_on_focus_checked:string,border_right_color_on_hover:string,border_right_color_on_hover_checked:string,border_right_style:string,border_right_style_checked:string,border_right_style_on_focus:string,border_right_style_on_focus_checked:string,border_right_style_on_hover:string,border_right_style_on_hover_checked:string,border_right_width:string,border_right_width_checked:string,border_right_width_on_focus:string,border_right_width_on_focus_checked:string,border_right_width_on_hover:string,border_right_width_on_hover_checked:string,border_top_color:string,border_top_color_checked:string,border_top_color_on_focus:string,border_top_color_on_focus_checked:string,border_top_color_on_hover:string,border_top_color_on_hover_checked:string,border_top_left_radius:string,border_top_right_radius:string,border_top_style:string,border_top_style_checked:string,border_top_style_on_focus:string,border_top_style_on_focus_checked:string,border_top_style_on_hover:string,border_top_style_on_hover_checked:string,border_top_width:string,border_top_width_checked:string,border_top_width_on_focus:string,border_top_width_on_focus_checked:string,border_top_width_on_hover:string,border_top_width_on_hover_checked:string,field_size:int,field_margin_bottom:string,field_margin_left:string,field_margin_right:string,field_margin_top:string,icon:string,icon_color:string,icon_color_on_focus:string,icon_color_on_hover:string,icon_size:int,icon_margin_bottom:string,icon_margin_left:string,icon_margin_right:string,icon_margin_top:string,shadow:string,shadow_checked:string,shadow_on_focus:string,shadow_on_focus_checked:string,shadow_on_hover:string,shadow_on_hover_checked:string} $results */
 		$results = $fields_group->get_all_fields_values();
+
 		return $results;
 	}
 
@@ -90,12 +91,46 @@ final class Adjuster_Login_Form_Checkbox_Fields extends Adjuster {
 				),
 			),
 			sprintf(
-				'.login form input[type=checkbox]:checked { background: %s; }',
+				'.login form input[type=checkbox]:checked { background: %1$s; %2$s; box-shadow: %3$s; }',
 				$this->styles->compose_color( $config['background_color_checked'], 'initial' ),
+				$this->styles->compose_border_style(
+					[
+						'top_width'    => $config['border_top_width_checked'],
+						'top_style'    => $config['border_top_style_checked'],
+						'top_color'    => $config['border_top_color_checked'],
+						'right_width'  => $config['border_right_width_checked'],
+						'right_style'  => $config['border_right_style_checked'],
+						'right_color'  => $config['border_right_color_checked'],
+						'bottom_width' => $config['border_bottom_width_checked'],
+						'bottom_style' => $config['border_bottom_style_checked'],
+						'bottom_color' => $config['border_bottom_color_checked'],
+						'left_width'   => $config['border_left_width_checked'],
+						'left_style'   => $config['border_left_style_checked'],
+						'left_color'   => $config['border_left_color_checked'],
+					],
+				),
+				$this->styles->compose_box_shadow_style( $config['shadow_checked'] ),
 			),
 			sprintf(
-				'.login form input[type=checkbox]:hover:checked { background: %s; }',
+				'.login form input[type=checkbox]:hover:checked { background: %1$s; %2$s; box-shadow: %3$s; }',
 				$this->styles->compose_color( $config['background_color_on_hover_checked'], 'initial' ),
+				$this->styles->compose_border_style(
+					[
+						'top_width'    => $config['border_top_width_on_hover_checked'],
+						'top_style'    => $config['border_top_style_on_hover_checked'],
+						'top_color'    => $config['border_top_color_on_hover_checked'],
+						'right_width'  => $config['border_right_width_on_hover_checked'],
+						'right_style'  => $config['border_right_style_on_hover_checked'],
+						'right_color'  => $config['border_right_color_on_hover_checked'],
+						'bottom_width' => $config['border_bottom_width_on_hover_checked'],
+						'bottom_style' => $config['border_bottom_style_on_hover_checked'],
+						'bottom_color' => $config['border_bottom_color_on_hover_checked'],
+						'left_width'   => $config['border_left_width_on_hover_checked'],
+						'left_style'   => $config['border_left_style_on_hover_checked'],
+						'left_color'   => $config['border_left_color_on_hover_checked'],
+					],
+				),
+				$this->styles->compose_box_shadow_style( $config['shadow_on_hover_checked'] ),
 			),
 			sprintf(
 				'.login form input[type=checkbox]:hover { background: %s; %s; box-shadow: %s; }',
@@ -119,8 +154,25 @@ final class Adjuster_Login_Form_Checkbox_Fields extends Adjuster {
 				$this->styles->compose_box_shadow_style( $config['shadow_on_hover'] ),
 			),
 			sprintf(
-				'.login form input[type=checkbox]:focus:checked { background: %s; }',
+				'.login form input[type=checkbox]:focus:checked { background: %1$s; %2$s; box-shadow: %3$s; }',
 				$this->styles->compose_color( $config['background_color_on_focus_checked'], 'initial' ),
+				$this->styles->compose_border_style(
+					[
+						'top_width'    => $config['border_top_width_on_focus_checked'],
+						'top_style'    => $config['border_top_style_on_focus_checked'],
+						'top_color'    => $config['border_top_color_on_focus_checked'],
+						'right_width'  => $config['border_right_width_on_focus_checked'],
+						'right_style'  => $config['border_right_style_on_focus_checked'],
+						'right_color'  => $config['border_right_color_on_focus_checked'],
+						'bottom_width' => $config['border_bottom_width_on_focus_checked'],
+						'bottom_style' => $config['border_bottom_style_on_focus_checked'],
+						'bottom_color' => $config['border_bottom_color_on_focus_checked'],
+						'left_width'   => $config['border_left_width_on_focus_checked'],
+						'left_style'   => $config['border_left_style_on_focus_checked'],
+						'left_color'   => $config['border_left_color_on_focus_checked'],
+					],
+				),
+				$this->styles->compose_box_shadow_style( $config['shadow_on_focus_checked'] ),
 			),
 			sprintf(
 				'.login form input[type=checkbox]:focus { background: %s; %s; box-shadow: %s; }',
@@ -157,6 +209,7 @@ final class Adjuster_Login_Form_Checkbox_Fields extends Adjuster {
 				 */
 				$svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="currentColor"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" /></svg>';
 				break;
+
 			case 'heroicons-check':
 				/**
 				 * License - https://github.com/tailwindlabs/heroicons/blob/master/LICENSE
@@ -166,6 +219,7 @@ final class Adjuster_Login_Form_Checkbox_Fields extends Adjuster {
 				 */
 				$svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M12.416 3.376a.75.75 0 0 1 .208 1.04l-5 7.5a.75.75 0 0 1-1.154.114l-3-3a.75.75 0 0 1 1.06-1.06l2.353 2.353 4.493-6.74a.75.75 0 0 1 1.04-.207Z" clip-rule="evenodd" /></svg>';
 				break;
+
 			case 'default':
 			default:
 				$svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M14.83 4.89l1.34.94-5.81 8.38H9.02L5.78 9.67l1.34-1.25 2.57 2.4z" fill="currentColor" /></svg>';

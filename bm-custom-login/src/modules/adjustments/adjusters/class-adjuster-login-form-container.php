@@ -12,7 +12,7 @@ use DOMXPath;
 use Teydea_Studio\Custom_Login\Adjuster;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit; // @codeCoverageIgnore
 }
 
 /**
@@ -118,6 +118,7 @@ final class Adjuster_Login_Form_Container extends Adjuster {
 
 		/** @var array{alignment:string,background_color:string,border_bottom_color:string,border_bottom_color_on_focus:string,border_bottom_color_on_hover:string,border_bottom_left_radius:string,border_bottom_right_radius:string,border_bottom_style:string,border_bottom_style_on_focus:string,border_bottom_style_on_hover:string,border_bottom_width:string,border_bottom_width_on_focus:string,border_bottom_width_on_hover:string,border_left_color:string,border_left_color_on_focus:string,border_left_color_on_hover:string,border_left_style:string,border_left_style_on_focus:string,border_left_style_on_hover:string,border_left_width:string,border_left_width_on_focus:string,border_left_width_on_hover:string,border_right_color:string,border_right_color_on_focus:string,border_right_color_on_hover:string,border_right_style:string,border_right_style_on_focus:string,border_right_style_on_hover:string,border_right_width:string,border_right_width_on_focus:string,border_right_width_on_hover:string,border_top_color:string,border_top_color_on_focus:string,border_top_color_on_hover:string,border_top_left_radius:string,border_top_right_radius:string,border_top_style:string,border_top_style_on_focus:string,border_top_style_on_hover:string,border_top_width:string,border_top_width_on_focus:string,border_top_width_on_hover:string,focal_point_x:float,focal_point_y:float,margin_bottom:string,margin_left:string,margin_right:string,margin_top:string,media_id:int,padding_bottom:string,padding_left:string,padding_right:string,padding_top:string,shadow:string,shadow_on_focus:string,shadow_on_hover:string,size_repeat:string,width:int,wrap_links_in_container:bool,wrap_logo_in_container:bool,wrapper_padding_top:string,wrapper_padding_right:string,wrapper_padding_bottom:string,wrapper_padding_left:string} $results */
 		$results = $fields_group->get_all_fields_values();
+
 		return $results;
 	}
 
@@ -246,27 +247,35 @@ final class Adjuster_Login_Form_Container extends Adjuster {
 				case 'top left':
 					$flex_alignment = 'align-items: flex-start; justify-content: flex-start';
 					break;
+
 				case 'top center':
 					$flex_alignment = 'align-items: center; justify-content: flex-start';
 					break;
+
 				case 'top right':
 					$flex_alignment = 'align-items: flex-end; justify-content: flex-start';
 					break;
+
 				case 'center left':
 					$flex_alignment = 'align-items: flex-start; justify-content: center';
 					break;
+
 				case 'center center':
 					$flex_alignment = 'align-items: center; justify-content: center';
 					break;
+
 				case 'center right':
 					$flex_alignment = 'align-items: flex-end; justify-content: center';
 					break;
+
 				case 'bottom left':
 					$flex_alignment = 'align-items: flex-start; justify-content: flex-end';
 					break;
+
 				case 'bottom center':
 					$flex_alignment = 'align-items: center; justify-content: flex-end';
 					break;
+
 				case 'bottom right':
 					$flex_alignment = 'align-items: flex-end; justify-content: flex-end';
 					break;

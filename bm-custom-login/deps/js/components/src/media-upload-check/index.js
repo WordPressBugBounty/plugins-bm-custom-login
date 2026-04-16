@@ -19,11 +19,11 @@ import { WaitingIndicator } from '../waiting-indicator/index.js';
  * MediaUploadCheck component
  *
  * @param {Object}  properties                Component properties object.
- * @param {JSX}     properties.children       Children component, to be rendered when user has the necessary capabilities.
- * @param {JSX}     properties.fallback       Fallback component.
+ * @param {Element} properties.children       Children component, to be rendered when user has the necessary capabilities.
+ * @param {Element} properties.fallback       Fallback component.
  * @param {boolean} properties.isNetworkAdmin Whether the current context is the network admin.
  *
- * @return {JSX} MediaUploadCheck component.
+ * @return {Element} MediaUploadCheck component.
  */
 export const MediaUploadCheck = ( { children, fallback, isNetworkAdmin = false } ) => {
 	/**
@@ -37,7 +37,7 @@ export const MediaUploadCheck = ( { children, fallback, isNetworkAdmin = false }
 			hasFinishedResolution: select( 'core' ).hasFinishedResolution( 'canUser', [ 'create', 'media' ] ),
 			hasUploadPermissions: select( 'core' ).canUser( 'create', 'media' ),
 		} ),
-		[]
+		[],
 	);
 
 	/**

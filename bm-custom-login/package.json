@@ -9,8 +9,8 @@
     "@teydeastudio/utils": "file:deps/js/utils"
   },
   "devDependencies": {
-    "@wordpress/icons": "^11.5.0",
-    "@wordpress/scripts": "^31.4.0",
+    "@wordpress/icons": "^11.8.0",
+    "@wordpress/scripts": "^31.6.0",
     "concurrently": "^9.2.1",
     "prop-types": "^15.8.1"
   }

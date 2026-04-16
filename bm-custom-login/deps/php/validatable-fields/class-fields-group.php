@@ -8,16 +8,17 @@
 namespace Teydea_Studio\Custom_Login\Dependencies\Validatable_Fields;
 
 use Closure;
+use Teydea_Studio\Custom_Login\Dependencies\Utils;
 use WP_Error;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit; // @codeCoverageIgnore
 }
 
 /**
  * Fields_Group class
  *
- * @phpstan-type Type_Fields_Config array<string,array{type:'array_of_strings',default_value:string[],restorer?:?Closure,sanitizer?:?Closure,validator?:?Closure,skip_default_sanitization?:bool}|array{type:'boolean',default_value:bool,restorer?:?Closure,sanitizer?:?Closure,validator?:?Closure}|array{type:'float',default_value:float,min:float,max:?float,precision?:int,restorer?:?Closure,sanitizer?:?Closure,validator?:?Closure}|array{type:'integer',default_value:int,min:int,max:?int,restorer?:?Closure,sanitizer?:?Closure,validator?:?Closure}|array{type:'string_of_choice',default_value:string,allowed_values?:string[],restorer?:?Closure,sanitizer?:?Closure,validator?:?Closure,skip_default_sanitization?:bool}|array{type:'string',default_value:string|Closure,restorer?:?Closure,sanitizer?:?Closure,validator?:?Closure,skip_default_sanitization?:bool}>
+ * @phpstan-type Type_Fields_Config array<string,array{type:'array_of_strings',default_value:string[],restorer?:?Closure,sanitizer?:?Closure,validator?:?Closure,skip_default_sanitization?:bool}|array{type:'boolean',default_value:bool,restorer?:?Closure,sanitizer?:?Closure,validator?:?Closure}|array{type:'float',default_value:float,min:float,max:?float,precision?:int,restorer?:?Closure,sanitizer?:?Closure,validator?:?Closure}|array{type:'integer',default_value:int,min:int,max:?int,restorer?:?Closure,sanitizer?:?Closure,validator?:?Closure}|array{type:'integer_of_choice',default_value:int,allowed_values?:int[],restorer?:?Closure,sanitizer?:?Closure,validator?:?Closure}|array{type:'string_of_choice',default_value:string,allowed_values?:string[],restorer?:?Closure,sanitizer?:?Closure,validator?:?Closure,skip_default_sanitization?:bool}|array{type:'string',default_value:string|Closure,restorer?:?Closure,sanitizer?:?Closure,validator?:?Closure,skip_default_sanitization?:bool}>
  */
 class Fields_Group {
 	/**
@@ -68,6 +69,7 @@ class Fields_Group {
 					);
 
 					break;
+
 				case 'boolean':
 					$field = new Field_Boolean(
 						$field_key,
@@ -78,6 +80,7 @@ class Fields_Group {
 					);
 
 					break;
+
 				case 'float':
 					$field = new Field_Float(
 						$field_key,
@@ -91,6 +94,7 @@ class Fields_Group {
 					);
 
 					break;
+
 				case 'integer':
 					$field = new Field_Integer(
 						$field_key,
@@ -103,6 +107,19 @@ class Fields_Group {
 					);
 
 					break;
+
+				case 'integer_of_choice':
+					$field = new Field_Integer_Of_Choice(
+						$field_key,
+						$field_config['default_value'],
+						$field_config['allowed_values'] ?? [],
+						$field_config['restorer'] ?? null,
+						$field_config['sanitizer'] ?? null,
+						$field_config['validator'] ?? null,
+					);
+
+					break;
+
 				case 'string_of_choice':
 					$field = new Field_String_Of_Choice(
 						$field_key,
@@ -115,6 +132,7 @@ class Fields_Group {
 					);
 
 					break;
+
 				case 'string':
 					$field = new Field_String(
 						$field_key,
@@ -246,5 +264,158 @@ class Fields_Group {
 		}
 
 		return $values;
+	}
+
+	/**
+	 * Build a nested JSON Schema from the flat field definitions
+	 *
+	 * @param array<string,string> $descriptions Optional descriptions keyed by field key.
+	 * @param string[]             $exclude      Field keys to exclude.
+	 *
+	 * @return array<string,mixed> JSON Schema object.
+	 */
+	public function get_nested_schema( array $descriptions = [], array $exclude = [] ): array {
+		$properties = [];
+
+		foreach ( $this->get_fields() as $field ) {
+			if ( ! $field instanceof Field ) {
+				continue;
+			}
+
+			if ( in_array( $field->get_key(), $exclude, true ) ) {
+				continue;
+			}
+
+			$schema = $field->get_schema();
+
+			if ( $field instanceof Field_Integer || $field instanceof Field_Float ) {
+				$schema['minimum'] = $field->get_minimum();
+				$max               = $field->get_maximum();
+
+				if ( null !== $max ) {
+					$schema['maximum'] = $max;
+				}
+			}
+
+			if ( isset( $descriptions[ $field->get_key() ] ) ) {
+				$schema['description'] = $descriptions[ $field->get_key() ];
+			}
+
+			$segments      = explode( '.', $field->get_key() );
+			$segment_count = count( $segments );
+
+			/** @var array<string,mixed> $current */
+			$current = &$properties;
+
+			for ( $i = 0; $i < $segment_count - 1; $i++ ) {
+				$segment = $segments[ $i ];
+
+				if ( ! isset( $current[ $segment ] ) || ! is_array( $current[ $segment ] ) || ! isset( $current[ $segment ]['properties'] ) ) {
+					$current[ $segment ] = [
+						'type'       => 'object',
+						'properties' => [],
+					];
+				}
+
+				/** @var array{type:string,properties:array<string,mixed>} $nested */
+				$nested  = &$current[ $segment ];
+				$current = &$nested['properties'];
+			}
+
+			$current[ end( $segments ) ] = $schema;
+			unset( $current );
+		}
+
+		return [
+			'type'       => 'object',
+			'properties' => $properties,
+		];
+	}
+
+	/**
+	 * Serialize field values into a nested array structure using dot-notation keys
+	 *
+	 * @param string[] $exclude Field keys to exclude.
+	 *
+	 * @return array<string,mixed> Nested values array.
+	 */
+	public function get_nested_value( array $exclude = [] ): array {
+		$result = [];
+
+		foreach ( $this->get_fields() as $field ) {
+			if ( ! $field instanceof Field ) {
+				continue;
+			}
+
+			if ( in_array( $field->get_key(), $exclude, true ) ) {
+				continue;
+			}
+
+			self::set_nested_value( $result, $field->get_key(), $field->get_value() );
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Recursively flatten nested snake_case arrays into camelCase dot-notation
+	 *
+	 * @param array<string,mixed> $input  Input array with snake_case keys.
+	 * @param string              $prefix Current key prefix.
+	 *
+	 * @return array<string,mixed> Flattened array with camelCase dot-notation keys.
+	 */
+	public static function flatten_to_camel_case( array $input, string $prefix = '' ): array {
+		$flat = [];
+
+		foreach ( $input as $key => $value ) {
+			$camel_key = Utils\Strings::to_camel_case( (string) $key );
+			$full_key  = '' !== $prefix ? $prefix . '.' . $camel_key : $camel_key;
+
+			if ( is_array( $value ) && ! wp_is_numeric_array( $value ) ) {
+				/** @var array<string,mixed> $value */
+				$nested = self::flatten_to_camel_case( $value, $full_key );
+
+				foreach ( $nested as $nested_key => $nested_value ) {
+					$flat[ $nested_key ] = $nested_value;
+				}
+
+				continue;
+			}
+
+			$flat[ $full_key ] = $value;
+		}
+
+		return $flat;
+	}
+
+	/**
+	 * Set a value at a dot-notation path in a nested array
+	 *
+	 * @param array<string,mixed> $result Result array (modified by reference).
+	 * @param string              $key    Dot-notation key.
+	 * @param mixed               $value  Value to set.
+	 *
+	 * @return void
+	 */
+	private static function set_nested_value( array &$result, string $key, $value ): void {
+		$segments      = explode( '.', $key );
+		$segment_count = count( $segments );
+
+		/** @var array<string,mixed> $current */
+		$current = &$result;
+
+		for ( $i = 0; $i < $segment_count - 1; $i++ ) {
+			$segment = $segments[ $i ];
+
+			if ( ! isset( $current[ $segment ] ) || ! is_array( $current[ $segment ] ) ) {
+				$current[ $segment ] = [];
+			}
+
+			/** @var array<string,mixed> $current */
+			$current = &$current[ $segment ];
+		}
+
+		$current[ end( $segments ) ] = $value;
 	}
 }

@@ -18,7 +18,7 @@ import { __experimentalBorderBoxControl as BorderBoxControl } from '@wordpress/c
  * @param {Object}   properties.values        Field's values.
  * @param {boolean}  properties.withAlpha     Whether the alpha choice should be allowed.
  *
- * @return {JSX} BorderControl component.
+ * @return {Element} BorderControl component.
  */
 export const BorderControl = ( { colorPalettes, label, onChange, values, withAlpha } ) => {
 	const {
@@ -42,6 +42,7 @@ export const BorderControl = ( { colorPalettes, label, onChange, values, withAlp
 			colors={ colorPalettes }
 			enableAlpha={ withAlpha }
 			label={ label }
+
 			/**
 			 * Update the value
 			 *

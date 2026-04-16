@@ -92,7 +92,7 @@ const dataStateReducer = ( state, action ) => {
 				content = sprintf(
 					// Translators: %s - error message.
 					__( 'Settings were not saved due to validation error: %s Please update the invalid field value and try again.', 'bm-custom-login' ),
-					action.error.data.params.settings
+					action.error.data.params.settings,
 				);
 			}
 
@@ -148,10 +148,9 @@ const dataStateReducer = ( state, action ) => {
  * Render the SnackbarList component near the given
  * children and control the notices displayed
  *
- * @param {Object} properties          Component properties object.
- * @param {JSX}    properties.children Child component to render.
+ * @param {Function} Component Wrapped settings component.
  *
- * @return {JSX} WithSettings component.
+ * @return {Function} Higher-order component.
  */
 export const withSettings = createHigherOrderComponent( ( Component ) => {
 	return ( props ) => {
@@ -203,6 +202,7 @@ export const withSettings = createHigherOrderComponent( ( Component ) => {
 					} )
 					.catch( ( error ) => {
 						console.error( error ); // eslint-disable-line no-console
+
 						dispatchDataState( {
 							type: 'settingsSaveFailed',
 							error,
@@ -232,7 +232,7 @@ export const withSettings = createHigherOrderComponent( ( Component ) => {
 		/**
 		 * The "save settings" button component
 		 *
-		 * @return {JSX} SaveSettingsButton component.
+		 * @return {Element} SaveSettingsButton component.
 		 */
 		const SaveSettingsButton = () => (
 			<Button
@@ -281,6 +281,7 @@ export const withSettings = createHigherOrderComponent( ( Component ) => {
 			<div className="tsc-with-settings">
 				<SnackbarList
 					notices={ dataState.notices }
+
 					/**
 					 * Remove single notice
 					 *
@@ -297,6 +298,7 @@ export const withSettings = createHigherOrderComponent( ( Component ) => {
 					{ ...props }
 					SaveSettingsButton={ SaveSettingsButton }
 					settings={ dataState.settings }
+
 					/**
 					 * Settings setter
 					 *

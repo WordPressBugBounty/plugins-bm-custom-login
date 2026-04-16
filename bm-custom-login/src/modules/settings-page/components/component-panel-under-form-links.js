@@ -34,7 +34,7 @@ import { UnderFormLink } from './component-under-form-link.js';
  * @param {Object}   properties.settings    Plugin settings.
  * @param {Function} properties.setSettings Function (callback) used to update the settings.
  *
- * @return {JSX} PanelUnderFormLinks component.
+ * @return {Element} PanelUnderFormLinks component.
  */
 export const PanelUnderFormLinks = ( { presets, settings, setSettings } ) => {
 	// Destructure the settings object.
@@ -92,7 +92,7 @@ export const PanelUnderFormLinks = ( { presets, settings, setSettings } ) => {
 	/**
 	 * Return the component
 	 *
-	 * @return {JSX} PanelUnderFormLinks component.
+	 * @return {Element} PanelUnderFormLinks component.
 	 */
 	return (
 		<PanelBody initialOpen={ false } title={ __( 'Under form links', 'bm-custom-login' ) }>
@@ -102,6 +102,7 @@ export const PanelUnderFormLinks = ( { presets, settings, setSettings } ) => {
 					ItemComponent={ UnderFormLink }
 					items={ underFormLinksList }
 					label={ __( 'Additional links under the form', 'bm-custom-login' ) }
+
 					/**
 					 * Handle adding new item
 					 *
@@ -122,6 +123,7 @@ export const PanelUnderFormLinks = ( { presets, settings, setSettings } ) => {
 							},
 						} );
 					} }
+
 					/**
 					 * Update the value
 					 *
@@ -160,6 +162,7 @@ export const PanelUnderFormLinks = ( { presets, settings, setSettings } ) => {
 							label: __( 'Right', 'bm-custom-login' ),
 						},
 					] }
+
 					/**
 					 * Update the value
 					 *
@@ -179,6 +182,7 @@ export const PanelUnderFormLinks = ( { presets, settings, setSettings } ) => {
 					__next40pxDefaultSize
 					label={ __( 'Separator', 'bm-custom-login' ) }
 					value={ separator }
+
 					/**
 					 * Update the value
 					 *
@@ -199,6 +203,7 @@ export const PanelUnderFormLinks = ( { presets, settings, setSettings } ) => {
 					label={ __( 'Disable the "← Go to…" back link', 'bm-custom-login' ) }
 					help={ __( 'This link redirects to the home page.', 'bm-custom-login' ) }
 					checked={ disableBackLink }
+
 					/**
 					 * Update the value
 					 *
@@ -215,6 +220,7 @@ export const PanelUnderFormLinks = ( { presets, settings, setSettings } ) => {
 					<ColorControl
 						value={ linkColor }
 						label={ __( 'Link', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -236,6 +242,7 @@ export const PanelUnderFormLinks = ( { presets, settings, setSettings } ) => {
 					<ColorControl
 						value={ separatorColor }
 						label={ __( 'Separator', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -257,6 +264,7 @@ export const PanelUnderFormLinks = ( { presets, settings, setSettings } ) => {
 					<ColorControl
 						value={ linkColorOnHover }
 						label={ __( 'Link', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -280,6 +288,7 @@ export const PanelUnderFormLinks = ( { presets, settings, setSettings } ) => {
 					<ColorControl
 						value={ linkColorOnFocus }
 						label={ __( 'Link', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -317,6 +326,7 @@ export const PanelUnderFormLinks = ( { presets, settings, setSettings } ) => {
 						withDecoration: true,
 						withLetterCase: true,
 					} }
+
 					/**
 					 * Update the values
 					 *
@@ -333,6 +343,7 @@ export const PanelUnderFormLinks = ( { presets, settings, setSettings } ) => {
 					label={ __( 'Shadow', 'bm-custom-login' ) }
 					value={ shadow }
 					presets={ shadowPresets }
+
 					/**
 					 * Update the value
 					 *
@@ -350,6 +361,7 @@ export const PanelUnderFormLinks = ( { presets, settings, setSettings } ) => {
 					label={ __( 'Shadow (on hover)', 'bm-custom-login' ) }
 					value={ shadowOnHover }
 					presets={ shadowPresets }
+
 					/**
 					 * Update the value
 					 *
@@ -367,6 +379,7 @@ export const PanelUnderFormLinks = ( { presets, settings, setSettings } ) => {
 					label={ __( 'Shadow (on focus)', 'bm-custom-login' ) }
 					value={ shadowOnFocus }
 					presets={ shadowPresets }
+
 					/**
 					 * Update the value
 					 *
@@ -391,6 +404,7 @@ export const PanelUnderFormLinks = ( { presets, settings, setSettings } ) => {
 						bottom: paddingBottom,
 						left: paddingLeft,
 					} }
+
 					/**
 					 * Update the value
 					 *
@@ -428,6 +442,7 @@ export const PanelUnderFormLinks = ( { presets, settings, setSettings } ) => {
 						bottom: marginBottom,
 						left: marginLeft,
 					} }
+
 					/**
 					 * Update the value
 					 *

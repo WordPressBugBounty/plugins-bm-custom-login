@@ -105,7 +105,7 @@ const normalizeMedia = ( media = undefined ) => {
  * @param {boolean}  properties.withSizeRepeatSelector  Whether to render the position selector.
  * @param {boolean}  properties.withVisualEffectControl Whether to render the visual effects controls.
  *
- * @return {JSX} MediaControl component.
+ * @return {Element} MediaControl component.
  */
 export const MediaControl = ( {
 	allowedTypes,
@@ -191,7 +191,7 @@ export const MediaControl = ( {
 					{ isNetworkAdmin
 						? __(
 								"The Media Library is not available in the Network Admin dashboard. To use custom images, configure image settings from an individual site's dashboard.",
-								'bm-custom-login'
+								'bm-custom-login',
 						  )
 						: __( 'You have no permissions to upload to the Media Library!', 'bm-custom-login' ) }
 				</Notice>
@@ -211,13 +211,14 @@ export const MediaControl = ( {
 					} }
 					allowedTypes={ allowedTypes }
 					value={ media?.id }
+
 					/**
 					 * Render the component
 					 *
 					 * @param {Object}   properties      Component properties.
 					 * @param {Function} properties.open Callback function to open the Media Library
 					 *
-					 * @return {JSX} Component.
+					 * @return {Element} Component.
 					 */
 					render={ ( { open } ) => (
 						<Fragment>
@@ -245,12 +246,12 @@ export const MediaControl = ( {
 										? sprintf(
 												// Translators: %s - label.
 												__( 'Replace %s', 'bm-custom-login' ),
-												label
+												label,
 										  )
 										: sprintf(
 												// Translators: %s - label.
 												__( 'Set %s', 'bm-custom-login' ),
-												label
+												label,
 										  ) }
 								</Button>
 								{ hasMediaId && (
@@ -265,7 +266,7 @@ export const MediaControl = ( {
 										{ sprintf(
 											// Translators: %s - label.
 											__( 'Remove %s', 'bm-custom-login' ),
-											label
+											label,
 										) }
 									</Button>
 								) }
@@ -325,6 +326,7 @@ export const MediaControl = ( {
 								label: __( 'Size: cover', 'bm-custom-login' ),
 							},
 						] }
+
 						/**
 						 * Update the value
 						 *

@@ -70,7 +70,7 @@ addFilter(
 		} );
 
 		return tabsConfig;
-	}
+	},
 );
 
 /**
@@ -83,7 +83,7 @@ addFilter(
 	/**
 	 * Render the "promoted plugins" panel
 	 *
-	 * @return {JSX} Updated "promoted plugins" panel.
+	 * @return {Element} Updated "promoted plugins" panel.
 	 */
 	() => (
 		<PromotedPluginsPanel
@@ -93,12 +93,12 @@ addFilter(
 					name: __( 'WP Password Policy', 'bm-custom-login' ),
 					description: __(
 						"Define advanced password policies, enforce strong password requirements, and improve your WordPress site's security.",
-						'bm-custom-login'
+						'bm-custom-login',
 					),
 				},
 			] }
 		/>
-	)
+	),
 );
 
 /**
@@ -111,9 +111,9 @@ addFilter(
 	/**
 	 * Render the "upsell" panel
 	 *
-	 * @param {JSX} panel The "upsell" panel.
+	 * @param {Element} panel The "upsell" panel.
 	 *
-	 * @return {JSX} Updated "upsell" panel.
+	 * @return {Element} Updated "upsell" panel.
 	 */
 	( panel ) => {
 		// Load the panel only if PRO version of the plugin is not active.
@@ -122,10 +122,38 @@ addFilter(
 				<UpsellPanel
 					url="https://wpcustomlogin.com/pricing/?utm_source=WP+Custom+Login"
 					benefits={ [
-						__( '20+ predefined templates to choose from for a quick start', 'bm-custom-login' ),
-						__( 'Advanced background customization options for a unique login experience', 'bm-custom-login' ),
-						__( 'Configurable post-login redirects for all users, specific users, or based on user roles', 'bm-custom-login' ),
-						__( 'Custom login path to replace the default wp-login.php for improved security', 'bm-custom-login' ),
+						<a
+							key="pre-designed-templates"
+							href="https://wpcustomlogin.com/features/pre-designed-templates/?utm_source=WP+Custom+Login"
+							target="_blank"
+							rel="noreferrer"
+						>
+							{ __( '20+ predefined templates to choose from for a quick start', 'bm-custom-login' ) }
+						</a>,
+						<a
+							key="advanced-backgrounds-layouts"
+							href="https://wpcustomlogin.com/features/advanced-backgrounds-layouts/?utm_source=WP+Custom+Login"
+							target="_blank"
+							rel="noreferrer"
+						>
+							{ __( 'Advanced background customization options for a unique login experience', 'bm-custom-login' ) }
+						</a>,
+						<a
+							key="post-login-redirects"
+							href="https://wpcustomlogin.com/features/post-login-redirects/?utm_source=WP+Custom+Login"
+							target="_blank"
+							rel="noreferrer"
+						>
+							{ __( 'Configurable post-login redirects for all users, specific users, or based on user roles', 'bm-custom-login' ) }
+						</a>,
+						<a
+							key="custom-login-url"
+							href="https://wpcustomlogin.com/features/custom-login-url/?utm_source=WP+Custom+Login"
+							target="_blank"
+							rel="noreferrer"
+						>
+							{ __( 'Custom login path to replace the default wp-login.php for improved security', 'bm-custom-login' ) }
+						</a>,
 						__( 'Access to PRO updates and our premium support', 'bm-custom-login' ),
 					] }
 				/>
@@ -134,7 +162,7 @@ addFilter(
 
 		// Return updated panel component.
 		return panel;
-	}
+	},
 );
 
 /**
@@ -149,12 +177,12 @@ addFilter(
 	 * Render the login screen preview after
 	 * the settings sidebar panel
 	 *
-	 * @param {JSX}    component The "after sidebar" panel.
-	 * @param {Object} settings  Settings object.
+	 * @param {Element} component The "after sidebar" panel.
+	 * @param {Object}  settings  Settings object.
 	 *
-	 * @return {JSX} Updated "after sidebar" panel.
+	 * @return {Element} Updated "after sidebar" panel.
 	 */
-	( component, settings ) => <Preview settings={ settings } />
+	( component, settings ) => <Preview settings={ settings } />,
 );
 
 /**
@@ -174,7 +202,7 @@ const { pageTitle } = window.teydeaStudio[ productKey ].settingsPage;
 /**
  * SettingsPage component
  *
- * @return {JSX}
+ * @return {Element} SettingsPage component.
  */
 const SettingsPage = withSettings( ( { SaveSettingsButton, setSettings, settings } ) => {
 	/**
@@ -193,12 +221,13 @@ const SettingsPage = withSettings( ( { SaveSettingsButton, setSettings, settings
 render(
 	<SettingsPage
 		product={ product }
+
 		/**
 		 * LoadingContainer component
 		 *
-		 * @param {JSX} children Children to render.
+		 * @param {Element} children Children to render.
 		 *
-		 * @return {JSX} LoadingContainer component.
+		 * @return {Element} LoadingContainer component.
 		 */
 		LoadingContainer={ ( { children } ) => (
 			<SettingsContainer pageTitle={ pageTitle } product={ product }>
@@ -206,5 +235,5 @@ render(
 			</SettingsContainer>
 		) }
 	/>,
-	document.querySelector( 'div#bm-custom-login-settings-page' )
+	document.querySelector( 'div#bm-custom-login-settings-page' ),
 );

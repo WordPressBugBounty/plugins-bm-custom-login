@@ -10,7 +10,7 @@ namespace Teydea_Studio\Custom_Login\Dependencies\Utils;
 use WP_Screen;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit; // @codeCoverageIgnore
 }
 
 /**
@@ -70,6 +70,19 @@ final class Screen {
 
 	/**
 	 * Check if the current screen is a block editor
+	 *
+	 * @return bool Whether the current screen is a block editor.
+	 */
+	public function is_block_editor(): bool {
+		if ( ! $this->current_screen instanceof WP_Screen ) {
+			return false;
+		}
+
+		return $this->current_screen->is_block_editor;
+	}
+
+	/**
+	 * Check if the current screen is a block editor
 	 * for a specific post type
 	 *
 	 * @param string $post_type Expected post type.
@@ -81,6 +94,6 @@ final class Screen {
 			return false;
 		}
 
-		return $this->current_screen->is_block_editor && $post_type === $this->current_screen->post_type;
+		return $this->is_block_editor() && $post_type === $this->current_screen->post_type;
 	}
 }

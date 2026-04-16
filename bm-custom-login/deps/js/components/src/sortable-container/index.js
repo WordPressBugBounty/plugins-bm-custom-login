@@ -30,18 +30,19 @@ import './styles.scss';
  * @param {Object}   properties.context       Additional context object.
  * @param {Object}   properties.data          Item data object.
  * @param {string}   properties.id            Item ID.
- * @param {JSX}      properties.ItemComponent Component to render in a list.
+ * @param {Function} properties.ItemComponent Component to render in a list.
  * @param {Function} properties.onChange      Callback function, used on item data change.
  * @param {Function} properties.onDelete      Callback function, used on item deletion.
  * @param {Object}   properties.presets       Presets to use in components.
  *
- * @return {JSX} SortableContainerItem component.
+ * @return {Element} SortableContainerItem component.
  */
 const SortableContainerItem = ( { context, data, id, ItemComponent, onChange, onDelete, presets } ) => {
 	/**
 	 * Drag and drop (sortable) related constants
 	 */
 	const { attributes, listeners, setNodeRef, transform, transition } = useSortable( { id } );
+
 	const style = {
 		transform: CSS.Translate.toString( transform ),
 		transition,
@@ -92,7 +93,7 @@ SortableContainerItem.propTypes = {
  * @param {Element}  properties.addComponent  Component to use instead of the default "Add new" button.
  * @param {string}   properties.addLabel      Label used on the "Add new" button.
  * @param {Object}   properties.context       Additional context object.
- * @param {JSX}      properties.ItemComponent Component to render in a list.
+ * @param {Function} properties.ItemComponent Component to render in a list.
  * @param {Object}   properties.items         Object of items to render in the sortable container.
  * @param {string}   properties.label         Container's label.
  * @param {Element}  properties.notice        Notice component to render between the label and a sortable list.
@@ -101,7 +102,7 @@ SortableContainerItem.propTypes = {
  * @param {Element}  properties.placeholder   Placeholder text to render when there's no any items.
  * @param {Object}   properties.presets       Presets to use in components.
  *
- * @return {JSX} SortableContainer component.
+ * @return {Element} SortableContainer component.
  */
 export const SortableContainer = ( {
 	addComponent = undefined,
@@ -132,7 +133,7 @@ export const SortableContainer = ( {
 		useSensor( PointerSensor ),
 		useSensor( KeyboardSensor, {
 			coordinateGetter: sortableKeyboardCoordinates,
-		} )
+		} ),
 	);
 
 	/**
@@ -185,6 +186,7 @@ export const SortableContainer = ( {
 						id={ itemKey }
 						ItemComponent={ ItemComponent }
 						key={ itemKey }
+
 						/**
 						 * Update the value
 						 *
@@ -198,6 +200,7 @@ export const SortableContainer = ( {
 
 							onChange( updatedItems );
 						} }
+
 						/**
 						 * Delete one of the items
 						 *

@@ -9,8 +9,8 @@
     "@dnd-kit/utilities": "^3.2.2"
   },
   "devDependencies": {
-    "@wordpress/icons": "^11.5.0",
-    "@wordpress/scripts": "^31.4.0",
+    "@wordpress/icons": "^11.8.0",
+    "@wordpress/scripts": "^31.6.0",
     "prop-types": "^15.8.1"
   }
 }

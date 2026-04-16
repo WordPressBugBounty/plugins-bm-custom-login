@@ -29,7 +29,7 @@ import { __, sprintf } from '@wordpress/i18n';
  * @param {Object}   properties.settings    Plugin settings.
  * @param {Function} properties.setSettings Function (callback) used to update the settings.
  *
- * @return {JSX} PanelLoginFormButtonSecondary component.
+ * @return {Element} PanelLoginFormButtonSecondary component.
  */
 export const PanelLoginFormButtonSecondary = ( { context, presets, settings, setSettings } ) => {
 	// Destructure the settings object.
@@ -124,7 +124,7 @@ export const PanelLoginFormButtonSecondary = ( { context, presets, settings, set
 	/**
 	 * Return the component
 	 *
-	 * @return {JSX} PanelLoginFormButtonSecondary component.
+	 * @return {Element} PanelLoginFormButtonSecondary component.
 	 */
 	return (
 		<PanelBody initialOpen={ false } title={ __( 'Login form button (secondary)', 'bm-custom-login' ) }>
@@ -133,6 +133,7 @@ export const PanelLoginFormButtonSecondary = ( { context, presets, settings, set
 					<ColorControl
 						value={ backgroundColor }
 						label={ __( 'Background', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -154,6 +155,7 @@ export const PanelLoginFormButtonSecondary = ( { context, presets, settings, set
 					<ColorControl
 						value={ textColor }
 						label={ __( 'Text', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -175,6 +177,7 @@ export const PanelLoginFormButtonSecondary = ( { context, presets, settings, set
 					<ColorControl
 						value={ backgroundColorOnHover }
 						label={ __( 'Background', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -196,6 +199,7 @@ export const PanelLoginFormButtonSecondary = ( { context, presets, settings, set
 					<ColorControl
 						value={ textColorOnHover }
 						label={ __( 'Text', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -217,6 +221,7 @@ export const PanelLoginFormButtonSecondary = ( { context, presets, settings, set
 					<ColorControl
 						value={ backgroundColorOnFocus }
 						label={ __( 'Background', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -238,6 +243,7 @@ export const PanelLoginFormButtonSecondary = ( { context, presets, settings, set
 					<ColorControl
 						value={ textColorOnFocus }
 						label={ __( 'Text', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -273,6 +279,7 @@ export const PanelLoginFormButtonSecondary = ( { context, presets, settings, set
 						withDecoration: false,
 						withLetterCase: true,
 					} }
+
 					/**
 					 * Update the values
 					 *
@@ -301,6 +308,7 @@ export const PanelLoginFormButtonSecondary = ( { context, presets, settings, set
 						borderTopWidth,
 					} }
 					label={ __( 'Border style', 'bm-custom-login' ) }
+
 					/**
 					 * Update the value
 					 *
@@ -343,6 +351,7 @@ export const PanelLoginFormButtonSecondary = ( { context, presets, settings, set
 						borderTopWidth: borderTopWidthOnHover,
 					} }
 					label={ __( 'Border style (on hover)', 'bm-custom-login' ) }
+
 					/**
 					 * Update the value
 					 *
@@ -385,6 +394,7 @@ export const PanelLoginFormButtonSecondary = ( { context, presets, settings, set
 						borderTopWidth: borderTopWidthOnFocus,
 					} }
 					label={ __( 'Border style (on focus)', 'bm-custom-login' ) }
+
 					/**
 					 * Update the value
 					 *
@@ -418,6 +428,7 @@ export const PanelLoginFormButtonSecondary = ( { context, presets, settings, set
 						topLeft: borderTopLeftRadius,
 						topRight: borderTopRightRadius,
 					} }
+
 					/**
 					 * Update the value
 					 *
@@ -443,6 +454,7 @@ export const PanelLoginFormButtonSecondary = ( { context, presets, settings, set
 					label={ __( 'Shadow', 'bm-custom-login' ) }
 					value={ shadow }
 					presets={ shadowPresets }
+
 					/**
 					 * Update the value
 					 *
@@ -460,6 +472,7 @@ export const PanelLoginFormButtonSecondary = ( { context, presets, settings, set
 					label={ __( 'Shadow (on hover)', 'bm-custom-login' ) }
 					value={ shadowOnHover }
 					presets={ shadowPresets }
+
 					/**
 					 * Update the value
 					 *
@@ -477,6 +490,7 @@ export const PanelLoginFormButtonSecondary = ( { context, presets, settings, set
 					label={ __( 'Shadow (on focus)', 'bm-custom-login' ) }
 					value={ shadowOnFocus }
 					presets={ shadowPresets }
+
 					/**
 					 * Update the value
 					 *
@@ -501,6 +515,7 @@ export const PanelLoginFormButtonSecondary = ( { context, presets, settings, set
 						bottom: paddingBottom,
 						left: paddingLeft,
 					} }
+
 					/**
 					 * Update the value
 					 *
@@ -534,8 +549,9 @@ export const PanelLoginFormButtonSecondary = ( { context, presets, settings, set
 					label={ __( '"Change" button text', 'bm-custom-login' ) }
 					original={ translations?.Change }
 					values={ Object.fromEntries(
-						languages.map( ( language ) => [ language, loginFormButtonSecondary?.[ sprintf( 'labelChange.%s', language ) ] ?? '' ] )
+						languages.map( ( language ) => [ language, loginFormButtonSecondary?.[ sprintf( 'labelChange.%s', language ) ] ?? '' ] ),
 					) }
+
 					/**
 					 * Update the values
 					 *
@@ -545,7 +561,7 @@ export const PanelLoginFormButtonSecondary = ( { context, presets, settings, set
 					 */
 					onChange={ ( updatedValues ) => {
 						setSetting(
-							Object.fromEntries( languages.map( ( language ) => [ sprintf( 'labelChange.%s', language ), updatedValues[ language ] ] ) )
+							Object.fromEntries( languages.map( ( language ) => [ sprintf( 'labelChange.%s', language ), updatedValues[ language ] ] ) ),
 						);
 					} }
 				/>
@@ -556,8 +572,9 @@ export const PanelLoginFormButtonSecondary = ( { context, presets, settings, set
 					label={ __( '"Generate Password" button text', 'bm-custom-login' ) }
 					original={ translations?.GeneratePassword }
 					values={ Object.fromEntries(
-						languages.map( ( language ) => [ language, loginFormButtonSecondary?.[ sprintf( 'labelGeneratePassword.%s', language ) ] ?? '' ] )
+						languages.map( ( language ) => [ language, loginFormButtonSecondary?.[ sprintf( 'labelGeneratePassword.%s', language ) ] ?? '' ] ),
 					) }
+
 					/**
 					 * Update the values
 					 *
@@ -568,8 +585,8 @@ export const PanelLoginFormButtonSecondary = ( { context, presets, settings, set
 					onChange={ ( updatedValues ) => {
 						setSetting(
 							Object.fromEntries(
-								languages.map( ( language ) => [ sprintf( 'labelGeneratePassword.%s', language ), updatedValues[ language ] ] )
-							)
+								languages.map( ( language ) => [ sprintf( 'labelGeneratePassword.%s', language ), updatedValues[ language ] ] ),
+							),
 						);
 					} }
 				/>

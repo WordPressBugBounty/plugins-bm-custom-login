@@ -31,5 +31,5 @@ export const useMedia = ( id ) =>
 				hasResolvedMedia: hasFinishedResolution( 'getEntityRecord', entityParameters ),
 			};
 		},
-		[ id ]
+		[ id ],
 	);

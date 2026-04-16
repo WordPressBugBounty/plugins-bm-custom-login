@@ -45,7 +45,7 @@ import { PanelUnderFormLinks } from './component-panel-under-form-links.js';
  * @param {Object}   properties.settings    Plugin settings.
  * @param {Function} properties.setSettings Function (callback) used to update the settings.
  *
- * @return {JSX} TabDesign component.
+ * @return {Element} TabDesign component.
  */
 export const TabDesign = ( { settings, setSettings } ) => {
 	// Destructure the settingsPage object.
@@ -122,7 +122,7 @@ export const TabDesign = ( { settings, setSettings } ) => {
 	 * Allow other plugins and modules to filter
 	 * the Templates panel component
 	 *
-	 * @param {JSX}      templates   The PanelTemplates component.
+	 * @param {Element}  templates   The PanelTemplates component.
 	 * @param {Object}   settings    Plugin settings.
 	 * @param {Function} setSettings Function (callback) used to update the settings.
 	 */
@@ -130,7 +130,7 @@ export const TabDesign = ( { settings, setSettings } ) => {
 		'custom_login__settings_page_design_templates',
 		<PanelTemplates settings={ settings } setSettings={ setSettings } />,
 		settings,
-		setSettings
+		setSettings,
 	);
 
 	/**

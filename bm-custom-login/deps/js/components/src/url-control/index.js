@@ -32,7 +32,7 @@ import './styles.scss';
  * @param {string}   properties.value    Field's value.
  * @param {Function} properties.onChange Function callback to trigger on value change.
  *
- * @return {JSX} URLControl component.
+ * @return {Element} URLControl component.
  */
 export const URLControl = ( { label, help, value, onChange } ) => {
 	// Manage the notice state.
@@ -41,7 +41,7 @@ export const URLControl = ( { label, help, value, onChange } ) => {
 	/**
 	 * Return component
 	 *
-	 * @return {JSX} URLControl component.
+	 * @return {Element} URLControl component.
 	 */
 	return (
 		<div className="tsc-url-control">
@@ -62,10 +62,10 @@ export const URLControl = ( { label, help, value, onChange } ) => {
 								// Translators: %s - field value.
 								__(
 									'"%s" is not a valid URL; field value has been emptied. Please put the valid URL or leave the field empty.',
-									'bm-custom-login'
+									'bm-custom-login',
 								),
-								value
-							)
+								value,
+							),
 						);
 					}
 				} }
@@ -76,6 +76,7 @@ export const URLControl = ( { label, help, value, onChange } ) => {
 					label={ label }
 					help={ help }
 					value={ value }
+
 					/**
 					 * Update the value
 					 *

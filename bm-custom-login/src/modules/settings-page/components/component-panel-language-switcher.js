@@ -26,7 +26,7 @@ import { __ } from '@wordpress/i18n';
  * @param {Object}   properties.settings    Plugin settings.
  * @param {Function} properties.setSettings Function (callback) used to update the settings.
  *
- * @return {JSX} PanelLanguageSwitcher component.
+ * @return {Element} PanelLanguageSwitcher component.
  */
 export const PanelLanguageSwitcher = ( { presets, settings, setSettings } ) => {
 	// Destructure the settings object.
@@ -59,7 +59,7 @@ export const PanelLanguageSwitcher = ( { presets, settings, setSettings } ) => {
 	/**
 	 * Return the component
 	 *
-	 * @return {JSX} PanelLanguageSwitcher component.
+	 * @return {Element} PanelLanguageSwitcher component.
 	 */
 	return (
 		<PanelBody initialOpen={ false } title={ __( 'Language switcher', 'bm-custom-login' ) }>
@@ -70,9 +70,10 @@ export const PanelLanguageSwitcher = ( { presets, settings, setSettings } ) => {
 					label={ __( 'Allow the language switcher/dropdown', 'bm-custom-login' ) }
 					help={ __(
 						'If your website supports multiple languages, users can switch to their preferred language using the dropdown below the login form; that functionality can be disabled here.',
-						'bm-custom-login'
+						'bm-custom-login',
 					) }
 					checked={ show }
+
 					/**
 					 * Update the value
 					 *
@@ -90,7 +91,7 @@ export const PanelLanguageSwitcher = ( { presets, settings, setSettings } ) => {
 						<Notice __nextHasNoMarginBottom __next40pxDefaultSize isDismissible={ false } status="info">
 							{ __(
 								'Note: the select field\'s (language dropdown) styles inherit styles defined in the "Login form input fields" panel above.',
-								'bm-custom-login'
+								'bm-custom-login',
 							) }
 						</Notice>
 						<hr />
@@ -98,6 +99,7 @@ export const PanelLanguageSwitcher = ( { presets, settings, setSettings } ) => {
 							<ColorControl
 								value={ iconColor }
 								label={ __( 'Icon', 'bm-custom-login' ) }
+
 								/**
 								 * Update the value
 								 *
@@ -128,6 +130,7 @@ export const PanelLanguageSwitcher = ( { presets, settings, setSettings } ) => {
 								bottom: paddingBottom,
 								left: paddingLeft,
 							} }
+
 							/**
 							 * Update the values
 							 *
@@ -165,6 +168,7 @@ export const PanelLanguageSwitcher = ( { presets, settings, setSettings } ) => {
 								bottom: marginBottom,
 								left: marginLeft,
 							} }
+
 							/**
 							 * Update the values
 							 *

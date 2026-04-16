@@ -28,7 +28,7 @@ import { __ } from '@wordpress/i18n';
  * @param {Object}   properties.settings    Plugin settings.
  * @param {Function} properties.setSettings Function (callback) used to update the settings.
  *
- * @return {JSX} PanelLoginFormCheckboxFields component.
+ * @return {Element} PanelLoginFormCheckboxFields component.
  */
 export const PanelLoginFormCheckboxFields = ( { presets, settings, setSettings } ) => {
 	// Destructure the settings object.
@@ -41,45 +41,81 @@ export const PanelLoginFormCheckboxFields = ( { presets, settings, setSettings }
 		backgroundColorOnHover,
 		backgroundColorOnHoverChecked,
 		borderBottomColor,
+		borderBottomColorChecked,
 		borderBottomColorOnFocus,
+		borderBottomColorOnFocusChecked,
 		borderBottomColorOnHover,
+		borderBottomColorOnHoverChecked,
 		borderBottomLeftRadius,
 		borderBottomRightRadius,
 		borderBottomStyle,
+		borderBottomStyleChecked,
 		borderBottomStyleOnFocus,
+		borderBottomStyleOnFocusChecked,
 		borderBottomStyleOnHover,
+		borderBottomStyleOnHoverChecked,
 		borderBottomWidth,
+		borderBottomWidthChecked,
 		borderBottomWidthOnFocus,
+		borderBottomWidthOnFocusChecked,
 		borderBottomWidthOnHover,
+		borderBottomWidthOnHoverChecked,
 		borderLeftColor,
+		borderLeftColorChecked,
 		borderLeftColorOnFocus,
+		borderLeftColorOnFocusChecked,
 		borderLeftColorOnHover,
+		borderLeftColorOnHoverChecked,
 		borderLeftStyle,
+		borderLeftStyleChecked,
 		borderLeftStyleOnFocus,
+		borderLeftStyleOnFocusChecked,
 		borderLeftStyleOnHover,
+		borderLeftStyleOnHoverChecked,
 		borderLeftWidth,
+		borderLeftWidthChecked,
 		borderLeftWidthOnFocus,
+		borderLeftWidthOnFocusChecked,
 		borderLeftWidthOnHover,
+		borderLeftWidthOnHoverChecked,
 		borderRightColor,
+		borderRightColorChecked,
 		borderRightColorOnFocus,
+		borderRightColorOnFocusChecked,
 		borderRightColorOnHover,
+		borderRightColorOnHoverChecked,
 		borderRightStyle,
+		borderRightStyleChecked,
 		borderRightStyleOnFocus,
+		borderRightStyleOnFocusChecked,
 		borderRightStyleOnHover,
+		borderRightStyleOnHoverChecked,
 		borderRightWidth,
+		borderRightWidthChecked,
 		borderRightWidthOnFocus,
+		borderRightWidthOnFocusChecked,
 		borderRightWidthOnHover,
+		borderRightWidthOnHoverChecked,
 		borderTopColor,
+		borderTopColorChecked,
 		borderTopColorOnFocus,
+		borderTopColorOnFocusChecked,
 		borderTopColorOnHover,
+		borderTopColorOnHoverChecked,
 		borderTopLeftRadius,
 		borderTopRightRadius,
 		borderTopStyle,
+		borderTopStyleChecked,
 		borderTopStyleOnFocus,
+		borderTopStyleOnFocusChecked,
 		borderTopStyleOnHover,
+		borderTopStyleOnHoverChecked,
 		borderTopWidth,
+		borderTopWidthChecked,
 		borderTopWidthOnFocus,
+		borderTopWidthOnFocusChecked,
 		borderTopWidthOnHover,
+		borderTopWidthOnHoverChecked,
 		fieldMarginBottom,
 		fieldMarginLeft,
 		fieldMarginRight,
@@ -95,8 +131,11 @@ export const PanelLoginFormCheckboxFields = ( { presets, settings, setSettings }
 		iconMarginTop,
 		iconSize,
 		shadow,
+		shadowChecked,
 		shadowOnFocus,
+		shadowOnFocusChecked,
 		shadowOnHover,
+		shadowOnHoverChecked,
 	} = loginFormCheckboxFields;
 
 	// Destructure the presets object.
@@ -125,7 +164,7 @@ export const PanelLoginFormCheckboxFields = ( { presets, settings, setSettings }
 	/**
 	 * Return the component
 	 *
-	 * @return {JSX} PanelLoginFormCheckboxFields component.
+	 * @return {Element} PanelLoginFormCheckboxFields component.
 	 */
 	return (
 		<PanelBody initialOpen={ false } title={ __( 'Login form checkbox field(s)', 'bm-custom-login' ) }>
@@ -133,6 +172,7 @@ export const PanelLoginFormCheckboxFields = ( { presets, settings, setSettings }
 				<IconControl
 					label={ __( '"Checked" icon', 'bm-custom-login' ) }
 					value={ icon }
+
 					/**
 					 * Update the value
 					 *
@@ -151,7 +191,8 @@ export const PanelLoginFormCheckboxFields = ( { presets, settings, setSettings }
 				<FieldsGroup label={ __( 'Colors', 'bm-custom-login' ) } withBoxBorder withBaseControl>
 					<ColorControl
 						value={ iconColor }
-						label={ __( 'Icon', 'bm-custom-login' ) }
+						label={ __( 'Icon (visible when checked)', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -172,6 +213,7 @@ export const PanelLoginFormCheckboxFields = ( { presets, settings, setSettings }
 					<ColorControl
 						value={ backgroundColor }
 						label={ __( 'Background', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -192,6 +234,7 @@ export const PanelLoginFormCheckboxFields = ( { presets, settings, setSettings }
 					<ColorControl
 						value={ backgroundColorChecked }
 						label={ __( 'Background (when checked)', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -213,7 +256,8 @@ export const PanelLoginFormCheckboxFields = ( { presets, settings, setSettings }
 				<FieldsGroup label={ __( 'Colors (on hover)', 'bm-custom-login' ) } withBoxBorder withBaseControl>
 					<ColorControl
 						value={ iconColorOnHover }
-						label={ __( 'Icon', 'bm-custom-login' ) }
+						label={ __( 'Icon (visible when checked)', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -234,6 +278,7 @@ export const PanelLoginFormCheckboxFields = ( { presets, settings, setSettings }
 					<ColorControl
 						value={ backgroundColorOnHover }
 						label={ __( 'Background', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -254,6 +299,7 @@ export const PanelLoginFormCheckboxFields = ( { presets, settings, setSettings }
 					<ColorControl
 						value={ backgroundColorOnHoverChecked }
 						label={ __( 'Background (when checked)', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -275,7 +321,8 @@ export const PanelLoginFormCheckboxFields = ( { presets, settings, setSettings }
 				<FieldsGroup label={ __( 'Colors (on focus)', 'bm-custom-login' ) } withBoxBorder withBaseControl>
 					<ColorControl
 						value={ iconColorOnFocus }
-						label={ __( 'Icon', 'bm-custom-login' ) }
+						label={ __( 'Icon (visible when checked)', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -296,6 +343,7 @@ export const PanelLoginFormCheckboxFields = ( { presets, settings, setSettings }
 					<ColorControl
 						value={ backgroundColorOnFocus }
 						label={ __( 'Background', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -316,6 +364,7 @@ export const PanelLoginFormCheckboxFields = ( { presets, settings, setSettings }
 					<ColorControl
 						value={ backgroundColorOnFocusChecked }
 						label={ __( 'Background (when checked)', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -351,6 +400,7 @@ export const PanelLoginFormCheckboxFields = ( { presets, settings, setSettings }
 						borderTopWidth,
 					} }
 					label={ __( 'Border style', 'bm-custom-login' ) }
+
 					/**
 					 * Update the value
 					 *
@@ -380,6 +430,7 @@ export const PanelLoginFormCheckboxFields = ( { presets, settings, setSettings }
 						borderTopWidth: borderTopWidthOnHover,
 					} }
 					label={ __( 'Border style (on hover)', 'bm-custom-login' ) }
+
 					/**
 					 * Update the value
 					 *
@@ -422,6 +473,7 @@ export const PanelLoginFormCheckboxFields = ( { presets, settings, setSettings }
 						borderTopWidth: borderTopWidthOnFocus,
 					} }
 					label={ __( 'Border style (on focus)', 'bm-custom-login' ) }
+
 					/**
 					 * Update the value
 					 *
@@ -448,6 +500,135 @@ export const PanelLoginFormCheckboxFields = ( { presets, settings, setSettings }
 					colorPalettes={ colorPalettes }
 					withAlpha
 				/>
+				<BorderControl
+					values={ {
+						borderBottomColor: borderBottomColorChecked,
+						borderBottomStyle: borderBottomStyleChecked,
+						borderBottomWidth: borderBottomWidthChecked,
+						borderLeftColor: borderLeftColorChecked,
+						borderLeftStyle: borderLeftStyleChecked,
+						borderLeftWidth: borderLeftWidthChecked,
+						borderRightColor: borderRightColorChecked,
+						borderRightStyle: borderRightStyleChecked,
+						borderRightWidth: borderRightWidthChecked,
+						borderTopColor: borderTopColorChecked,
+						borderTopStyle: borderTopStyleChecked,
+						borderTopWidth: borderTopWidthChecked,
+					} }
+					label={ __( 'Border style (when checked)', 'bm-custom-login' ) }
+
+					/**
+					 * Update the value
+					 *
+					 * @param {Object} updatedValues Updated values.
+					 *
+					 * @return {void}
+					 */
+					onChange={ ( updatedValues ) => {
+						setSetting( {
+							borderBottomColorChecked: updatedValues.borderBottomColor,
+							borderBottomStyleChecked: updatedValues.borderBottomStyle,
+							borderBottomWidthChecked: updatedValues.borderBottomWidth,
+							borderLeftColorChecked: updatedValues.borderLeftColor,
+							borderLeftStyleChecked: updatedValues.borderLeftStyle,
+							borderLeftWidthChecked: updatedValues.borderLeftWidth,
+							borderRightColorChecked: updatedValues.borderRightColor,
+							borderRightStyleChecked: updatedValues.borderRightStyle,
+							borderRightWidthChecked: updatedValues.borderRightWidth,
+							borderTopColorChecked: updatedValues.borderTopColor,
+							borderTopStyleChecked: updatedValues.borderTopStyle,
+							borderTopWidthChecked: updatedValues.borderTopWidth,
+						} );
+					} }
+					colorPalettes={ colorPalettes }
+					withAlpha
+				/>
+				<BorderControl
+					values={ {
+						borderBottomColor: borderBottomColorOnHoverChecked,
+						borderBottomStyle: borderBottomStyleOnHoverChecked,
+						borderBottomWidth: borderBottomWidthOnHoverChecked,
+						borderLeftColor: borderLeftColorOnHoverChecked,
+						borderLeftStyle: borderLeftStyleOnHoverChecked,
+						borderLeftWidth: borderLeftWidthOnHoverChecked,
+						borderRightColor: borderRightColorOnHoverChecked,
+						borderRightStyle: borderRightStyleOnHoverChecked,
+						borderRightWidth: borderRightWidthOnHoverChecked,
+						borderTopColor: borderTopColorOnHoverChecked,
+						borderTopStyle: borderTopStyleOnHoverChecked,
+						borderTopWidth: borderTopWidthOnHoverChecked,
+					} }
+					label={ __( 'Border style (on hover, when checked)', 'bm-custom-login' ) }
+
+					/**
+					 * Update the value
+					 *
+					 * @param {Object} updatedValues Updated values.
+					 *
+					 * @return {void}
+					 */
+					onChange={ ( updatedValues ) => {
+						setSetting( {
+							borderBottomColorOnHoverChecked: updatedValues.borderBottomColor,
+							borderBottomStyleOnHoverChecked: updatedValues.borderBottomStyle,
+							borderBottomWidthOnHoverChecked: updatedValues.borderBottomWidth,
+							borderLeftColorOnHoverChecked: updatedValues.borderLeftColor,
+							borderLeftStyleOnHoverChecked: updatedValues.borderLeftStyle,
+							borderLeftWidthOnHoverChecked: updatedValues.borderLeftWidth,
+							borderRightColorOnHoverChecked: updatedValues.borderRightColor,
+							borderRightStyleOnHoverChecked: updatedValues.borderRightStyle,
+							borderRightWidthOnHoverChecked: updatedValues.borderRightWidth,
+							borderTopColorOnHoverChecked: updatedValues.borderTopColor,
+							borderTopStyleOnHoverChecked: updatedValues.borderTopStyle,
+							borderTopWidthOnHoverChecked: updatedValues.borderTopWidth,
+						} );
+					} }
+					colorPalettes={ colorPalettes }
+					withAlpha
+				/>
+				<BorderControl
+					values={ {
+						borderBottomColor: borderBottomColorOnFocusChecked,
+						borderBottomStyle: borderBottomStyleOnFocusChecked,
+						borderBottomWidth: borderBottomWidthOnFocusChecked,
+						borderLeftColor: borderLeftColorOnFocusChecked,
+						borderLeftStyle: borderLeftStyleOnFocusChecked,
+						borderLeftWidth: borderLeftWidthOnFocusChecked,
+						borderRightColor: borderRightColorOnFocusChecked,
+						borderRightStyle: borderRightStyleOnFocusChecked,
+						borderRightWidth: borderRightWidthOnFocusChecked,
+						borderTopColor: borderTopColorOnFocusChecked,
+						borderTopStyle: borderTopStyleOnFocusChecked,
+						borderTopWidth: borderTopWidthOnFocusChecked,
+					} }
+					label={ __( 'Border style (on focus, when checked)', 'bm-custom-login' ) }
+
+					/**
+					 * Update the value
+					 *
+					 * @param {Object} updatedValues Updated values.
+					 *
+					 * @return {void}
+					 */
+					onChange={ ( updatedValues ) => {
+						setSetting( {
+							borderBottomColorOnFocusChecked: updatedValues.borderBottomColor,
+							borderBottomStyleOnFocusChecked: updatedValues.borderBottomStyle,
+							borderBottomWidthOnFocusChecked: updatedValues.borderBottomWidth,
+							borderLeftColorOnFocusChecked: updatedValues.borderLeftColor,
+							borderLeftStyleOnFocusChecked: updatedValues.borderLeftStyle,
+							borderLeftWidthOnFocusChecked: updatedValues.borderLeftWidth,
+							borderRightColorOnFocusChecked: updatedValues.borderRightColor,
+							borderRightStyleOnFocusChecked: updatedValues.borderRightStyle,
+							borderRightWidthOnFocusChecked: updatedValues.borderRightWidth,
+							borderTopColorOnFocusChecked: updatedValues.borderTopColor,
+							borderTopStyleOnFocusChecked: updatedValues.borderTopStyle,
+							borderTopWidthOnFocusChecked: updatedValues.borderTopWidth,
+						} );
+					} }
+					colorPalettes={ colorPalettes }
+					withAlpha
+				/>
 				<BorderRadiusControl
 					value={ {
 						bottomLeft: borderBottomLeftRadius,
@@ -455,6 +636,7 @@ export const PanelLoginFormCheckboxFields = ( { presets, settings, setSettings }
 						topLeft: borderTopLeftRadius,
 						topRight: borderTopRightRadius,
 					} }
+
 					/**
 					 * Update the value
 					 *
@@ -480,6 +662,7 @@ export const PanelLoginFormCheckboxFields = ( { presets, settings, setSettings }
 					label={ __( 'Shadow', 'bm-custom-login' ) }
 					value={ shadow }
 					presets={ shadowPresets }
+
 					/**
 					 * Update the value
 					 *
@@ -497,6 +680,7 @@ export const PanelLoginFormCheckboxFields = ( { presets, settings, setSettings }
 					label={ __( 'Shadow (on hover)', 'bm-custom-login' ) }
 					value={ shadowOnHover }
 					presets={ shadowPresets }
+
 					/**
 					 * Update the value
 					 *
@@ -514,6 +698,7 @@ export const PanelLoginFormCheckboxFields = ( { presets, settings, setSettings }
 					label={ __( 'Shadow (on focus)', 'bm-custom-login' ) }
 					value={ shadowOnFocus }
 					presets={ shadowPresets }
+
 					/**
 					 * Update the value
 					 *
@@ -527,6 +712,60 @@ export const PanelLoginFormCheckboxFields = ( { presets, settings, setSettings }
 						} );
 					} }
 				/>
+				<ShadowControl
+					label={ __( 'Shadow (when checked)', 'bm-custom-login' ) }
+					value={ shadowChecked }
+					presets={ shadowPresets }
+
+					/**
+					 * Update the value
+					 *
+					 * @param {string} updatedValue Updated value.
+					 *
+					 * @return {void}
+					 */
+					onChange={ ( updatedValue ) => {
+						setSetting( {
+							shadowChecked: updatedValue,
+						} );
+					} }
+				/>
+				<ShadowControl
+					label={ __( 'Shadow (on hover, when checked)', 'bm-custom-login' ) }
+					value={ shadowOnHoverChecked }
+					presets={ shadowPresets }
+
+					/**
+					 * Update the value
+					 *
+					 * @param {string} updatedValue Updated value.
+					 *
+					 * @return {void}
+					 */
+					onChange={ ( updatedValue ) => {
+						setSetting( {
+							shadowOnHoverChecked: updatedValue,
+						} );
+					} }
+				/>
+				<ShadowControl
+					label={ __( 'Shadow (on focus, when checked)', 'bm-custom-login' ) }
+					value={ shadowOnFocusChecked }
+					presets={ shadowPresets }
+
+					/**
+					 * Update the value
+					 *
+					 * @param {string} updatedValue Updated value.
+					 *
+					 * @return {void}
+					 */
+					onChange={ ( updatedValue ) => {
+						setSetting( {
+							shadowOnFocusChecked: updatedValue,
+						} );
+					} }
+				/>
 				<hr />
 				<IntegerControl
 					label={ __( 'Field size (width & height, in pixels)', 'bm-custom-login' ) }
@@ -534,6 +773,7 @@ export const PanelLoginFormCheckboxFields = ( { presets, settings, setSettings }
 					max={ 50 }
 					value={ fieldSize }
 					defaultValue={ 16 }
+
 					/**
 					 * Update the value
 					 *
@@ -557,6 +797,7 @@ export const PanelLoginFormCheckboxFields = ( { presets, settings, setSettings }
 						bottom: fieldMarginBottom,
 						left: fieldMarginLeft,
 					} }
+
 					/**
 					 * Update the value
 					 *
@@ -590,6 +831,7 @@ export const PanelLoginFormCheckboxFields = ( { presets, settings, setSettings }
 					max={ 50 }
 					value={ iconSize }
 					defaultValue={ 21 }
+
 					/**
 					 * Update the value
 					 *
@@ -613,6 +855,7 @@ export const PanelLoginFormCheckboxFields = ( { presets, settings, setSettings }
 						bottom: iconMarginBottom,
 						left: iconMarginLeft,
 					} }
+
 					/**
 					 * Update the value
 					 *

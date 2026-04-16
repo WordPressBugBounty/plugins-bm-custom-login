@@ -8,10 +8,12 @@
 namespace Teydea_Studio\Custom_Login\Dependencies\Utils;
 
 use DateTime;
+use DateTimeImmutable;
 use DateTimeZone;
+use Exception;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit; // @codeCoverageIgnore
 }
 
 /**
@@ -125,5 +127,74 @@ final class Date_Time {
 	 */
 	public static function get_utc_datetime( $timestamp = 'now', string $modifier = '' ): DateTime {
 		return self::get_datetime( new DateTimeZone( '+00:00' ), $timestamp, $modifier );
+	}
+
+	/**
+	 * Parse a UTC datetime string (Y-m-d H:i:s) into a Unix timestamp
+	 *
+	 * Uses explicit UTC timezone to avoid misinterpretation when PHP's
+	 * default timezone is not UTC.
+	 *
+	 * @param string $datetime Datetime string in UTC (Y-m-d H:i:s format).
+	 *
+	 * @return int Unix timestamp, or 0 if parsing fails.
+	 */
+	public static function parse_utc_datetime( string $datetime ): int {
+		$parsed = DateTimeImmutable::createFromFormat( 'Y-m-d H:i:s', $datetime, new DateTimeZone( 'UTC' ) );
+
+		return false !== $parsed ? $parsed->getTimestamp() : 0;
+	}
+
+	/**
+	 * Format a Unix timestamp as a UTC datetime string (Y-m-d H:i:s)
+	 *
+	 * @param ?int $timestamp Unix timestamp, or null for the current time.
+	 *
+	 * @return string Datetime string in UTC (Y-m-d H:i:s format).
+	 */
+	public static function format_utc_datetime( ?int $timestamp = null ): string {
+		return gmdate( 'Y-m-d H:i:s', $timestamp ?? time() );
+	}
+
+	/**
+	 * Format a UTC Unix timestamp as a site-local datetime string
+	 *
+	 * @param int    $timestamp UTC Unix timestamp.
+	 * @param string $format    Date format string. Defaults to 'Y-m-d\TH:i' (datetime-local input).
+	 *
+	 * @return string Local datetime string, or empty string on failure.
+	 */
+	public static function utc_timestamp_to_local_input_value( int $timestamp, string $format = 'Y-m-d\TH:i' ): string {
+		if ( $timestamp <= 0 ) {
+			return '';
+		}
+
+		$formatted = wp_date( $format, $timestamp );
+
+		return false !== $formatted ? $formatted : '';
+	}
+
+	/**
+	 * Parse a site-local datetime string (from a datetime-local input)
+	 * into a UTC Unix timestamp
+	 *
+	 * @param string $value Local datetime string (e.g. "2025-06-15T14:30").
+	 *
+	 * @return int UTC Unix timestamp, or 0 if parsing fails.
+	 */
+	public static function parse_local_datetime( string $value ): int {
+		$value = Strings::trim( $value );
+
+		if ( '' === $value ) {
+			return 0;
+		}
+
+		try {
+			$datetime = new DateTime( $value, wp_timezone() );
+
+			return $datetime->getTimestamp();
+		} catch ( Exception $exception ) {
+			return 0;
+		}
 	}
 }

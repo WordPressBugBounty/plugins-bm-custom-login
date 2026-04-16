@@ -18,7 +18,7 @@ import { __, sprintf } from '@wordpress/i18n';
  * @param {Object}   properties.data     Component data object.
  * @param {Function} properties.onChange Function (callback) used to update the data.
  *
- * @return {JSX} UnderFormLink component.
+ * @return {Element} UnderFormLink component.
  */
 export const UnderFormLink = ( { data, onChange } ) => {
 	// Destructure the data object.
@@ -36,7 +36,7 @@ export const UnderFormLink = ( { data, onChange } ) => {
 					: sprintf(
 							// Translators: %s - link text (anchor).
 							__( '"%s" link under form', 'bm-custom-login' ),
-							text
+							text,
 					  )
 			}
 		>
@@ -46,6 +46,7 @@ export const UnderFormLink = ( { data, onChange } ) => {
 					__next40pxDefaultSize
 					label={ __( 'Link text (anchor)', 'bm-custom-login' ) }
 					value={ text }
+
 					/**
 					 * Update the value
 					 *
@@ -63,6 +64,7 @@ export const UnderFormLink = ( { data, onChange } ) => {
 				<URLControl
 					label={ __( 'Link URL', 'bm-custom-login' ) }
 					value={ link }
+
 					/**
 					 * Update the value
 					 *
@@ -82,6 +84,7 @@ export const UnderFormLink = ( { data, onChange } ) => {
 					__next40pxDefaultSize
 					label={ __( 'Open link in new tab', 'bm-custom-login' ) }
 					checked={ openInNewTab }
+
 					/**
 					 * Update the value
 					 *

@@ -19,7 +19,7 @@ import { __, sprintf } from '@wordpress/i18n';
  * @param {Object}   properties.data     Component data object.
  * @param {Function} properties.onChange Function (callback) used to update the data.
  *
- * @return {JSX} SocialMediaLink component.
+ * @return {Element} SocialMediaLink component.
  */
 export const SocialMediaLink = ( { data, onChange } ) => {
 	// Destructure the data object.
@@ -37,7 +37,7 @@ export const SocialMediaLink = ( { data, onChange } ) => {
 					: sprintf(
 							// Translators: %s - link's ARIA label.
 							__( '"%s" social media link', 'bm-custom-login' ),
-							ariaLabel
+							ariaLabel,
 					  )
 			}
 		>
@@ -45,6 +45,7 @@ export const SocialMediaLink = ( { data, onChange } ) => {
 				<IconControl
 					label={ __( 'Icon', 'bm-custom-login' ) }
 					value={ icon }
+
 					/**
 					 * Update the value
 					 *
@@ -63,6 +64,7 @@ export const SocialMediaLink = ( { data, onChange } ) => {
 				<URLControl
 					label={ __( 'Link URL', 'bm-custom-login' ) }
 					value={ link }
+
 					/**
 					 * Update the value
 					 *
@@ -82,6 +84,7 @@ export const SocialMediaLink = ( { data, onChange } ) => {
 					__next40pxDefaultSize
 					label={ __( 'Link\'s "aria-label"', 'bm-custom-login' ) }
 					value={ ariaLabel }
+
 					/**
 					 * Update the value
 					 *
@@ -101,6 +104,7 @@ export const SocialMediaLink = ( { data, onChange } ) => {
 					__next40pxDefaultSize
 					label={ __( 'Open link in new tab', 'bm-custom-login' ) }
 					checked={ openInNewTab }
+
 					/**
 					 * Update the value
 					 *

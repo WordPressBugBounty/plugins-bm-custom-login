@@ -22,7 +22,7 @@ import './styles.scss';
  * @param {string} properties.url      URL for the action button.
  * @param {Array}  properties.benefits List of benefits of the advertised product.
  *
- * @return {JSX} The UpsellPanel panel component.
+ * @return {Element} The UpsellPanel panel component.
  */
 export const UpsellPanel = ( { url, benefits } ) => {
 	// Build the SVG ID prefix.
@@ -31,7 +31,7 @@ export const UpsellPanel = ( { url, benefits } ) => {
 	/**
 	 * Render the UpsellPanel component
 	 *
-	 * @return {JSX} The UpsellPanel panel component.
+	 * @return {Element} The UpsellPanel panel component.
 	 */
 	return (
 		<PanelBody title={ __( 'Buy the PRO version', 'bm-custom-login' ) } className="tsc-upsell-panel">

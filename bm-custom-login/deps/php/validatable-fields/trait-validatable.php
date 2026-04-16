@@ -10,7 +10,7 @@ namespace Teydea_Studio\Custom_Login\Dependencies\Validatable_Fields;
 use WP_Error;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit; // @codeCoverageIgnore
 }
 
 /**

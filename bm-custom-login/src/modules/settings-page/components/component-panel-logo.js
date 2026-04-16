@@ -23,12 +23,12 @@ import { __, sprintf } from '@wordpress/i18n';
  * @param {Object}   properties.settings    Plugin settings.
  * @param {Function} properties.setSettings Function (callback) used to update the settings.
  *
- * @return {JSX} PanelLogo component.
+ * @return {Element} PanelLogo component.
  */
 export const PanelLogo = ( { context, settings, setSettings } ) => {
 	// Destructure the settings object.
 	const { logo } = settings.data;
-	const { alignment, asLink, link, mediaId, openInNewTab, show, strictWidth, logoSource } = logo;
+	const { alignment, asLink, coreLogoStyle, link, mediaId, openInNewTab, show, strictWidth, logoSource } = logo;
 
 	// Destructure the context object.
 	const { isNetworkAdmin, languages, translations } = context;
@@ -56,7 +56,7 @@ export const PanelLogo = ( { context, settings, setSettings } ) => {
 	/**
 	 * Return the component
 	 *
-	 * @return {JSX} PanelLogo component.
+	 * @return {Element} PanelLogo component.
 	 */
 	return (
 		<PanelBody initialOpen={ false } title={ __( 'Logo', 'bm-custom-login' ) }>
@@ -66,6 +66,7 @@ export const PanelLogo = ( { context, settings, setSettings } ) => {
 					__next40pxDefaultSize
 					label={ __( 'Show logo above the login form', 'bm-custom-login' ) }
 					checked={ show }
+
 					/**
 					 * Update the value
 					 *
@@ -98,6 +99,7 @@ export const PanelLogo = ( { context, settings, setSettings } ) => {
 									label: __( 'Right', 'bm-custom-login' ),
 								},
 							] }
+
 							/**
 							 * Update the value
 							 *
@@ -131,6 +133,7 @@ export const PanelLogo = ( { context, settings, setSettings } ) => {
 									label: __( 'Site icon', 'bm-custom-login' ),
 								},
 							] }
+
 							/**
 							 * Update the value
 							 *
@@ -144,6 +147,41 @@ export const PanelLogo = ( { context, settings, setSettings } ) => {
 								} );
 							} }
 						/>
+						{ 'core' === logoSource && (
+							<SelectControl
+								__nextHasNoMarginBottom
+								__next40pxDefaultSize
+								label={ __( 'Logo variant', 'bm-custom-login' ) }
+								value={ coreLogoStyle }
+								options={ [
+									{
+										value: 'default',
+										label: __( 'Auto (match WordPress version)', 'bm-custom-login' ),
+									},
+									{
+										value: 'blue',
+										label: __( 'Blue', 'bm-custom-login' ),
+									},
+									{
+										value: 'gray',
+										label: __( 'Gray', 'bm-custom-login' ),
+									},
+								] }
+
+								/**
+								 * Update the value
+								 *
+								 * @param {string} updatedValue Updated value.
+								 *
+								 * @return {void}
+								 */
+								onChange={ ( updatedValue ) => {
+									setSetting( {
+										coreLogoStyle: updatedValue,
+									} );
+								} }
+							/>
+						) }
 					</Fragment>
 				) }
 				{ show && 'core' !== logoSource && (
@@ -156,6 +194,7 @@ export const PanelLogo = ( { context, settings, setSettings } ) => {
 								values={ {
 									mediaId,
 								} }
+
 								/**
 								 * Update the value
 								 *
@@ -175,6 +214,7 @@ export const PanelLogo = ( { context, settings, setSettings } ) => {
 							max={ 1000 }
 							value={ strictWidth }
 							defaultValue={ 0 }
+
 							/**
 							 * Update the value
 							 *
@@ -198,6 +238,7 @@ export const PanelLogo = ( { context, settings, setSettings } ) => {
 							__next40pxDefaultSize
 							label={ __( 'Make logo a link', 'bm-custom-login' ) }
 							checked={ asLink }
+
 							/**
 							 * Update the value
 							 *
@@ -216,6 +257,7 @@ export const PanelLogo = ( { context, settings, setSettings } ) => {
 									__next40pxDefaultSize
 									label={ __( 'Open link in new tab', 'bm-custom-login' ) }
 									checked={ openInNewTab }
+
 									/**
 									 * Update the value
 									 *
@@ -231,6 +273,7 @@ export const PanelLogo = ( { context, settings, setSettings } ) => {
 									label={ __( 'Logo link', 'bm-custom-login' ) }
 									help={ __( 'Leave empty to remove the link entirely and only render the image.', 'bm-custom-login' ) }
 									value={ link }
+
 									/**
 									 * Update the value
 									 *
@@ -250,8 +293,9 @@ export const PanelLogo = ( { context, settings, setSettings } ) => {
 									label={ __( 'Logo link title', 'bm-custom-login' ) }
 									original={ translations?.[ 'Powered by WordPress' ] }
 									values={ Object.fromEntries(
-										languages.map( ( language ) => [ language, logo?.[ sprintf( 'linkTitle.%s', language ) ] ?? '' ] )
+										languages.map( ( language ) => [ language, logo?.[ sprintf( 'linkTitle.%s', language ) ] ?? '' ] ),
 									) }
+
 									/**
 									 * Update the values
 									 *
@@ -262,8 +306,8 @@ export const PanelLogo = ( { context, settings, setSettings } ) => {
 									onChange={ ( updatedValues ) => {
 										setSetting(
 											Object.fromEntries(
-												languages.map( ( language ) => [ sprintf( 'linkTitle.%s', language ), updatedValues[ language ] ] )
-											)
+												languages.map( ( language ) => [ sprintf( 'linkTitle.%s', language ), updatedValues[ language ] ] ),
+											),
 										);
 									} }
 								/>

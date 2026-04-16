@@ -8,13 +8,18 @@
 namespace Teydea_Studio\Custom_Login\Dependencies\Utils;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit; // @codeCoverageIgnore
 }
 
 /**
  * The "Module" class
  */
 abstract class Module {
+	/**
+	 * Simplify access to the Settings class instance
+	 */
+	use With_Settings;
+
 	/**
 	 * Container instance
 	 *

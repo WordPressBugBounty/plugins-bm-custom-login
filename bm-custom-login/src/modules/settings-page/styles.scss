@@ -71,6 +71,18 @@
 	flex-wrap: wrap;
 	justify-content: space-between;
 	position: relative;
+
+	// Invisible filler to prevent space-between from spreading items in incomplete last rows.
+	&::after {
+		content: "";
+		width: calc((100% - 1rem) / 2); // Match the 2 columns item width.
+	}
+
+	@container bm-custom-login-templates (width > 650px) {
+		&::after {
+			width: calc((100% - 2rem) / 3); // Match the 3 columns item width.
+		}
+	}
 }
 
 .components-notice + .bm-custom-login-settings-page__templates {

@@ -21,7 +21,7 @@ import { __ } from '@wordpress/i18n';
  * @param {Object}   properties.settings    Plugin settings.
  * @param {Function} properties.setSettings Function (callback) used to update the settings.
  *
- * @return {JSX} PanelBackground component.
+ * @return {Element} PanelBackground component.
  */
 export const PanelBackground = ( { context, presets, settings, setSettings } ) => {
 	// Destructure the settings object.
@@ -57,7 +57,7 @@ export const PanelBackground = ( { context, presets, settings, setSettings } ) =
 	/**
 	 * Return the component
 	 *
-	 * @return {JSX} PanelBackground component.
+	 * @return {Element} PanelBackground component.
 	 */
 	return (
 		<PanelBody initialOpen={ false } title={ __( 'Background', 'bm-custom-login' ) }>
@@ -66,6 +66,7 @@ export const PanelBackground = ( { context, presets, settings, setSettings } ) =
 					<ColorControl
 						value={ color }
 						label={ __( 'Background', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -96,6 +97,7 @@ export const PanelBackground = ( { context, presets, settings, setSettings } ) =
 						mediaId,
 						sizeRepeat,
 					} }
+
 					/**
 					 * Update the value
 					 *

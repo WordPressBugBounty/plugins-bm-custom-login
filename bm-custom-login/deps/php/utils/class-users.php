@@ -11,7 +11,7 @@ use WP_Site;
 use WP_User;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit; // @codeCoverageIgnore
 }
 
 /**
@@ -173,7 +173,8 @@ class Users {
 
 			foreach ( $data as &$role_data ) {
 				// Ensure that ID starts with "1".
-				$role_data['id']   += 1;
+				$role_data['id'] += 1;
+
 				$role_data['title'] = sprintf(
 					'%1$s ("%2$s")',
 					$role_data['title'],
@@ -322,6 +323,7 @@ class Users {
 		}
 
 		$results = Type::ensure_array_of_ints( $results );
+
 		return array_unique( $results, SORT_NUMERIC );
 	}
 
@@ -341,6 +343,7 @@ class Users {
 				}
 
 				$user = get_user_by( 'login', $user_login );
+
 				return $user instanceof WP_User ? $user->ID : null;
 			},
 			$users,

@@ -26,7 +26,7 @@ import { __ } from '@wordpress/i18n';
  * @param {Object}   properties.settings    Plugin settings.
  * @param {Function} properties.setSettings Function (callback) used to update the settings.
  *
- * @return {JSX} PanelFooter component.
+ * @return {Element} PanelFooter component.
  */
 export const PanelFooter = ( { presets, settings, setSettings } ) => {
 	// Destructure the settings object.
@@ -77,7 +77,7 @@ export const PanelFooter = ( { presets, settings, setSettings } ) => {
 	/**
 	 * Return the component
 	 *
-	 * @return {JSX} PanelFooter component.
+	 * @return {Element} PanelFooter component.
 	 */
 	return (
 		<PanelBody initialOpen={ false } title={ __( 'Footer', 'bm-custom-login' ) }>
@@ -87,6 +87,7 @@ export const PanelFooter = ( { presets, settings, setSettings } ) => {
 					__next40pxDefaultSize
 					label={ __( 'Footer text', 'bm-custom-login' ) }
 					value={ text }
+
 					/**
 					 * Update the value
 					 *
@@ -120,6 +121,7 @@ export const PanelFooter = ( { presets, settings, setSettings } ) => {
 							label: __( 'Right', 'bm-custom-login' ),
 						},
 					] }
+
 					/**
 					 * Update the value
 					 *
@@ -138,6 +140,7 @@ export const PanelFooter = ( { presets, settings, setSettings } ) => {
 					<ColorControl
 						value={ textColor }
 						label={ __( 'Text', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -175,6 +178,7 @@ export const PanelFooter = ( { presets, settings, setSettings } ) => {
 						withDecoration: true,
 						withLetterCase: true,
 					} }
+
 					/**
 					 * Update the values
 					 *
@@ -197,6 +201,7 @@ export const PanelFooter = ( { presets, settings, setSettings } ) => {
 						bottom: paddingBottom,
 						left: paddingLeft,
 					} }
+
 					/**
 					 * Update the value
 					 *
@@ -234,6 +239,7 @@ export const PanelFooter = ( { presets, settings, setSettings } ) => {
 						bottom: marginBottom,
 						left: marginLeft,
 					} }
+
 					/**
 					 * Update the value
 					 *

@@ -15,13 +15,14 @@ import { LineHeightControl as CoreLineHeightControl } from '@wordpress/block-edi
  * @param {Function} properties.onChange Function callback to trigger on value change.
  * @param {number}   properties.value    Field's value.
  *
- * @return {JSX} LineHeightControl component.
+ * @return {Element} LineHeightControl component.
  */
 export const LineHeightControl = ( { onChange, value } ) => (
 	<CoreLineHeightControl
 		__next40pxDefaultSize
 		__unstableInputWidth="100%"
 		value={ value }
+
 		/**
 		 * Update the value
 		 *

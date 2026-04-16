@@ -13,7 +13,7 @@ use Teydea_Studio\Custom_Login\Adjuster;
 use Teydea_Studio\Custom_Login\Dependencies\Utils;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit; // @codeCoverageIgnore
 }
 
 /**
@@ -84,6 +84,7 @@ final class Adjuster_Notices extends Adjuster {
 					case 'notice':
 						$class_names[] = sprintf( 'notice-%s', $config['custom_notice_type'] );
 						break;
+
 					case 'success':
 						$class_names[] = 'success';
 						break;

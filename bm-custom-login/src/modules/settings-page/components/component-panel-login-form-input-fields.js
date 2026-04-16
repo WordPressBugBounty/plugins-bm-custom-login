@@ -30,7 +30,7 @@ import { __, sprintf } from '@wordpress/i18n';
  * @param {Object}   properties.settings    Plugin settings.
  * @param {Function} properties.setSettings Function (callback) used to update the settings.
  *
- * @return {JSX} PanelLoginFormInputFields component.
+ * @return {Element} PanelLoginFormInputFields component.
  */
 export const PanelLoginFormInputFields = ( { context, presets, settings, setSettings } ) => {
 	// Destructure the settings object.
@@ -132,7 +132,7 @@ export const PanelLoginFormInputFields = ( { context, presets, settings, setSett
 	/**
 	 * Return the component
 	 *
-	 * @return {JSX} PanelLoginFormInputFields component.
+	 * @return {Element} PanelLoginFormInputFields component.
 	 */
 	return (
 		<PanelBody initialOpen={ false } title={ __( 'Login form input fields', 'bm-custom-login' ) }>
@@ -141,6 +141,7 @@ export const PanelLoginFormInputFields = ( { context, presets, settings, setSett
 					<ColorControl
 						value={ backgroundColor }
 						label={ __( 'Background', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -161,6 +162,7 @@ export const PanelLoginFormInputFields = ( { context, presets, settings, setSett
 					<ColorControl
 						value={ textColor }
 						label={ __( 'Text', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -181,6 +183,7 @@ export const PanelLoginFormInputFields = ( { context, presets, settings, setSett
 					<ColorControl
 						value={ eyeIconColor }
 						label={ __( 'Eye icon (show/hide password)', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -201,6 +204,7 @@ export const PanelLoginFormInputFields = ( { context, presets, settings, setSett
 					<ColorControl
 						value={ placeholderColor }
 						label={ __( 'Placeholder', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -223,6 +227,7 @@ export const PanelLoginFormInputFields = ( { context, presets, settings, setSett
 					<ColorControl
 						value={ backgroundColorOnHover }
 						label={ __( 'Background', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -243,6 +248,7 @@ export const PanelLoginFormInputFields = ( { context, presets, settings, setSett
 					<ColorControl
 						value={ textColorOnHover }
 						label={ __( 'Text', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -263,6 +269,7 @@ export const PanelLoginFormInputFields = ( { context, presets, settings, setSett
 					<ColorControl
 						value={ eyeIconColorOnHover }
 						label={ __( 'Eye icon (show/hide password)', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -285,6 +292,7 @@ export const PanelLoginFormInputFields = ( { context, presets, settings, setSett
 					<ColorControl
 						value={ backgroundColorOnFocus }
 						label={ __( 'Background', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -305,6 +313,7 @@ export const PanelLoginFormInputFields = ( { context, presets, settings, setSett
 					<ColorControl
 						value={ textColorOnFocus }
 						label={ __( 'Text', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -325,6 +334,7 @@ export const PanelLoginFormInputFields = ( { context, presets, settings, setSett
 					<ColorControl
 						value={ eyeIconColorOnFocus }
 						label={ __( 'Eye icon (show/hide password)', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -359,6 +369,7 @@ export const PanelLoginFormInputFields = ( { context, presets, settings, setSett
 						withDecoration: false,
 						withLetterCase: false,
 					} }
+
 					/**
 					 * Update the values
 					 *
@@ -387,6 +398,7 @@ export const PanelLoginFormInputFields = ( { context, presets, settings, setSett
 						borderTopWidth,
 					} }
 					label={ __( 'Border style', 'bm-custom-login' ) }
+
 					/**
 					 * Update the value
 					 *
@@ -416,6 +428,7 @@ export const PanelLoginFormInputFields = ( { context, presets, settings, setSett
 						borderTopWidth: borderTopWidthOnHover,
 					} }
 					label={ __( 'Border style (on hover)', 'bm-custom-login' ) }
+
 					/**
 					 * Update the value
 					 *
@@ -458,6 +471,7 @@ export const PanelLoginFormInputFields = ( { context, presets, settings, setSett
 						borderTopWidth: borderTopWidthOnFocus,
 					} }
 					label={ __( 'Border style (on focus)', 'bm-custom-login' ) }
+
 					/**
 					 * Update the value
 					 *
@@ -491,6 +505,7 @@ export const PanelLoginFormInputFields = ( { context, presets, settings, setSett
 						topLeft: borderTopLeftRadius,
 						topRight: borderTopRightRadius,
 					} }
+
 					/**
 					 * Update the value
 					 *
@@ -516,6 +531,7 @@ export const PanelLoginFormInputFields = ( { context, presets, settings, setSett
 					label={ __( 'Shadow', 'bm-custom-login' ) }
 					value={ shadow }
 					presets={ shadowPresets }
+
 					/**
 					 * Update the value
 					 *
@@ -533,6 +549,7 @@ export const PanelLoginFormInputFields = ( { context, presets, settings, setSett
 					label={ __( 'Shadow (on hover)', 'bm-custom-login' ) }
 					value={ shadowOnHover }
 					presets={ shadowPresets }
+
 					/**
 					 * Update the value
 					 *
@@ -550,6 +567,7 @@ export const PanelLoginFormInputFields = ( { context, presets, settings, setSett
 					label={ __( 'Shadow (on focus)', 'bm-custom-login' ) }
 					value={ shadowOnFocus }
 					presets={ shadowPresets }
+
 					/**
 					 * Update the value
 					 *
@@ -574,6 +592,7 @@ export const PanelLoginFormInputFields = ( { context, presets, settings, setSett
 						bottom: paddingBottom,
 						left: paddingLeft,
 					} }
+
 					/**
 					 * Update the values
 					 *
@@ -611,6 +630,7 @@ export const PanelLoginFormInputFields = ( { context, presets, settings, setSett
 						bottom: marginBottom,
 						left: marginLeft,
 					} }
+
 					/**
 					 * Update the values
 					 *
@@ -646,8 +666,9 @@ export const PanelLoginFormInputFields = ( { context, presets, settings, setSett
 						languages.map( ( language ) => [
 							language,
 							loginFormInputFields?.[ sprintf( 'placeholderUsernameOrEmailAddress.%s', language ) ] ?? '',
-						] )
+						] ),
 					) }
+
 					/**
 					 * Update the values
 					 *
@@ -658,8 +679,8 @@ export const PanelLoginFormInputFields = ( { context, presets, settings, setSett
 					onChange={ ( updatedValues ) => {
 						setSetting(
 							Object.fromEntries(
-								languages.map( ( language ) => [ sprintf( 'placeholderUsernameOrEmailAddress.%s', language ), updatedValues[ language ] ] )
-							)
+								languages.map( ( language ) => [ sprintf( 'placeholderUsernameOrEmailAddress.%s', language ), updatedValues[ language ] ] ),
+							),
 						);
 					} }
 				/>
@@ -669,8 +690,9 @@ export const PanelLoginFormInputFields = ( { context, presets, settings, setSett
 					__next40pxDefaultSize
 					label={ __( '"Password" field\'s placeholder', 'bm-custom-login' ) }
 					values={ Object.fromEntries(
-						languages.map( ( language ) => [ language, loginFormInputFields?.[ sprintf( 'placeholderPassword.%s', language ) ] ?? '' ] )
+						languages.map( ( language ) => [ language, loginFormInputFields?.[ sprintf( 'placeholderPassword.%s', language ) ] ?? '' ] ),
 					) }
+
 					/**
 					 * Update the values
 					 *
@@ -680,7 +702,7 @@ export const PanelLoginFormInputFields = ( { context, presets, settings, setSett
 					 */
 					onChange={ ( updatedValues ) => {
 						setSetting(
-							Object.fromEntries( languages.map( ( language ) => [ sprintf( 'placeholderPassword.%s', language ), updatedValues[ language ] ] ) )
+							Object.fromEntries( languages.map( ( language ) => [ sprintf( 'placeholderPassword.%s', language ), updatedValues[ language ] ] ) ),
 						);
 					} }
 				/>
@@ -692,8 +714,9 @@ export const PanelLoginFormInputFields = ( { context, presets, settings, setSett
 							__next40pxDefaultSize
 							label={ __( '"Username" field\'s placeholder', 'bm-custom-login' ) }
 							values={ Object.fromEntries(
-								languages.map( ( language ) => [ language, loginFormInputFields?.[ sprintf( 'placeholderUsername.%s', language ) ] ?? '' ] )
+								languages.map( ( language ) => [ language, loginFormInputFields?.[ sprintf( 'placeholderUsername.%s', language ) ] ?? '' ] ),
 							) }
+
 							/**
 							 * Update the values
 							 *
@@ -704,8 +727,8 @@ export const PanelLoginFormInputFields = ( { context, presets, settings, setSett
 							onChange={ ( updatedValues ) => {
 								setSetting(
 									Object.fromEntries(
-										languages.map( ( language ) => [ sprintf( 'placeholderUsername.%s', language ), updatedValues[ language ] ] )
-									)
+										languages.map( ( language ) => [ sprintf( 'placeholderUsername.%s', language ), updatedValues[ language ] ] ),
+									),
 								);
 							} }
 						/>
@@ -715,8 +738,9 @@ export const PanelLoginFormInputFields = ( { context, presets, settings, setSett
 							__next40pxDefaultSize
 							label={ __( '"Email" field\'s placeholder', 'bm-custom-login' ) }
 							values={ Object.fromEntries(
-								languages.map( ( language ) => [ language, loginFormInputFields?.[ sprintf( 'placeholderEmail.%s', language ) ] ?? '' ] )
+								languages.map( ( language ) => [ language, loginFormInputFields?.[ sprintf( 'placeholderEmail.%s', language ) ] ?? '' ] ),
 							) }
+
 							/**
 							 * Update the values
 							 *
@@ -727,8 +751,8 @@ export const PanelLoginFormInputFields = ( { context, presets, settings, setSett
 							onChange={ ( updatedValues ) => {
 								setSetting(
 									Object.fromEntries(
-										languages.map( ( language ) => [ sprintf( 'placeholderEmail.%s', language ), updatedValues[ language ] ] )
-									)
+										languages.map( ( language ) => [ sprintf( 'placeholderEmail.%s', language ), updatedValues[ language ] ] ),
+									),
 								);
 							} }
 						/>

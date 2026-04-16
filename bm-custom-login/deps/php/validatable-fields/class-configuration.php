@@ -12,7 +12,7 @@ use Teydea_Studio\Custom_Login\Dependencies\Utils;
 use WP_Error;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit; // @codeCoverageIgnore
 }
 
 /**
@@ -121,6 +121,16 @@ final class Configuration {
 	}
 
 	/**
+	 * Generate a unique key for a dynamic field
+	 *
+	 * @return string Dynamic field key in the format "d:XXXXXXXXXXXXXXXXX" (19 chars total).
+	 */
+	public static function generate_dynamic_field_key(): string {
+		$microtime = str_replace( '.', '', sprintf( '%.6F', microtime( true ) ) );
+		return sprintf( 'd:%s%d', substr( $microtime, -16 ), wp_rand( 0, 9 ) );
+	}
+
+	/**
 	 * Configure the "dynamic field key" field
 	 *
 	 * @return array{type:'string',default_value:Closure,validator:?Closure} Field configuration array.
@@ -135,7 +145,7 @@ final class Configuration {
 			 * @return string Field value.
 			 */
 			'default_value' => function (): string {
-				return sprintf( 'd:%1$d000%2$d', time(), wp_rand( 1000, 9999 ) );
+				return self::generate_dynamic_field_key();
 			},
 
 			/**
@@ -259,6 +269,28 @@ final class Configuration {
 	}
 
 	/**
+	 * Configure the "integer of choice" field
+	 *
+	 * @param int      $default_value  Default value of the field.
+	 * @param int[]    $allowed_values Array of allowed values.
+	 * @param ?Closure $restorer       Additional function for value restore.
+	 * @param ?Closure $sanitizer      Additional sanitizer function.
+	 * @param ?Closure $validator      Additional validation function.
+	 *
+	 * @return array{type:'integer_of_choice',default_value:int,allowed_values:int[],restorer:?Closure,sanitizer:?Closure,validator:?Closure} Field configuration array.
+	 */
+	public static function integer_of_choice_field( int $default_value = 0, array $allowed_values = [], ?Closure $restorer = null, ?Closure $sanitizer = null, ?Closure $validator = null ): array {
+		return [
+			'type'           => 'integer_of_choice',
+			'default_value'  => $default_value,
+			'allowed_values' => $allowed_values,
+			'restorer'       => $restorer,
+			'sanitizer'      => $sanitizer,
+			'validator'      => $validator,
+		];
+	}
+
+	/**
 	 * Configure the "media id" field
 	 *
 	 * @param int      $default_value   Default value of the field.
@@ -278,6 +310,27 @@ final class Configuration {
 			'restorer'      => $restorer,
 			'sanitizer'     => $sanitizer,
 			'validator'     => $validator ?? Closures::media_id_field_validator( $supported_types ),
+		];
+	}
+
+	/**
+	 * Configure the "post types" field
+	 *
+	 * @param string[]            $default_value Default value of the field.
+	 * @param array<string,mixed> $query_args    Query arguments used for getting a list of post types.
+	 * @param ?Closure            $restorer      Additional function for value restore.
+	 * @param ?Closure            $sanitizer     Additional sanitizer function.
+	 * @param ?Closure            $validator     Additional validation function.
+	 *
+	 * @return array{type:'array_of_strings',default_value:string[],restorer:?Closure,sanitizer:?Closure,validator:?Closure} Field configuration array.
+	 */
+	public static function post_types_field( array $default_value = [ 'post', 'page' ], array $query_args = [ 'post_type__in' => [ 'post', 'page' ] ], ?Closure $restorer = null, ?Closure $sanitizer = null, ?Closure $validator = null ): array {
+		return [
+			'type'          => 'array_of_strings',
+			'default_value' => $default_value,
+			'restorer'      => $restorer ?? Closures::post_types_field_restorer( $query_args ),
+			'sanitizer'     => $sanitizer,
+			'validator'     => $validator ?? Closures::post_types_field_validator( $query_args ),
 		];
 	}
 

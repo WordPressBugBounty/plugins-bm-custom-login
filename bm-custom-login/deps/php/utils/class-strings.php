@@ -8,7 +8,7 @@
 namespace Teydea_Studio\Custom_Login\Dependencies\Utils;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit; // @codeCoverageIgnore
 }
 
 /**
@@ -96,6 +96,39 @@ final class Strings {
 	}
 
 	/**
+	 * Sanitize a CSS color value
+	 *
+	 * Allows hex colors, CSS color functions (rgb, rgba, hsl, hsla),
+	 * and named CSS colors. Returns an empty string for invalid values.
+	 *
+	 * @param string $color Color value to sanitize.
+	 *
+	 * @return string Sanitized color value or empty string.
+	 */
+	public static function sanitize_color( string $color ): string {
+		if ( '' === $color ) {
+			return '';
+		}
+
+		// Allow hex colors (#rgb, #rgba, #rrggbb, #rrggbbaa).
+		if ( 1 === preg_match( '/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/', $color ) ) {
+			return $color;
+		}
+
+		// Allow CSS color functions: rgb, rgba, hsl, hsla (numeric channels only).
+		if ( 1 === preg_match( '/^(rgb|rgba|hsl|hsla)\([0-9a-f.,\/%\s+-]+\)$/i', $color ) ) {
+			return $color;
+		}
+
+		// Allow named CSS colors (alphabetic only).
+		if ( 1 === preg_match( '/^[a-zA-Z]+$/', $color ) ) {
+			return $color;
+		}
+
+		return '';
+	}
+
+	/**
 	 * Get excerpt truncate after the last sentence
 	 *
 	 * @param string $content Original excerpt content.
@@ -153,6 +186,7 @@ final class Strings {
 		}
 
 		$length = strlen( $needle );
+
 		return 0 === $length || 0 === substr_compare( $haystack, $needle, - $length );
 	}
 

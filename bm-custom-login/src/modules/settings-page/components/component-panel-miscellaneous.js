@@ -17,7 +17,7 @@ import { __ } from '@wordpress/i18n';
  * @param {Object}   properties.settings    Plugin settings.
  * @param {Function} properties.setSettings Function (callback) used to update the settings.
  *
- * @return {JSX} PanelMiscellaneous component.
+ * @return {Element} PanelMiscellaneous component.
  */
 export const PanelMiscellaneous = ( { settings, setSettings } ) => {
 	// Destructure the settings object.
@@ -47,7 +47,7 @@ export const PanelMiscellaneous = ( { settings, setSettings } ) => {
 	/**
 	 * Return the component
 	 *
-	 * @return {JSX} PanelMiscellaneous component.
+	 * @return {Element} PanelMiscellaneous component.
 	 */
 	return (
 		<PanelBody initialOpen={ false } title={ __( 'Miscellaneous', 'bm-custom-login' ) }>
@@ -58,9 +58,10 @@ export const PanelMiscellaneous = ( { settings, setSettings } ) => {
 					label={ __( 'Disable autocomplete on the login form fields', 'bm-custom-login' ) }
 					help={ __(
 						'Ask the browser not to remember the values for the login form fields. This is a hint to browsers; some may not comply with this choice.',
-						'bm-custom-login'
+						'bm-custom-login',
 					) }
 					checked={ disableAutocomplete }
+
 					/**
 					 * Update the value
 					 *
@@ -78,9 +79,10 @@ export const PanelMiscellaneous = ( { settings, setSettings } ) => {
 					label={ __( 'Disable autofocus on the "username" login form field', 'bm-custom-login' ) }
 					help={ __(
 						'When entering the login screen, the "username" field of the login form field is automatically focused; that functionality can be disabled here.',
-						'bm-custom-login'
+						'bm-custom-login',
 					) }
 					checked={ disableAutofocus }
+
 					/**
 					 * Update the value
 					 *
@@ -98,6 +100,7 @@ export const PanelMiscellaneous = ( { settings, setSettings } ) => {
 					label={ __( 'Disable shake effect on login form fields', 'bm-custom-login' ) }
 					help={ __( 'The "shake" effect comes from a WordPress core and is used if a value of a field is incorrect.', 'bm-custom-login' ) }
 					checked={ disableShakeEffect }
+
 					/**
 					 * Update the value
 					 *

@@ -34,7 +34,7 @@ import './styles.scss';
  * @param {Object}   properties.options  Preset options for font family and font size selectors.
  * @param {string}   properties.values   Object containing values for all associated subfields.
  *
- * @return {JSX} FontControl component.
+ * @return {Element} FontControl component.
  */
 export const FontControl = ( { onChange, options, values } ) => {
 	// Destructure the objects.
@@ -69,6 +69,7 @@ export const FontControl = ( { onChange, options, values } ) => {
 				label={ label ? label : __( 'Font family', 'bm-custom-login' ) }
 				value={ fontFamily }
 				options={ fontFamilies }
+
 				/**
 				 * Update the value
 				 *
@@ -92,6 +93,7 @@ export const FontControl = ( { onChange, options, values } ) => {
 				label={ __( 'Font weight', 'bm-custom-login' ) }
 				value={ fontWeight }
 				options={ fontWeights[ fontFamily ] ?? [] }
+
 				/**
 				 * Update the value
 				 *
@@ -113,6 +115,7 @@ export const FontControl = ( { onChange, options, values } ) => {
 				fallbackFontSize={ fallbackSize }
 				withReset={ false }
 				withSlider={ true }
+
 				/**
 				 * Update the value
 				 *
@@ -129,6 +132,7 @@ export const FontControl = ( { onChange, options, values } ) => {
 			/>
 			<LineHeightControl
 				value={ lineHeight }
+
 				/**
 				 * Update the value
 				 *
@@ -146,6 +150,7 @@ export const FontControl = ( { onChange, options, values } ) => {
 			{ withLetterCase && (
 				<TextTransformControl
 					value={ letterCase }
+
 					/**
 					 * Update the value
 					 *
@@ -164,6 +169,7 @@ export const FontControl = ( { onChange, options, values } ) => {
 			{ withDecoration && (
 				<TextDecorationControl
 					value={ textDecoration }
+
 					/**
 					 * Update the value
 					 *

@@ -12,7 +12,7 @@ use DOMXPath;
 use Teydea_Studio\Custom_Login\Adjuster;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit; // @codeCoverageIgnore
 }
 
 /**
@@ -80,6 +80,7 @@ final class Adjuster_Privacy_Policy_Link extends Adjuster {
 
 		/** @var array{alignment:string,font_family:string,font_size:string,font_weight:string,hide:bool,letter_case:string,line_height:float,link_color:string,link_color_on_focus:string,link_color_on_hover:string,margin_bottom:string,margin_left:string,margin_right:string,margin_top:string,padding_bottom:string,padding_left:string,padding_right:string,padding_top:string,shadow:string,shadow_on_focus:string,shadow_on_hover:string,text_decoration:string} $results */
 		$results = $fields_group->get_all_fields_values();
+
 		return $results;
 	}
 

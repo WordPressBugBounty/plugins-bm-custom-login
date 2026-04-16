@@ -29,7 +29,7 @@ import './styles.scss';
  * @param {Array}    properties.presets  Predefined shadow presets.
  * @param {string}   properties.value    Field's value.
  *
- * @return {JSX} ShadowControl component.
+ * @return {Element} ShadowControl component.
  */
 export const ShadowControl = ( { label, onChange, presets, value } ) => (
 	<FieldsGroup className="tsc-shadow-control">

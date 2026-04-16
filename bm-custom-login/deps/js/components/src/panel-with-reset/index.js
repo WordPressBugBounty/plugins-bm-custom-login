@@ -19,12 +19,12 @@ import './styles.scss';
  * PanelWithReset component
  *
  * @param {Object}   properties             Component properties object.
- * @param {JSX}      properties.children    Children components (panel itself).
+ * @param {Element}  properties.children    Children components (panel itself).
  * @param {Object}   properties.settings    Plugin settings.
  * @param {Function} properties.setSettings Function (callback) used to update the settings.
  * @param {string}   properties.slug        Slug identifier for the panel.
  *
- * @return {JSX} PanelWithReset component.
+ * @return {Element} PanelWithReset component.
  */
 export const PanelWithReset = ( { children, settings, setSettings, slug } ) => {
 	let differs = false;
@@ -40,6 +40,7 @@ export const PanelWithReset = ( { children, settings, setSettings, slug } ) => {
 			// Check if there is an associated key with this panel.
 			if ( 'undefined' !== typeof settings.data[ `${ slug }${ key }` ] ) {
 				const isDifferent = JSON.stringify( settings.data[ `${ slug }${ key }` ] ) !== JSON.stringify( settings.defaults[ `${ slug }${ key }` ] );
+
 				const isSameEmpty =
 					'{}' === JSON.stringify( settings.data[ `${ slug }${ key }` ] ) && '[]' === JSON.stringify( settings.defaults[ `${ slug }${ key }` ] );
 

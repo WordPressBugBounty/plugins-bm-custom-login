@@ -10,7 +10,7 @@ namespace Teydea_Studio\Custom_Login\Dependencies\Universal_Modules;
 use Teydea_Studio\Custom_Login\Dependencies\Utils;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit; // @codeCoverageIgnore
 }
 
 /**
@@ -30,8 +30,10 @@ class Module_Plugin_Upgrade_Action_Link extends Utils\Module {
 	 * @return void
 	 */
 	public function register(): void {
-		// Filter the plugin action links.
+		// Filter the network admin plugin action links.
 		add_filter( sprintf( 'network_admin_plugin_action_links_%s', $this->container->get_basename() ), [ $this, 'filter_plugin_action_links' ] );
+
+		// Filter the single-site plugin action links.
 		add_filter( sprintf( 'plugin_action_links_%s', $this->container->get_basename() ), [ $this, 'filter_plugin_action_links' ] );
 	}
 

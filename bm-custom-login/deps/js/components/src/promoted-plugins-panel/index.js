@@ -15,7 +15,7 @@ import { __ } from '@wordpress/i18n';
  * @param {Object} properties         Component properties object.
  * @param {Array}  properties.plugins Data of the promoted plugins.
  *
- * @return {null|JSX} Promoted plugins panel component.
+ * @return {null|Element} Promoted plugins panel component.
  */
 export const PromotedPluginsPanel = ( { plugins } ) => {
 	const contents = [];
@@ -31,7 +31,7 @@ export const PromotedPluginsPanel = ( { plugins } ) => {
 					</a>
 				</strong>{ ' ' }
 				- { description }
-			</p>
+			</p>,
 		);
 	}
 
@@ -43,7 +43,7 @@ export const PromotedPluginsPanel = ( { plugins } ) => {
 	/**
 	 * Render the panel
 	 *
-	 * @return {JSX}
+	 * @return {Element}
 	 */
 	return <PanelBody title={ __( 'Also by Teydea Studio', 'bm-custom-login' ) }>{ contents }</PanelBody>;
 };

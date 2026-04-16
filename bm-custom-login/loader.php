@@ -11,7 +11,7 @@ use Teydea_Studio\Custom_Login\Dependencies\Universal_Modules;
 use Teydea_Studio\Custom_Login\Dependencies\Utils;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit; // @codeCoverageIgnore
 }
 
 /**
@@ -52,7 +52,7 @@ function get_container(): Utils\Plugin {
 		$plugin->set_slug( 'bm-custom-login' );
 		$plugin->set_supports_network( true );
 		$plugin->set_text_domain( 'bm-custom-login' );
-		$plugin->set_version( '3.0.0' );
+		$plugin->set_version( '3.1.0' );
 
 		$plugin->register_modules(
 			[
@@ -64,7 +64,6 @@ function get_container(): Utils\Plugin {
 				Modules\Module_Miscellaneous::class,
 				Modules\Module_Plugin_Upgrade_Action_Link::class,
 				Universal_Modules\Module_Endpoint_Settings::class,
-				Universal_Modules\Module_Translations::class,
 			],
 		);
 	}

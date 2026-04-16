@@ -28,7 +28,7 @@ import './styles.scss';
  * @param {Object}   properties.original Original translations.
  * @param {Object}   properties.values   Field's value.
  *
- * @return {JSX} MultilingualTextControl component.
+ * @return {Element} MultilingualTextControl component.
  */
 export const MultilingualTextControl = ( { label, onChange, original, values } ) => (
 	<FieldsGroup className="tsc-multilingual-text-control" label={ label } withBaseControl>
@@ -52,10 +52,11 @@ export const MultilingualTextControl = ( { label, onChange, original, values } )
 							? sprintf(
 									// Translators: %s - original text.
 									__( 'Original: "%s"', 'bm-custom-login' ),
-									help
+									help,
 							  )
 							: undefined
 					}
+
 					/**
 					 * Update the value
 					 *

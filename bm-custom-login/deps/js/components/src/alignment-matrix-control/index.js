@@ -28,7 +28,7 @@ import './styles.scss';
  * @param {Function} properties.onChange Function callback to trigger on value change.
  * @param {string}   properties.value    Field's value.
  *
- * @return {JSX} AlignmentMatrixControl component.
+ * @return {Element} AlignmentMatrixControl component.
  */
 export const AlignmentMatrixControl = ( { label, onChange, value } ) => {
 	// State management.
@@ -45,7 +45,7 @@ export const AlignmentMatrixControl = ( { label, onChange, value } ) => {
 	/**
 	 * Render the component
 	 *
-	 * @return {JSX} AlignmentMatrixControl component.
+	 * @return {Element} AlignmentMatrixControl component.
 	 */
 	return (
 		<FieldsGroup className="tsc-alignment-matrix-control">
@@ -58,6 +58,7 @@ export const AlignmentMatrixControl = ( { label, onChange, value } ) => {
 					{ value: 'default', label: __( 'Default', 'bm-custom-login' ) },
 					{ value: 'custom', label: __( 'Custom', 'bm-custom-login' ) },
 				] }
+
 				/**
 				 * Update the value
 				 *
@@ -79,7 +80,7 @@ export const AlignmentMatrixControl = ( { label, onChange, value } ) => {
 					 * @param {boolean}  properties.isOpen   Whether the dropdown is currently open.
 					 * @param {Function} properties.onToggle Callback function to toggle the dropdown.
 					 *
-					 * @return {JSX} Toggle component.
+					 * @return {Element} Toggle component.
 					 */
 					renderToggle={ ( { isOpen, onToggle } ) => (
 						<Button

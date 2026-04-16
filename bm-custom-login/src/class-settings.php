@@ -12,7 +12,7 @@ use Teydea_Studio\Custom_Login\Dependencies\Validatable_Fields;
 use Teydea_Studio\Custom_Login\Styles;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit; // @codeCoverageIgnore
 }
 
 /**
@@ -21,6 +21,62 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @phpstan-import-type Type_Settings_Fields_Config from Utils\Settings
  */
 class Settings extends Utils\Settings {
+	/**
+	 * Login style generation identifier for WordPress versions before 7.0.
+	 *
+	 * @var string
+	 */
+	const GENERATION_V1 = 'v1';
+
+	/**
+	 * Login style generation identifier for WordPress 7.0 and later.
+	 *
+	 * @var string
+	 */
+	const GENERATION_V2 = 'v2';
+
+	/**
+	 * Core logo style: use the generation-appropriate default (blue on v1, gray on v2).
+	 *
+	 * @var string
+	 */
+	const CORE_LOGO_STYLE_DEFAULT = 'default';
+
+	/**
+	 * Core logo style: WordPress blue logo (wordpress-logo.svg).
+	 *
+	 * @var string
+	 */
+	const CORE_LOGO_STYLE_BLUE = 'blue';
+
+	/**
+	 * Core logo style: WordPress gray logo (wordpress-logo-gray.svg, WP 7.0+).
+	 *
+	 * @var string
+	 */
+	const CORE_LOGO_STYLE_GRAY = 'gray';
+
+	/**
+	 * All allowed core logo style values.
+	 *
+	 * @var string[]
+	 */
+	const ALLOWED_CORE_LOGO_STYLES = [
+		self::CORE_LOGO_STYLE_DEFAULT,
+		self::CORE_LOGO_STYLE_BLUE,
+		self::CORE_LOGO_STYLE_GRAY,
+	];
+
+	/**
+	 * Login style generation
+	 *
+	 * Cached result of the WordPress version check.
+	 * Returns 'v1' for pre-7.0, 'v2' for 7.0+.
+	 *
+	 * @var ?string
+	 */
+	private ?string $login_style_generation = null;
+
 	/**
 	 * Common definitions
 	 *
@@ -130,6 +186,35 @@ class Settings extends Utils\Settings {
 	}
 
 	/**
+	 * Get the login style generation based on WordPress version
+	 *
+	 * Returns 'v1' for WordPress versions before 7.0,
+	 * 'v2' for WordPress 7.0 and later.
+	 *
+	 * @return string Login style generation identifier (e.g. 'v1', 'v2').
+	 */
+	public function get_login_style_generation(): string {
+		if ( null === $this->login_style_generation ) {
+			$this->login_style_generation = Utils\Environment::compare_wp_version( '7.0', '>=' ) ? self::GENERATION_V2 : self::GENERATION_V1;
+		}
+
+		return $this->login_style_generation;
+	}
+
+	/**
+	 * Resolve a value based on the current login style generation
+	 *
+	 * @template T
+	 *
+	 * @param array<string,T> $values Map of generation identifier to value (e.g. ['v1' => '#2271b1', 'v2' => '#3858e9']).
+	 *
+	 * @return T The value for the current generation.
+	 */
+	public function resolve_for_generation( array $values ) {
+		return $values[ $this->get_login_style_generation() ];
+	}
+
+	/**
 	 * Get the fields configuration
 	 *
 	 * @return Type_Settings_Fields_Config Fields configuration.
@@ -171,6 +256,7 @@ class Settings extends Utils\Settings {
 					'show'            => Validatable_Fields\Configuration::boolean_field( true ),
 					'strict_width'    => Validatable_Fields\Configuration::integer_field( 0, 0, 1000 ),
 					'logo_source'     => Validatable_Fields\Configuration::string_of_choice_field( 'core', [ 'core', 'custom', 'site_icon' ] ),
+					'core_logo_style' => Validatable_Fields\Configuration::string_of_choice_field( self::CORE_LOGO_STYLE_DEFAULT, self::ALLOWED_CORE_LOGO_STYLES ),
 				],
 			],
 			'login_form_container'            => [
@@ -268,53 +354,172 @@ class Settings extends Utils\Settings {
 					'background_color'             => Validatable_Fields\Configuration::string_field( '#ffffff' ),
 					'background_color_on_focus'    => Validatable_Fields\Configuration::string_field( '#ffffff' ),
 					'background_color_on_hover'    => Validatable_Fields\Configuration::string_field( '#ffffff' ),
-					'border_bottom_color'          => Validatable_Fields\Configuration::string_field( '#8c8f94' ),
-					'border_bottom_color_on_focus' => Validatable_Fields\Configuration::string_field( '#2271b1' ),
-					'border_bottom_color_on_hover' => Validatable_Fields\Configuration::string_field( '#8c8f94' ),
-					'border_bottom_left_radius'    => Validatable_Fields\Configuration::unit_field( '4px' ),
-					'border_bottom_right_radius'   => Validatable_Fields\Configuration::unit_field( '4px' ),
+					'border_bottom_color'          => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#8c8f94',
+								'v2' => '#949494',
+							],
+						),
+					),
+					'border_bottom_color_on_focus' => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#2271b1',
+								'v2' => '#3858e9',
+							],
+						),
+					),
+					'border_bottom_color_on_hover' => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#8c8f94',
+								'v2' => '#949494',
+							],
+						),
+					),
+					'border_bottom_left_radius'    => Validatable_Fields\Configuration::unit_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '4px',
+								'v2' => '2px',
+							],
+						),
+					),
+					'border_bottom_right_radius'   => Validatable_Fields\Configuration::unit_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '4px',
+								'v2' => '2px',
+							],
+						),
+					),
 					'border_bottom_style'          => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
 					'border_bottom_style_on_focus' => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
 					'border_bottom_style_on_hover' => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
 					'border_bottom_width'          => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_bottom_width_on_focus' => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_bottom_width_on_hover' => Validatable_Fields\Configuration::unit_field( '1px' ),
-					'border_left_color'            => Validatable_Fields\Configuration::string_field( '#8c8f94' ),
-					'border_left_color_on_focus'   => Validatable_Fields\Configuration::string_field( '#2271b1' ),
-					'border_left_color_on_hover'   => Validatable_Fields\Configuration::string_field( '#8c8f94' ),
+					'border_left_color'            => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#8c8f94',
+								'v2' => '#949494',
+							],
+						),
+					),
+					'border_left_color_on_focus'   => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#2271b1',
+								'v2' => '#3858e9',
+							],
+						),
+					),
+					'border_left_color_on_hover'   => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#8c8f94',
+								'v2' => '#949494',
+							],
+						),
+					),
 					'border_left_style'            => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
 					'border_left_style_on_focus'   => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
 					'border_left_style_on_hover'   => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
 					'border_left_width'            => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_left_width_on_focus'   => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_left_width_on_hover'   => Validatable_Fields\Configuration::unit_field( '1px' ),
-					'border_right_color'           => Validatable_Fields\Configuration::string_field( '#8c8f94' ),
-					'border_right_color_on_focus'  => Validatable_Fields\Configuration::string_field( '#2271b1' ),
-					'border_right_color_on_hover'  => Validatable_Fields\Configuration::string_field( '#8c8f94' ),
+					'border_right_color'           => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#8c8f94',
+								'v2' => '#949494',
+							],
+						),
+					),
+					'border_right_color_on_focus'  => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#2271b1',
+								'v2' => '#3858e9',
+							],
+						),
+					),
+					'border_right_color_on_hover'  => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#8c8f94',
+								'v2' => '#949494',
+							],
+						),
+					),
 					'border_right_style'           => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
 					'border_right_style_on_focus'  => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
 					'border_right_style_on_hover'  => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
 					'border_right_width'           => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_right_width_on_focus'  => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_right_width_on_hover'  => Validatable_Fields\Configuration::unit_field( '1px' ),
-					'border_top_color'             => Validatable_Fields\Configuration::string_field( '#8c8f94' ),
-					'border_top_color_on_focus'    => Validatable_Fields\Configuration::string_field( '#2271b1' ),
-					'border_top_color_on_hover'    => Validatable_Fields\Configuration::string_field( '#8c8f94' ),
-					'border_top_left_radius'       => Validatable_Fields\Configuration::unit_field( '4px' ),
-					'border_top_right_radius'      => Validatable_Fields\Configuration::unit_field( '4px' ),
+					'border_top_color'             => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#8c8f94',
+								'v2' => '#949494',
+							],
+						),
+					),
+					'border_top_color_on_focus'    => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#2271b1',
+								'v2' => '#3858e9',
+							],
+						),
+					),
+					'border_top_color_on_hover'    => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#8c8f94',
+								'v2' => '#949494',
+							],
+						),
+					),
+					'border_top_left_radius'       => Validatable_Fields\Configuration::unit_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '4px',
+								'v2' => '2px',
+							],
+						),
+					),
+					'border_top_right_radius'      => Validatable_Fields\Configuration::unit_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '4px',
+								'v2' => '2px',
+							],
+						),
+					),
 					'border_top_style'             => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
 					'border_top_style_on_focus'    => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
 					'border_top_style_on_hover'    => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
 					'border_top_width'             => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_top_width_on_focus'    => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_top_width_on_hover'    => Validatable_Fields\Configuration::unit_field( '1px' ),
-					'eye_icon_color'               => Validatable_Fields\Configuration::string_field( '#2271b1' ),
+					'eye_icon_color'               => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#2271b1',
+								'v2' => '#3858e9',
+							],
+						),
+					),
 					'eye_icon_color_on_focus'      => Validatable_Fields\Configuration::string_field( '#0a4b78' ),
 					'eye_icon_color_on_hover'      => Validatable_Fields\Configuration::string_field( '#0a4b78' ),
 					'font_family'                  => Validatable_Fields\Configuration::string_of_choice_field( 'default', $this->common_defs['font_families'] ),
 					'font_size'                    => Validatable_Fields\Configuration::unit_field( '24px' ),
 					'font_weight'                  => Validatable_Fields\Configuration::string_of_choice_field( '400', $this->common_defs['font_weights'] ),
-					'line_height'                  => Validatable_Fields\Configuration::float_field( 1.33, 0 ),
+					'line_height'                  => Validatable_Fields\Configuration::float_field( 1.34, 0, null, 8 ),
 					'margin_bottom'                => Validatable_Fields\Configuration::unit_field( '16px' ),
 					'margin_left'                  => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'margin_right'                 => Validatable_Fields\Configuration::unit_field( '6px' ),
@@ -325,7 +530,14 @@ class Settings extends Utils\Settings {
 					'padding_top'                  => Validatable_Fields\Configuration::unit_field( '0.1875rem' ),
 					'placeholder_color'            => Validatable_Fields\Configuration::string_field(),
 					'shadow'                       => Validatable_Fields\Configuration::string_field(),
-					'shadow_on_focus'              => Validatable_Fields\Configuration::string_field( '0 0 0 1px #2271b1' ),
+					'shadow_on_focus'              => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '0 0 0 1px #2271b1',
+								'v2' => '0 0 0 2px #3858e9',
+							],
+						),
+					),
 					'shadow_on_hover'              => Validatable_Fields\Configuration::string_field(),
 					'text_color'                   => Validatable_Fields\Configuration::string_field( '#2c3338' ),
 					'text_color_on_focus'          => Validatable_Fields\Configuration::string_field( '#2c3338' ),
@@ -335,69 +547,329 @@ class Settings extends Utils\Settings {
 			'login_form_checkbox_fields'      => [
 				'type'   => Validatable_Fields\Fields_Group::TYPE,
 				'config' => [
-					'background_color'                  => Validatable_Fields\Configuration::string_field( '#ffffff' ),
-					'background_color_checked'          => Validatable_Fields\Configuration::string_field( '#ffffff' ),
-					'background_color_on_focus'         => Validatable_Fields\Configuration::string_field( '#ffffff' ),
-					'background_color_on_focus_checked' => Validatable_Fields\Configuration::string_field( '#ffffff' ),
-					'background_color_on_hover'         => Validatable_Fields\Configuration::string_field( '#ffffff' ),
-					'background_color_on_hover_checked' => Validatable_Fields\Configuration::string_field( '#ffffff' ),
-					'border_bottom_color'               => Validatable_Fields\Configuration::string_field( '#8c8f94' ),
-					'border_bottom_color_on_focus'      => Validatable_Fields\Configuration::string_field( '#2271b1' ),
-					'border_bottom_color_on_hover'      => Validatable_Fields\Configuration::string_field( '#8c8f94' ),
-					'border_bottom_left_radius'         => Validatable_Fields\Configuration::unit_field( '4px' ),
-					'border_bottom_right_radius'        => Validatable_Fields\Configuration::unit_field( '4px' ),
-					'border_bottom_style'               => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
-					'border_bottom_style_on_focus'      => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
-					'border_bottom_style_on_hover'      => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
-					'border_bottom_width'               => Validatable_Fields\Configuration::unit_field( '1px' ),
-					'border_bottom_width_on_focus'      => Validatable_Fields\Configuration::unit_field( '1px' ),
-					'border_bottom_width_on_hover'      => Validatable_Fields\Configuration::unit_field( '1px' ),
-					'border_left_color'                 => Validatable_Fields\Configuration::string_field( '#8c8f94' ),
-					'border_left_color_on_focus'        => Validatable_Fields\Configuration::string_field( '#2271b1' ),
-					'border_left_color_on_hover'        => Validatable_Fields\Configuration::string_field( '#8c8f94' ),
-					'border_left_style'                 => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
-					'border_left_style_on_focus'        => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
-					'border_left_style_on_hover'        => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
-					'border_left_width'                 => Validatable_Fields\Configuration::unit_field( '1px' ),
-					'border_left_width_on_focus'        => Validatable_Fields\Configuration::unit_field( '1px' ),
-					'border_left_width_on_hover'        => Validatable_Fields\Configuration::unit_field( '1px' ),
-					'border_right_color'                => Validatable_Fields\Configuration::string_field( '#8c8f94' ),
-					'border_right_color_on_focus'       => Validatable_Fields\Configuration::string_field( '#2271b1' ),
-					'border_right_color_on_hover'       => Validatable_Fields\Configuration::string_field( '#8c8f94' ),
-					'border_right_style'                => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
-					'border_right_style_on_focus'       => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
-					'border_right_style_on_hover'       => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
-					'border_right_width'                => Validatable_Fields\Configuration::unit_field( '1px' ),
-					'border_right_width_on_focus'       => Validatable_Fields\Configuration::unit_field( '1px' ),
-					'border_right_width_on_hover'       => Validatable_Fields\Configuration::unit_field( '1px' ),
-					'border_top_color'                  => Validatable_Fields\Configuration::string_field( '#8c8f94' ),
-					'border_top_color_on_focus'         => Validatable_Fields\Configuration::string_field( '#2271b1' ),
-					'border_top_color_on_hover'         => Validatable_Fields\Configuration::string_field( '#8c8f94' ),
-					'border_top_left_radius'            => Validatable_Fields\Configuration::unit_field( '4px' ),
-					'border_top_right_radius'           => Validatable_Fields\Configuration::unit_field( '4px' ),
-					'border_top_style'                  => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
-					'border_top_style_on_focus'         => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
-					'border_top_style_on_hover'         => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
-					'border_top_width'                  => Validatable_Fields\Configuration::unit_field( '1px' ),
-					'border_top_width_on_focus'         => Validatable_Fields\Configuration::unit_field( '1px' ),
-					'border_top_width_on_hover'         => Validatable_Fields\Configuration::unit_field( '1px' ),
-					'field_margin_bottom'               => Validatable_Fields\Configuration::unit_field( '0rem' ),
-					'field_margin_left'                 => Validatable_Fields\Configuration::unit_field( '0rem' ),
-					'field_margin_right'                => Validatable_Fields\Configuration::unit_field( '0.25rem' ),
-					'field_margin_top'                  => Validatable_Fields\Configuration::unit_field( '-0.25rem' ),
-					'field_size'                        => Validatable_Fields\Configuration::integer_field( 16, 0, 50 ),
-					'icon'                              => Validatable_Fields\Configuration::string_of_choice_field( 'default', [ 'default', 'fontawesome-check', 'heroicons-check' ] ),
-					'icon_color'                        => Validatable_Fields\Configuration::string_field( '#3582c4' ),
-					'icon_color_on_focus'               => Validatable_Fields\Configuration::string_field( '#3582c4' ),
-					'icon_color_on_hover'               => Validatable_Fields\Configuration::string_field( '#3582c4' ),
-					'icon_margin_bottom'                => Validatable_Fields\Configuration::unit_field( '0px' ),
-					'icon_margin_left'                  => Validatable_Fields\Configuration::unit_field( '-4px' ),
-					'icon_margin_right'                 => Validatable_Fields\Configuration::unit_field( '0px' ),
-					'icon_margin_top'                   => Validatable_Fields\Configuration::unit_field( '-3px' ),
-					'icon_size'                         => Validatable_Fields\Configuration::integer_field( 21, 0, 50 ),
-					'shadow'                            => Validatable_Fields\Configuration::string_field( 'inset 0 1px 2px rgba(0,0,0,.1)' ),
-					'shadow_on_focus'                   => Validatable_Fields\Configuration::string_field( '0 0 0 1px #2271b1' ),
-					'shadow_on_hover'                   => Validatable_Fields\Configuration::string_field( 'inset 0 1px 2px rgba(0,0,0,.1)' ),
+					'background_color'                     => Validatable_Fields\Configuration::string_field( '#ffffff' ),
+					'background_color_checked'             => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#ffffff',
+								'v2' => '#3858e9',
+							],
+						),
+					),
+					'background_color_on_focus'            => Validatable_Fields\Configuration::string_field( '#ffffff' ),
+					'background_color_on_focus_checked'    => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#ffffff',
+								'v2' => '#3858e9',
+							],
+						),
+					),
+					'background_color_on_hover'            => Validatable_Fields\Configuration::string_field( '#ffffff' ),
+					'background_color_on_hover_checked'    => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#ffffff',
+								'v2' => '#3858e9',
+							],
+						),
+					),
+					'border_bottom_color'                  => Validatable_Fields\Configuration::string_field( '#8c8f94' ),
+					'border_bottom_color_checked'          => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#8c8f94',
+								'v2' => '#3858e9',
+							],
+						),
+					),
+					'border_bottom_color_on_focus'         => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#2271b1',
+								'v2' => '#3858e9',
+							],
+						),
+					),
+					'border_bottom_color_on_focus_checked' => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#2271b1',
+								'v2' => '#3858e9',
+							],
+						),
+					),
+					'border_bottom_color_on_hover'         => Validatable_Fields\Configuration::string_field( '#8c8f94' ),
+					'border_bottom_color_on_hover_checked' => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#8c8f94',
+								'v2' => '#3858e9',
+							],
+						),
+					),
+					'border_bottom_left_radius'            => Validatable_Fields\Configuration::unit_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '4px',
+								'v2' => '2px',
+							],
+						),
+					),
+					'border_bottom_right_radius'           => Validatable_Fields\Configuration::unit_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '4px',
+								'v2' => '2px',
+							],
+						),
+					),
+					'border_bottom_style'                  => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
+					'border_bottom_style_checked'          => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
+					'border_bottom_style_on_focus'         => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
+					'border_bottom_style_on_focus_checked' => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
+					'border_bottom_style_on_hover'         => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
+					'border_bottom_style_on_hover_checked' => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
+					'border_bottom_width'                  => Validatable_Fields\Configuration::unit_field( '1px' ),
+					'border_bottom_width_checked'          => Validatable_Fields\Configuration::unit_field( '1px' ),
+					'border_bottom_width_on_focus'         => Validatable_Fields\Configuration::unit_field( '1px' ),
+					'border_bottom_width_on_focus_checked' => Validatable_Fields\Configuration::unit_field( '1px' ),
+					'border_bottom_width_on_hover'         => Validatable_Fields\Configuration::unit_field( '1px' ),
+					'border_bottom_width_on_hover_checked' => Validatable_Fields\Configuration::unit_field( '1px' ),
+					'border_left_color'                    => Validatable_Fields\Configuration::string_field( '#8c8f94' ),
+					'border_left_color_checked'            => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#8c8f94',
+								'v2' => '#3858e9',
+							],
+						),
+					),
+					'border_left_color_on_focus'           => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#2271b1',
+								'v2' => '#3858e9',
+							],
+						),
+					),
+					'border_left_color_on_focus_checked'   => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#2271b1',
+								'v2' => '#3858e9',
+							],
+						),
+					),
+					'border_left_color_on_hover'           => Validatable_Fields\Configuration::string_field( '#8c8f94' ),
+					'border_left_color_on_hover_checked'   => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#8c8f94',
+								'v2' => '#3858e9',
+							],
+						),
+					),
+					'border_left_style'                    => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
+					'border_left_style_checked'            => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
+					'border_left_style_on_focus'           => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
+					'border_left_style_on_focus_checked'   => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
+					'border_left_style_on_hover'           => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
+					'border_left_style_on_hover_checked'   => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
+					'border_left_width'                    => Validatable_Fields\Configuration::unit_field( '1px' ),
+					'border_left_width_checked'            => Validatable_Fields\Configuration::unit_field( '1px' ),
+					'border_left_width_on_focus'           => Validatable_Fields\Configuration::unit_field( '1px' ),
+					'border_left_width_on_focus_checked'   => Validatable_Fields\Configuration::unit_field( '1px' ),
+					'border_left_width_on_hover'           => Validatable_Fields\Configuration::unit_field( '1px' ),
+					'border_left_width_on_hover_checked'   => Validatable_Fields\Configuration::unit_field( '1px' ),
+					'border_right_color'                   => Validatable_Fields\Configuration::string_field( '#8c8f94' ),
+					'border_right_color_checked'           => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#8c8f94',
+								'v2' => '#3858e9',
+							],
+						),
+					),
+					'border_right_color_on_focus'          => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#2271b1',
+								'v2' => '#3858e9',
+							],
+						),
+					),
+					'border_right_color_on_focus_checked'  => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#2271b1',
+								'v2' => '#3858e9',
+							],
+						),
+					),
+					'border_right_color_on_hover'          => Validatable_Fields\Configuration::string_field( '#8c8f94' ),
+					'border_right_color_on_hover_checked'  => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#8c8f94',
+								'v2' => '#3858e9',
+							],
+						),
+					),
+					'border_right_style'                   => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
+					'border_right_style_checked'           => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
+					'border_right_style_on_focus'          => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
+					'border_right_style_on_focus_checked'  => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
+					'border_right_style_on_hover'          => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
+					'border_right_style_on_hover_checked'  => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
+					'border_right_width'                   => Validatable_Fields\Configuration::unit_field( '1px' ),
+					'border_right_width_checked'           => Validatable_Fields\Configuration::unit_field( '1px' ),
+					'border_right_width_on_focus'          => Validatable_Fields\Configuration::unit_field( '1px' ),
+					'border_right_width_on_focus_checked'  => Validatable_Fields\Configuration::unit_field( '1px' ),
+					'border_right_width_on_hover'          => Validatable_Fields\Configuration::unit_field( '1px' ),
+					'border_right_width_on_hover_checked'  => Validatable_Fields\Configuration::unit_field( '1px' ),
+					'border_top_color'                     => Validatable_Fields\Configuration::string_field( '#8c8f94' ),
+					'border_top_color_checked'             => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#8c8f94',
+								'v2' => '#3858e9',
+							],
+						),
+					),
+					'border_top_color_on_focus'            => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#2271b1',
+								'v2' => '#3858e9',
+							],
+						),
+					),
+					'border_top_color_on_focus_checked'    => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#2271b1',
+								'v2' => '#3858e9',
+							],
+						),
+					),
+					'border_top_color_on_hover'            => Validatable_Fields\Configuration::string_field( '#8c8f94' ),
+					'border_top_color_on_hover_checked'    => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#8c8f94',
+								'v2' => '#3858e9',
+							],
+						),
+					),
+					'border_top_left_radius'               => Validatable_Fields\Configuration::unit_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '4px',
+								'v2' => '2px',
+							],
+						),
+					),
+					'border_top_right_radius'              => Validatable_Fields\Configuration::unit_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '4px',
+								'v2' => '2px',
+							],
+						),
+					),
+					'border_top_style'                     => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
+					'border_top_style_checked'             => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
+					'border_top_style_on_focus'            => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
+					'border_top_style_on_focus_checked'    => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
+					'border_top_style_on_hover'            => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
+					'border_top_style_on_hover_checked'    => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
+					'border_top_width'                     => Validatable_Fields\Configuration::unit_field( '1px' ),
+					'border_top_width_checked'             => Validatable_Fields\Configuration::unit_field( '1px' ),
+					'border_top_width_on_focus'            => Validatable_Fields\Configuration::unit_field( '1px' ),
+					'border_top_width_on_focus_checked'    => Validatable_Fields\Configuration::unit_field( '1px' ),
+					'border_top_width_on_hover'            => Validatable_Fields\Configuration::unit_field( '1px' ),
+					'border_top_width_on_hover_checked'    => Validatable_Fields\Configuration::unit_field( '1px' ),
+					'field_margin_bottom'                  => Validatable_Fields\Configuration::unit_field( '0rem' ),
+					'field_margin_left'                    => Validatable_Fields\Configuration::unit_field( '0rem' ),
+					'field_margin_right'                   => Validatable_Fields\Configuration::unit_field( '0.25rem' ),
+					'field_margin_top'                     => Validatable_Fields\Configuration::unit_field( '-0.25rem' ),
+					'field_size'                           => Validatable_Fields\Configuration::integer_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => 16,
+								'v2' => 25,
+							],
+						),
+						0,
+						50,
+					),
+					'icon'                                 => Validatable_Fields\Configuration::string_of_choice_field( 'default', [ 'default', 'fontawesome-check', 'heroicons-check' ] ),
+					'icon_color'                           => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#3582c4',
+								'v2' => '#ffffff',
+							],
+						),
+					),
+					'icon_color_on_focus'                  => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#3582c4',
+								'v2' => '#ffffff',
+							],
+						),
+					),
+					'icon_color_on_hover'                  => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#3582c4',
+								'v2' => '#ffffff',
+							],
+						),
+					),
+					'icon_margin_bottom'                   => Validatable_Fields\Configuration::unit_field( '0px' ),
+					'icon_margin_left'                     => Validatable_Fields\Configuration::unit_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '-4px',
+								'v2' => '-5px',
+							],
+						),
+					),
+					'icon_margin_right'                    => Validatable_Fields\Configuration::unit_field( '0px' ),
+					'icon_margin_top'                      => Validatable_Fields\Configuration::unit_field( '-3px' ),
+					'icon_size'                            => Validatable_Fields\Configuration::integer_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => 21,
+								'v2' => 30,
+							],
+						),
+						0,
+						50,
+					),
+					'shadow'                               => Validatable_Fields\Configuration::string_field( 'inset 0 1px 2px rgba(0,0,0,.1)' ),
+					'shadow_checked'                       => Validatable_Fields\Configuration::string_field( 'inset 0 1px 2px rgba(0,0,0,.1)' ),
+					'shadow_on_focus'                      => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '0 0 0 1px #2271b1',
+								'v2' => '0 0 0 2px #fff, 0 0 0 4px #3858e9',
+							],
+						),
+					),
+					'shadow_on_focus_checked'              => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '0 0 0 1px #2271b1',
+								'v2' => '0 0 0 2px #fff, 0 0 0 4px #3858e9',
+							],
+						),
+					),
+					'shadow_on_hover'                      => Validatable_Fields\Configuration::string_field( 'inset 0 1px 2px rgba(0,0,0,.1)' ),
+					'shadow_on_hover_checked'              => Validatable_Fields\Configuration::string_field( 'inset 0 1px 2px rgba(0,0,0,.1)' ),
 				],
 			],
 			'login_form_remember_me_checkbox' => [
@@ -414,43 +886,176 @@ class Settings extends Utils\Settings {
 				'type'   => Validatable_Fields\Fields_Group::TYPE,
 				'config' => [
 					'alignment'                    => Validatable_Fields\Configuration::string_of_choice_field( 'default', [ 'default', 'new-line-left', 'new-line-center', 'new-line-right' ] ),
-					'background_color'             => Validatable_Fields\Configuration::string_field( '#2271b1' ),
-					'background_color_on_focus'    => Validatable_Fields\Configuration::string_field( '#135e96' ),
-					'background_color_on_hover'    => Validatable_Fields\Configuration::string_field( '#135e96' ),
-					'border_bottom_color'          => Validatable_Fields\Configuration::string_field( '#2271b1' ),
-					'border_bottom_color_on_focus' => Validatable_Fields\Configuration::string_field( '#135e96' ),
-					'border_bottom_color_on_hover' => Validatable_Fields\Configuration::string_field( '#135e96' ),
-					'border_bottom_left_radius'    => Validatable_Fields\Configuration::unit_field( '3px' ),
-					'border_bottom_right_radius'   => Validatable_Fields\Configuration::unit_field( '3px' ),
+					'background_color'             => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#2271b1',
+								'v2' => '#3858e9',
+							],
+						),
+					),
+					'background_color_on_focus'    => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#135e96',
+								'v2' => '#3858e9',
+							],
+						),
+					),
+					'background_color_on_hover'    => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#135e96',
+								'v2' => '#2145e6',
+							],
+						),
+					),
+					'border_bottom_color'          => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#2271b1',
+								'v2' => '#3858e9',
+							],
+						),
+					),
+					'border_bottom_color_on_focus' => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#135e96',
+								'v2' => '#3858e9',
+							],
+						),
+					),
+					'border_bottom_color_on_hover' => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#135e96',
+								'v2' => '#2145e6',
+							],
+						),
+					),
+					'border_bottom_left_radius'    => Validatable_Fields\Configuration::unit_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '3px',
+								'v2' => '2px',
+							],
+						),
+					),
+					'border_bottom_right_radius'   => Validatable_Fields\Configuration::unit_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '3px',
+								'v2' => '2px',
+							],
+						),
+					),
 					'border_bottom_style'          => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
 					'border_bottom_style_on_focus' => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
 					'border_bottom_style_on_hover' => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
 					'border_bottom_width'          => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_bottom_width_on_focus' => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_bottom_width_on_hover' => Validatable_Fields\Configuration::unit_field( '1px' ),
-					'border_left_color'            => Validatable_Fields\Configuration::string_field( '#2271b1' ),
-					'border_left_color_on_focus'   => Validatable_Fields\Configuration::string_field( '#135e96' ),
-					'border_left_color_on_hover'   => Validatable_Fields\Configuration::string_field( '#135e96' ),
+					'border_left_color'            => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#2271b1',
+								'v2' => '#3858e9',
+							],
+						),
+					),
+					'border_left_color_on_focus'   => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#135e96',
+								'v2' => '#3858e9',
+							],
+						),
+					),
+					'border_left_color_on_hover'   => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#135e96',
+								'v2' => '#2145e6',
+							],
+						),
+					),
 					'border_left_style'            => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
 					'border_left_style_on_focus'   => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
 					'border_left_style_on_hover'   => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
 					'border_left_width'            => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_left_width_on_focus'   => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_left_width_on_hover'   => Validatable_Fields\Configuration::unit_field( '1px' ),
-					'border_right_color'           => Validatable_Fields\Configuration::string_field( '#2271b1' ),
-					'border_right_color_on_focus'  => Validatable_Fields\Configuration::string_field( '#135e96' ),
-					'border_right_color_on_hover'  => Validatable_Fields\Configuration::string_field( '#135e96' ),
+					'border_right_color'           => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#2271b1',
+								'v2' => '#3858e9',
+							],
+						),
+					),
+					'border_right_color_on_focus'  => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#135e96',
+								'v2' => '#3858e9',
+							],
+						),
+					),
+					'border_right_color_on_hover'  => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#135e96',
+								'v2' => '#2145e6',
+							],
+						),
+					),
 					'border_right_style'           => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
 					'border_right_style_on_focus'  => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
 					'border_right_style_on_hover'  => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
 					'border_right_width'           => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_right_width_on_focus'  => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_right_width_on_hover'  => Validatable_Fields\Configuration::unit_field( '1px' ),
-					'border_top_color'             => Validatable_Fields\Configuration::string_field( '#2271b1' ),
-					'border_top_color_on_focus'    => Validatable_Fields\Configuration::string_field( '#135e96' ),
-					'border_top_color_on_hover'    => Validatable_Fields\Configuration::string_field( '#135e96' ),
-					'border_top_left_radius'       => Validatable_Fields\Configuration::unit_field( '3px' ),
-					'border_top_right_radius'      => Validatable_Fields\Configuration::unit_field( '3px' ),
+					'border_top_color'             => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#2271b1',
+								'v2' => '#3858e9',
+							],
+						),
+					),
+					'border_top_color_on_focus'    => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#135e96',
+								'v2' => '#3858e9',
+							],
+						),
+					),
+					'border_top_color_on_hover'    => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#135e96',
+								'v2' => '#2145e6',
+							],
+						),
+					),
+					'border_top_left_radius'       => Validatable_Fields\Configuration::unit_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '3px',
+								'v2' => '2px',
+							],
+						),
+					),
+					'border_top_right_radius'      => Validatable_Fields\Configuration::unit_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '3px',
+								'v2' => '2px',
+							],
+						),
+					),
 					'border_top_style'             => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
 					'border_top_style_on_focus'    => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
 					'border_top_style_on_hover'    => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
@@ -458,17 +1063,54 @@ class Settings extends Utils\Settings {
 					'border_top_width_on_focus'    => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_top_width_on_hover'    => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'font_family'                  => Validatable_Fields\Configuration::string_of_choice_field( 'default', $this->common_defs['font_families'] ),
-					'font_size'                    => Validatable_Fields\Configuration::unit_field( '13px' ),
-					'font_weight'                  => Validatable_Fields\Configuration::string_of_choice_field( '400', $this->common_defs['font_weights'] ),
+					'font_size'                    => Validatable_Fields\Configuration::unit_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '13px',
+								'v2' => '14px',
+							],
+						),
+					),
+					'font_weight'                  => Validatable_Fields\Configuration::string_of_choice_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '400',
+								'v2' => '500',
+							],
+						),
+						$this->common_defs['font_weights'],
+					),
 					'letter_case'                  => Validatable_Fields\Configuration::string_of_choice_field( 'none', $this->common_defs['letter_case'] ),
-					'line_height'                  => Validatable_Fields\Configuration::float_field( 2.31, 0 ),
+					'line_height'                  => Validatable_Fields\Configuration::float_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => 2.31,
+								'v2' => 2.72,
+							],
+						),
+						0,
+					),
 					'margin_bottom'                => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'margin_left'                  => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'margin_right'                 => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'margin_top'                   => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'padding_bottom'               => Validatable_Fields\Configuration::unit_field( '0px' ),
-					'padding_left'                 => Validatable_Fields\Configuration::unit_field( '12px' ),
-					'padding_right'                => Validatable_Fields\Configuration::unit_field( '12px' ),
+					'padding_left'                 => Validatable_Fields\Configuration::unit_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '12px',
+								'v2' => '14px',
+							],
+						),
+					),
+					'padding_right'                => Validatable_Fields\Configuration::unit_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '12px',
+								'v2' => '14px',
+							],
+						),
+					),
 					'padding_top'                  => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'shadow'                       => Validatable_Fields\Configuration::string_field(),
 					'shadow_on_focus'              => Validatable_Fields\Configuration::string_field(),
@@ -485,9 +1127,30 @@ class Settings extends Utils\Settings {
 					'background_color'             => Validatable_Fields\Configuration::string_field( '#f6f7f7' ),
 					'background_color_on_focus'    => Validatable_Fields\Configuration::string_field( '#f6f7f7' ),
 					'background_color_on_hover'    => Validatable_Fields\Configuration::string_field( '#f0f0f1' ),
-					'border_bottom_color'          => Validatable_Fields\Configuration::string_field( '#3582c4' ),
-					'border_bottom_color_on_focus' => Validatable_Fields\Configuration::string_field( '#3582c4' ),
-					'border_bottom_color_on_hover' => Validatable_Fields\Configuration::string_field( '#0a4b78' ),
+					'border_bottom_color'          => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#3582c4',
+								'v2' => '#3858e9',
+							],
+						),
+					),
+					'border_bottom_color_on_focus' => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#3582c4',
+								'v2' => '#3858e9',
+							],
+						),
+					),
+					'border_bottom_color_on_hover' => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#0a4b78',
+								'v2' => '#183ad6',
+							],
+						),
+					),
 					'border_bottom_left_radius'    => Validatable_Fields\Configuration::unit_field( '3px' ),
 					'border_bottom_right_radius'   => Validatable_Fields\Configuration::unit_field( '3px' ),
 					'border_bottom_style'          => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
@@ -496,27 +1159,90 @@ class Settings extends Utils\Settings {
 					'border_bottom_width'          => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_bottom_width_on_focus' => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_bottom_width_on_hover' => Validatable_Fields\Configuration::unit_field( '1px' ),
-					'border_left_color'            => Validatable_Fields\Configuration::string_field( '#3582c4' ),
-					'border_left_color_on_focus'   => Validatable_Fields\Configuration::string_field( '#3582c4' ),
-					'border_left_color_on_hover'   => Validatable_Fields\Configuration::string_field( '#0a4b78' ),
+					'border_left_color'            => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#3582c4',
+								'v2' => '#3858e9',
+							],
+						),
+					),
+					'border_left_color_on_focus'   => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#3582c4',
+								'v2' => '#3858e9',
+							],
+						),
+					),
+					'border_left_color_on_hover'   => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#0a4b78',
+								'v2' => '#183ad6',
+							],
+						),
+					),
 					'border_left_style'            => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
 					'border_left_style_on_focus'   => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
 					'border_left_style_on_hover'   => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
 					'border_left_width'            => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_left_width_on_focus'   => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_left_width_on_hover'   => Validatable_Fields\Configuration::unit_field( '1px' ),
-					'border_right_color'           => Validatable_Fields\Configuration::string_field( '#3582c4' ),
-					'border_right_color_on_focus'  => Validatable_Fields\Configuration::string_field( '#3582c4' ),
-					'border_right_color_on_hover'  => Validatable_Fields\Configuration::string_field( '#0a4b78' ),
+					'border_right_color'           => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#3582c4',
+								'v2' => '#3858e9',
+							],
+						),
+					),
+					'border_right_color_on_focus'  => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#3582c4',
+								'v2' => '#3858e9',
+							],
+						),
+					),
+					'border_right_color_on_hover'  => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#0a4b78',
+								'v2' => '#183ad6',
+							],
+						),
+					),
 					'border_right_style'           => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
 					'border_right_style_on_focus'  => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
 					'border_right_style_on_hover'  => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
 					'border_right_width'           => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_right_width_on_focus'  => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_right_width_on_hover'  => Validatable_Fields\Configuration::unit_field( '1px' ),
-					'border_top_color'             => Validatable_Fields\Configuration::string_field( '#3582c4' ),
-					'border_top_color_on_focus'    => Validatable_Fields\Configuration::string_field( '#3582c4' ),
-					'border_top_color_on_hover'    => Validatable_Fields\Configuration::string_field( '#0a4b78' ),
+					'border_top_color'             => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#3582c4',
+								'v2' => '#3858e9',
+							],
+						),
+					),
+					'border_top_color_on_focus'    => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#3582c4',
+								'v2' => '#3858e9',
+							],
+						),
+					),
+					'border_top_color_on_hover'    => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#0a4b78',
+								'v2' => '#183ad6',
+							],
+						),
+					),
 					'border_top_left_radius'       => Validatable_Fields\Configuration::unit_field( '3px' ),
 					'border_top_right_radius'      => Validatable_Fields\Configuration::unit_field( '3px' ),
 					'border_top_style'             => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
@@ -530,11 +1256,39 @@ class Settings extends Utils\Settings {
 					'padding_right'                => Validatable_Fields\Configuration::unit_field( '10px' ),
 					'padding_top'                  => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'shadow'                       => Validatable_Fields\Configuration::string_field(),
-					'shadow_on_focus'              => Validatable_Fields\Configuration::string_field( '0 0 0 1px #3582c4' ),
+					'shadow_on_focus'              => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '0 0 0 1px #3582c4',
+								'v2' => '0 0 0 1.5px #3858e9',
+							],
+						),
+					),
 					'shadow_on_hover'              => Validatable_Fields\Configuration::string_field(),
-					'text_color'                   => Validatable_Fields\Configuration::string_field( '#2271b1' ),
-					'text_color_on_focus'          => Validatable_Fields\Configuration::string_field( '#0a4b78' ),
-					'text_color_on_hover'          => Validatable_Fields\Configuration::string_field( '#0a4b78' ),
+					'text_color'                   => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#2271b1',
+								'v2' => '#3858e9',
+							],
+						),
+					),
+					'text_color_on_focus'          => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#0a4b78',
+								'v2' => '#183ad6',
+							],
+						),
+					),
+					'text_color_on_hover'          => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#0a4b78',
+								'v2' => '#183ad6',
+							],
+						),
+					),
 					'font_family'                  => Validatable_Fields\Configuration::string_of_choice_field( 'default', $this->common_defs['font_families'] ),
 					'font_size'                    => Validatable_Fields\Configuration::unit_field( '13px' ),
 					'font_weight'                  => Validatable_Fields\Configuration::string_of_choice_field( '400', $this->common_defs['font_weights'] ),
@@ -550,11 +1304,25 @@ class Settings extends Utils\Settings {
 					'border_top_left_radius'      => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'border_top_right_radius'     => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'custom_notice_type'          => Validatable_Fields\Configuration::string_of_choice_field( 'notice', [ 'notice', 'error', 'success' ] ),
-					'error_background_color'      => Validatable_Fields\Configuration::string_field( '#ffffff' ),
+					'error_background_color'      => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#ffffff',
+								'v2' => '#fcf0f0',
+							],
+						),
+					),
 					'error_border_bottom_color'   => Validatable_Fields\Configuration::string_field(),
 					'error_border_bottom_style'   => Validatable_Fields\Configuration::string_of_choice_field( 'none', $this->common_defs['border_style'] ),
 					'error_border_bottom_width'   => Validatable_Fields\Configuration::unit_field( '0px' ),
-					'error_border_left_color'     => Validatable_Fields\Configuration::string_field( '#d63638' ),
+					'error_border_left_color'     => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#d63638',
+								'v2' => '#cc1818',
+							],
+						),
+					),
 					'error_border_left_style'     => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
 					'error_border_left_width'     => Validatable_Fields\Configuration::unit_field( '4px' ),
 					'error_border_right_color'    => Validatable_Fields\Configuration::string_field(),
@@ -563,7 +1331,14 @@ class Settings extends Utils\Settings {
 					'error_border_top_color'      => Validatable_Fields\Configuration::string_field(),
 					'error_border_top_style'      => Validatable_Fields\Configuration::string_of_choice_field( 'none', $this->common_defs['border_style'] ),
 					'error_border_top_width'      => Validatable_Fields\Configuration::unit_field( '0px' ),
-					'error_shadow'                => Validatable_Fields\Configuration::string_field( 'rgba(0, 0, 0, 0.1) 0px 1px 1px 0px' ),
+					'error_shadow'                => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => 'rgba(0, 0, 0, 0.1) 0px 1px 1px 0px',
+								'v2' => '',
+							],
+						),
+					),
 					'error_text_color'            => Validatable_Fields\Configuration::string_field( '#3c434a' ),
 					'font_family'                 => Validatable_Fields\Configuration::string_of_choice_field( 'default', $this->common_defs['font_families'] ),
 					'font_size'                   => Validatable_Fields\Configuration::unit_field( '13px' ),
@@ -577,7 +1352,14 @@ class Settings extends Utils\Settings {
 					'notice_border_bottom_color'  => Validatable_Fields\Configuration::string_field(),
 					'notice_border_bottom_style'  => Validatable_Fields\Configuration::string_of_choice_field( 'none', $this->common_defs['border_style'] ),
 					'notice_border_bottom_width'  => Validatable_Fields\Configuration::unit_field( '0px' ),
-					'notice_border_left_color'    => Validatable_Fields\Configuration::string_field( '#72aee6' ),
+					'notice_border_left_color'    => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#72aee6',
+								'v2' => '#3858e9',
+							],
+						),
+					),
 					'notice_border_left_style'    => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
 					'notice_border_left_width'    => Validatable_Fields\Configuration::unit_field( '4px' ),
 					'notice_border_right_color'   => Validatable_Fields\Configuration::string_field(),
@@ -586,18 +1368,53 @@ class Settings extends Utils\Settings {
 					'notice_border_top_color'     => Validatable_Fields\Configuration::string_field(),
 					'notice_border_top_style'     => Validatable_Fields\Configuration::string_of_choice_field( 'none', $this->common_defs['border_style'] ),
 					'notice_border_top_width'     => Validatable_Fields\Configuration::unit_field( '0px' ),
-					'notice_shadow'               => Validatable_Fields\Configuration::string_field( 'rgba(0, 0, 0, 0.1) 0px 1px 1px 0px' ),
+					'notice_shadow'               => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => 'rgba(0, 0, 0, 0.1) 0px 1px 1px 0px',
+								'v2' => '',
+							],
+						),
+					),
 					'notice_text_color'           => Validatable_Fields\Configuration::string_field( '#3c434a' ),
-					'padding_bottom'              => Validatable_Fields\Configuration::unit_field( '12px' ),
+					'padding_bottom'              => Validatable_Fields\Configuration::unit_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '12px',
+								'v2' => '8px',
+							],
+						),
+					),
 					'padding_left'                => Validatable_Fields\Configuration::unit_field( '12px' ),
 					'padding_right'               => Validatable_Fields\Configuration::unit_field( '12px' ),
-					'padding_top'                 => Validatable_Fields\Configuration::unit_field( '12px' ),
+					'padding_top'                 => Validatable_Fields\Configuration::unit_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '12px',
+								'v2' => '8px',
+							],
+						),
+					),
 					'show_custom_notice'          => Validatable_Fields\Configuration::boolean_field( false ),
-					'success_background_color'    => Validatable_Fields\Configuration::string_field( '#ffffff' ),
+					'success_background_color'    => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#ffffff',
+								'v2' => '#eff9f1',
+							],
+						),
+					),
 					'success_border_bottom_color' => Validatable_Fields\Configuration::string_field(),
 					'success_border_bottom_style' => Validatable_Fields\Configuration::string_of_choice_field( 'none', $this->common_defs['border_style'] ),
 					'success_border_bottom_width' => Validatable_Fields\Configuration::unit_field( '0px' ),
-					'success_border_left_color'   => Validatable_Fields\Configuration::string_field( '#00a32a' ),
+					'success_border_left_color'   => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#00a32a',
+								'v2' => '#4ab866',
+							],
+						),
+					),
 					'success_border_left_style'   => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
 					'success_border_left_width'   => Validatable_Fields\Configuration::unit_field( '4px' ),
 					'success_border_right_color'  => Validatable_Fields\Configuration::string_field(),
@@ -606,7 +1423,14 @@ class Settings extends Utils\Settings {
 					'success_border_top_color'    => Validatable_Fields\Configuration::string_field(),
 					'success_border_top_style'    => Validatable_Fields\Configuration::string_of_choice_field( 'none', $this->common_defs['border_style'] ),
 					'success_border_top_width'    => Validatable_Fields\Configuration::unit_field( '0px' ),
-					'success_shadow'              => Validatable_Fields\Configuration::string_field( 'rgba(0, 0, 0, 0.1) 0px 1px 1px 0px' ),
+					'success_shadow'              => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => 'rgba(0, 0, 0, 0.1) 0px 1px 1px 0px',
+								'v2' => '',
+							],
+						),
+					),
 					'success_text_color'          => Validatable_Fields\Configuration::string_field( '#3c434a' ),
 				],
 			],
@@ -622,7 +1446,14 @@ class Settings extends Utils\Settings {
 					'line_height'         => Validatable_Fields\Configuration::float_field( 1.5, 0 ),
 					'link_color'          => Validatable_Fields\Configuration::string_field( '#50575e' ),
 					'link_color_on_focus' => Validatable_Fields\Configuration::string_field( '#135e96' ),
-					'link_color_on_hover' => Validatable_Fields\Configuration::string_field( '#135e96' ),
+					'link_color_on_hover' => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#135e96',
+								'v2' => '#183ad6',
+							],
+						),
+					),
 					'margin_bottom'       => Validatable_Fields\Configuration::unit_field( '16px' ),
 					'margin_left'         => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'margin_right'        => Validatable_Fields\Configuration::unit_field( '0px' ),
@@ -634,7 +1465,14 @@ class Settings extends Utils\Settings {
 					'separator'           => Validatable_Fields\Configuration::string_field( '|' ),
 					'separator_color'     => Validatable_Fields\Configuration::string_field( '#50575e' ),
 					'shadow'              => Validatable_Fields\Configuration::string_field(),
-					'shadow_on_focus'     => Validatable_Fields\Configuration::string_field( '0 0 0 2px #2271b1' ),
+					'shadow_on_focus'     => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '0 0 0 2px #2271b1',
+								'v2' => '0 0 0 1.5px #3858e9',
+							],
+						),
+					),
 					'shadow_on_hover'     => Validatable_Fields\Configuration::string_field(),
 					'text_decoration'     => Validatable_Fields\Configuration::string_of_choice_field( 'none', [ 'none', 'underline', 'line-through' ] ),
 				],
@@ -701,8 +1539,22 @@ class Settings extends Utils\Settings {
 					'border_top_width_on_hover'    => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'gap'                          => Validatable_Fields\Configuration::unit_field( '1em' ),
 					'icon_color'                   => Validatable_Fields\Configuration::string_field( '#3c434a' ),
-					'icon_color_on_focus'          => Validatable_Fields\Configuration::string_field( '#135e96' ),
-					'icon_color_on_hover'          => Validatable_Fields\Configuration::string_field( '#135e96' ),
+					'icon_color_on_focus'          => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#135e96',
+								'v2' => '#043959',
+							],
+						),
+					),
+					'icon_color_on_hover'          => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#135e96',
+								'v2' => '#183ad6',
+							],
+						),
+					),
 					'icon_size'                    => Validatable_Fields\Configuration::unit_field( '20px' ),
 					'margin_bottom'                => Validatable_Fields\Configuration::unit_field( '16px' ),
 					'margin_left'                  => Validatable_Fields\Configuration::unit_field( '0px' ),
@@ -714,7 +1566,14 @@ class Settings extends Utils\Settings {
 					'padding_top'                  => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'placement'                    => Validatable_Fields\Configuration::string_of_choice_field( 'at_the_bottom', [ 'above_logo', 'above_form', 'above_inline_links', 'above_privacy_policy_link', 'above_language_switcher', 'at_the_bottom' ] ),
 					'shadow'                       => Validatable_Fields\Configuration::string_field(),
-					'shadow_on_focus'              => Validatable_Fields\Configuration::string_field( '0 0 0 2px #2271b1' ),
+					'shadow_on_focus'              => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '0 0 0 2px #2271b1',
+								'v2' => '0 0 0 1.5px #3858e9',
+							],
+						),
+					),
 					'shadow_on_hover'              => Validatable_Fields\Configuration::string_field(),
 					'show'                         => Validatable_Fields\Configuration::boolean_field( false ),
 				],
@@ -743,9 +1602,30 @@ class Settings extends Utils\Settings {
 					'hide'                => Validatable_Fields\Configuration::boolean_field( false ),
 					'letter_case'         => Validatable_Fields\Configuration::string_of_choice_field( 'none', $this->common_defs['letter_case'] ),
 					'line_height'         => Validatable_Fields\Configuration::float_field( 1.4, 0 ),
-					'link_color'          => Validatable_Fields\Configuration::string_field( '#2271b1' ),
-					'link_color_on_focus' => Validatable_Fields\Configuration::string_field( '#135e96' ),
-					'link_color_on_hover' => Validatable_Fields\Configuration::string_field( '#043959' ),
+					'link_color'          => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#2271b1',
+								'v2' => '#2145e6',
+							],
+						),
+					),
+					'link_color_on_focus' => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#135e96',
+								'v2' => '#043959',
+							],
+						),
+					),
+					'link_color_on_hover' => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '#043959',
+								'v2' => '#183ad6',
+							],
+						),
+					),
 					'margin_bottom'       => Validatable_Fields\Configuration::unit_field( '2em' ),
 					'margin_left'         => Validatable_Fields\Configuration::unit_field( '0em' ),
 					'margin_right'        => Validatable_Fields\Configuration::unit_field( '0em' ),
@@ -755,7 +1635,14 @@ class Settings extends Utils\Settings {
 					'padding_right'       => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'padding_top'         => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'shadow'              => Validatable_Fields\Configuration::string_field(),
-					'shadow_on_focus'     => Validatable_Fields\Configuration::string_field( '0 0 0 2px #2271b1' ),
+					'shadow_on_focus'     => Validatable_Fields\Configuration::string_field(
+						$this->resolve_for_generation(
+							[
+								'v1' => '0 0 0 2px #2271b1',
+								'v2' => '0 0 0 1.5px #3858e9',
+							],
+						),
+					),
 					'shadow_on_hover'     => Validatable_Fields\Configuration::string_field(),
 					'text_decoration'     => Validatable_Fields\Configuration::string_of_choice_field( 'underline', [ 'none', 'underline', 'line-through' ] ),
 				],

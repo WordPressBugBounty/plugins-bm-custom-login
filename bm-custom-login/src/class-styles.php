@@ -11,7 +11,7 @@ use Teydea_Studio\Custom_Login\Dependencies\Utils;
 use WP_Theme_JSON_Resolver;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit; // @codeCoverageIgnore
 }
 
 /**
@@ -83,42 +83,52 @@ class Styles {
 				$background_size   = 'auto';
 				$background_repeat = 'no-repeat';
 				break;
+
 			case 'size-auto--repeat':
 				$background_size   = 'auto';
 				$background_repeat = 'repeat';
 				break;
+
 			case 'size-auto--repeat-round':
 				$background_size   = 'auto';
 				$background_repeat = 'round';
 				break;
+
 			case 'size-auto--repeat-space':
 				$background_size   = 'auto';
 				$background_repeat = 'space';
 				break;
+
 			case 'size-auto--repeat-x':
 				$background_size   = 'auto';
 				$background_repeat = 'repeat-x';
 				break;
+
 			case 'size-auto--repeat-y':
 				$background_size   = 'auto';
 				$background_repeat = 'repeat-y';
 				break;
+
 			case 'size-contain--no-repeat':
 				$background_size   = 'contain';
 				$background_repeat = 'no-repeat';
 				break;
+
 			case 'size-contain--repeat':
 				$background_size   = 'contain';
 				$background_repeat = 'repeat';
 				break;
+
 			case 'size-contain--repeat-x':
 				$background_size   = 'contain';
 				$background_repeat = 'repeat-x';
 				break;
+
 			case 'size-contain--repeat-y':
 				$background_size   = 'contain';
 				$background_repeat = 'repeat-y';
 				break;
+
 			case 'size-cover':
 			default:
 				// Keep the default values.
@@ -269,7 +279,7 @@ class Styles {
 			'default' => [
 				'name'    => __( 'Default', 'bm-custom-login' ),
 				'slug'    => 'default',
-				'weights' => [ '400' ],
+				'weights' => [ '400', '500' ],
 			],
 		];
 

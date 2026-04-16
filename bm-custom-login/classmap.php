@@ -5,17 +5,21 @@
  * @package Teydea_Studio\Custom_Login
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 return [
 	'Teydea_Studio\\Custom_Login\\Adjuster' => '/src/class-adjuster.php',
 	'Teydea_Studio\\Custom_Login\\Dependencies\\Universal_Modules\\Module_Endpoint_Settings' => '/deps/php/universal-modules/class-module-endpoint-settings.php',
 	'Teydea_Studio\\Custom_Login\\Dependencies\\Universal_Modules\\Module_Plugin_Upgrade_Action_Link' => '/deps/php/universal-modules/class-module-plugin-upgrade-action-link.php',
 	'Teydea_Studio\\Custom_Login\\Dependencies\\Universal_Modules\\Module_Settings_Page' => '/deps/php/universal-modules/class-module-settings-page.php',
-	'Teydea_Studio\\Custom_Login\\Dependencies\\Universal_Modules\\Module_Translations' => '/deps/php/universal-modules/class-module-translations.php',
 	'Teydea_Studio\\Custom_Login\\Dependencies\\Utils\\Asset' => '/deps/php/utils/class-asset.php',
 	'Teydea_Studio\\Custom_Login\\Dependencies\\Utils\\Cache' => '/deps/php/utils/class-cache.php',
 	'Teydea_Studio\\Custom_Login\\Dependencies\\Utils\\Container' => '/deps/php/utils/class-container.php',
 	'Teydea_Studio\\Custom_Login\\Dependencies\\Utils\\Date_Time' => '/deps/php/utils/class-date-time.php',
 	'Teydea_Studio\\Custom_Login\\Dependencies\\Utils\\Environment' => '/deps/php/utils/class-environment.php',
+	'Teydea_Studio\\Custom_Login\\Dependencies\\Utils\\File' => '/deps/php/utils/class-file.php',
 	'Teydea_Studio\\Custom_Login\\Dependencies\\Utils\\Languages' => '/deps/php/utils/class-languages.php',
 	'Teydea_Studio\\Custom_Login\\Dependencies\\Utils\\Module' => '/deps/php/utils/class-module.php',
 	'Teydea_Studio\\Custom_Login\\Dependencies\\Utils\\Nonce' => '/deps/php/utils/class-nonce.php',
@@ -26,6 +30,7 @@ return [
 	'Teydea_Studio\\Custom_Login\\Dependencies\\Utils\\Type' => '/deps/php/utils/class-type.php',
 	'Teydea_Studio\\Custom_Login\\Dependencies\\Utils\\User' => '/deps/php/utils/class-user.php',
 	'Teydea_Studio\\Custom_Login\\Dependencies\\Utils\\Users' => '/deps/php/utils/class-users.php',
+	'Teydea_Studio\\Custom_Login\\Dependencies\\Utils\\With_Settings' => '/deps/php/utils/trait-with-settings.php',
 	'Teydea_Studio\\Custom_Login\\Dependencies\\Validatable_Fields\\Closures' => '/deps/php/validatable-fields/class-closures.php',
 	'Teydea_Studio\\Custom_Login\\Dependencies\\Validatable_Fields\\Configuration' => '/deps/php/validatable-fields/class-configuration.php',
 	'Teydea_Studio\\Custom_Login\\Dependencies\\Validatable_Fields\\Dynamic_Fields_Group' => '/deps/php/validatable-fields/class-dynamic-fields-group.php',
@@ -34,6 +39,7 @@ return [
 	'Teydea_Studio\\Custom_Login\\Dependencies\\Validatable_Fields\\Field_Boolean' => '/deps/php/validatable-fields/class-field-boolean.php',
 	'Teydea_Studio\\Custom_Login\\Dependencies\\Validatable_Fields\\Field_Float' => '/deps/php/validatable-fields/class-field-float.php',
 	'Teydea_Studio\\Custom_Login\\Dependencies\\Validatable_Fields\\Field_Integer' => '/deps/php/validatable-fields/class-field-integer.php',
+	'Teydea_Studio\\Custom_Login\\Dependencies\\Validatable_Fields\\Field_Integer_Of_Choice' => '/deps/php/validatable-fields/class-field-integer-of-choice.php',
 	'Teydea_Studio\\Custom_Login\\Dependencies\\Validatable_Fields\\Field_String' => '/deps/php/validatable-fields/class-field-string.php',
 	'Teydea_Studio\\Custom_Login\\Dependencies\\Validatable_Fields\\Field_String_Of_Choice' => '/deps/php/validatable-fields/class-field-string-of-choice.php',
 	'Teydea_Studio\\Custom_Login\\Dependencies\\Validatable_Fields\\Fields_Group' => '/deps/php/validatable-fields/class-fields-group.php',

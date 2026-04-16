@@ -12,7 +12,7 @@ use Teydea_Studio\Custom_Login\Dependencies\Utils;
 use Teydea_Studio\Custom_Login\Styles;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit; // @codeCoverageIgnore
 }
 
 /**
@@ -146,6 +146,9 @@ final class Module_Settings_Page extends Universal_Modules\Module_Settings_Page 
 		$data['context'] = [
 			// Whether anyone can register.
 			'anyoneCanRegister'         => $anyone_can_register,
+
+			// Login style generation identifier (e.g. 'v1', 'v2').
+			'loginStyleGeneration'      => $this->get_settings()->get_login_style_generation(),
 
 			// Whether we're in the network admin context.
 			'isNetworkAdmin'            => is_network_admin(),

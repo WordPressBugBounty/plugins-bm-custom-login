@@ -8,7 +8,7 @@
 namespace Teydea_Studio\Custom_Login\Dependencies\Utils;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit; // @codeCoverageIgnore
 }
 
 /**
@@ -77,6 +77,7 @@ final class Asset {
 		switch ( $this->container->get_type() ) {
 			case 'plugin':
 				return plugin_dir_path( $this->container->get_main_file() ) . $path;
+
 			case 'theme':
 				return get_theme_file_path( $path );
 		}
@@ -100,6 +101,7 @@ final class Asset {
 		switch ( $this->container->get_type() ) {
 			case 'plugin':
 				return plugins_url( $path, $this->container->get_main_file() );
+
 			case 'theme':
 				return get_theme_file_uri( $path );
 		}

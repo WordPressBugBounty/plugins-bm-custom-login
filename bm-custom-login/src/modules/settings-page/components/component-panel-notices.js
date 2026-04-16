@@ -32,7 +32,7 @@ import { __, sprintf } from '@wordpress/i18n';
  * @param {Object}   properties.settings    Plugin settings.
  * @param {Function} properties.setSettings Function (callback) used to update the settings.
  *
- * @return {JSX} PanelNotices component.
+ * @return {Element} PanelNotices component.
  */
 export const PanelNotices = ( { context, presets, settings, setSettings } ) => {
 	// Destructure the settings object.
@@ -132,7 +132,7 @@ export const PanelNotices = ( { context, presets, settings, setSettings } ) => {
 	/**
 	 * Return the component
 	 *
-	 * @return {JSX} PanelNotices component.
+	 * @return {Element} PanelNotices component.
 	 */
 	return (
 		<PanelBody initialOpen={ false } title={ __( 'Notices', 'bm-custom-login' ) }>
@@ -152,6 +152,7 @@ export const PanelNotices = ( { context, presets, settings, setSettings } ) => {
 						withDecoration: false,
 						withLetterCase: false,
 					} }
+
 					/**
 					 * Update the values
 					 *
@@ -168,6 +169,7 @@ export const PanelNotices = ( { context, presets, settings, setSettings } ) => {
 					<ColorControl
 						value={ errorBackgroundColor }
 						label={ __( 'Background', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -188,6 +190,7 @@ export const PanelNotices = ( { context, presets, settings, setSettings } ) => {
 					<ColorControl
 						value={ errorTextColor }
 						label={ __( 'Text', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -210,6 +213,7 @@ export const PanelNotices = ( { context, presets, settings, setSettings } ) => {
 					<ColorControl
 						value={ noticeBackgroundColor }
 						label={ __( 'Background', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -230,6 +234,7 @@ export const PanelNotices = ( { context, presets, settings, setSettings } ) => {
 					<ColorControl
 						value={ noticeTextColor }
 						label={ __( 'Text', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -252,6 +257,7 @@ export const PanelNotices = ( { context, presets, settings, setSettings } ) => {
 					<ColorControl
 						value={ successBackgroundColor }
 						label={ __( 'Background', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -272,6 +278,7 @@ export const PanelNotices = ( { context, presets, settings, setSettings } ) => {
 					<ColorControl
 						value={ successTextColor }
 						label={ __( 'Text', 'bm-custom-login' ) }
+
 						/**
 						 * Update the value
 						 *
@@ -307,6 +314,7 @@ export const PanelNotices = ( { context, presets, settings, setSettings } ) => {
 						borderTopWidth: errorBorderTopWidth,
 					} }
 					label={ __( 'Border style (error)', 'bm-custom-login' ) }
+
 					/**
 					 * Update the value
 					 *
@@ -349,6 +357,7 @@ export const PanelNotices = ( { context, presets, settings, setSettings } ) => {
 						borderTopWidth: noticeBorderTopWidth,
 					} }
 					label={ __( 'Border style (notice)', 'bm-custom-login' ) }
+
 					/**
 					 * Update the value
 					 *
@@ -391,6 +400,7 @@ export const PanelNotices = ( { context, presets, settings, setSettings } ) => {
 						borderTopWidth: successBorderTopWidth,
 					} }
 					label={ __( 'Border style (success)', 'bm-custom-login' ) }
+
 					/**
 					 * Update the value
 					 *
@@ -424,6 +434,7 @@ export const PanelNotices = ( { context, presets, settings, setSettings } ) => {
 						topLeft: borderTopLeftRadius,
 						topRight: borderTopRightRadius,
 					} }
+
 					/**
 					 * Update the value
 					 *
@@ -449,6 +460,7 @@ export const PanelNotices = ( { context, presets, settings, setSettings } ) => {
 					label={ __( 'Shadow (error)', 'bm-custom-login' ) }
 					value={ errorShadow }
 					presets={ shadowPresets }
+
 					/**
 					 * Update the value
 					 *
@@ -466,6 +478,7 @@ export const PanelNotices = ( { context, presets, settings, setSettings } ) => {
 					label={ __( 'Shadow (notice)', 'bm-custom-login' ) }
 					value={ noticeShadow }
 					presets={ shadowPresets }
+
 					/**
 					 * Update the value
 					 *
@@ -483,6 +496,7 @@ export const PanelNotices = ( { context, presets, settings, setSettings } ) => {
 					label={ __( 'Shadow (success)', 'bm-custom-login' ) }
 					value={ successShadow }
 					presets={ shadowPresets }
+
 					/**
 					 * Update the value
 					 *
@@ -507,6 +521,7 @@ export const PanelNotices = ( { context, presets, settings, setSettings } ) => {
 						bottom: paddingBottom,
 						left: paddingLeft,
 					} }
+
 					/**
 					 * Update the value
 					 *
@@ -544,6 +559,7 @@ export const PanelNotices = ( { context, presets, settings, setSettings } ) => {
 						bottom: marginBottom,
 						left: marginLeft,
 					} }
+
 					/**
 					 * Update the value
 					 *
@@ -581,8 +597,9 @@ export const PanelNotices = ( { context, presets, settings, setSettings } ) => {
 						]
 					}
 					values={ Object.fromEntries(
-						languages.map( ( language ) => [ language, notices?.[ sprintf( 'noticePasswordReset.%s', language ) ] ?? '' ] )
+						languages.map( ( language ) => [ language, notices?.[ sprintf( 'noticePasswordReset.%s', language ) ] ?? '' ] ),
 					) }
+
 					/**
 					 * Update the values
 					 *
@@ -592,7 +609,7 @@ export const PanelNotices = ( { context, presets, settings, setSettings } ) => {
 					 */
 					onChange={ ( updatedValues ) => {
 						setSetting(
-							Object.fromEntries( languages.map( ( language ) => [ sprintf( 'noticePasswordReset.%s', language ), updatedValues[ language ] ] ) )
+							Object.fromEntries( languages.map( ( language ) => [ sprintf( 'noticePasswordReset.%s', language ), updatedValues[ language ] ] ) ),
 						);
 					} }
 				/>
@@ -605,8 +622,9 @@ export const PanelNotices = ( { context, presets, settings, setSettings } ) => {
 							label={ __( '"Register For This Site" notice content', 'bm-custom-login' ) }
 							original={ translations?.[ 'Register For This Site.' ] }
 							values={ Object.fromEntries(
-								languages.map( ( language ) => [ language, notices?.[ sprintf( 'noticeRegister.%s', language ) ] ?? '' ] )
+								languages.map( ( language ) => [ language, notices?.[ sprintf( 'noticeRegister.%s', language ) ] ?? '' ] ),
 							) }
+
 							/**
 							 * Update the values
 							 *
@@ -617,8 +635,8 @@ export const PanelNotices = ( { context, presets, settings, setSettings } ) => {
 							onChange={ ( updatedValues ) => {
 								setSetting(
 									Object.fromEntries(
-										languages.map( ( language ) => [ sprintf( 'noticeRegister.%s', language ), updatedValues[ language ] ] )
-									)
+										languages.map( ( language ) => [ sprintf( 'noticeRegister.%s', language ), updatedValues[ language ] ] ),
+									),
 								);
 							} }
 						/>
@@ -630,6 +648,7 @@ export const PanelNotices = ( { context, presets, settings, setSettings } ) => {
 					__next40pxDefaultSize
 					label={ __( 'Show custom notice above the login form', 'bm-custom-login' ) }
 					checked={ showCustomNotice }
+
 					/**
 					 * Update the value
 					 *
@@ -662,6 +681,7 @@ export const PanelNotices = ( { context, presets, settings, setSettings } ) => {
 									label: __( 'Success', 'bm-custom-login' ),
 								},
 							] }
+
 							/**
 							 * Update the value
 							 *
@@ -680,8 +700,9 @@ export const PanelNotices = ( { context, presets, settings, setSettings } ) => {
 							__next40pxDefaultSize
 							label={ __( 'Content of the custom notice', 'bm-custom-login' ) }
 							values={ Object.fromEntries(
-								languages.map( ( language ) => [ language, notices?.[ sprintf( 'noticeCustom.%s', language ) ] ?? '' ] )
+								languages.map( ( language ) => [ language, notices?.[ sprintf( 'noticeCustom.%s', language ) ] ?? '' ] ),
 							) }
+
 							/**
 							 * Update the values
 							 *
@@ -691,7 +712,9 @@ export const PanelNotices = ( { context, presets, settings, setSettings } ) => {
 							 */
 							onChange={ ( updatedValues ) => {
 								setSetting(
-									Object.fromEntries( languages.map( ( language ) => [ sprintf( 'noticeCustom.%s', language ), updatedValues[ language ] ] ) )
+									Object.fromEntries(
+										languages.map( ( language ) => [ sprintf( 'noticeCustom.%s', language ), updatedValues[ language ] ] ),
+									),
 								);
 							} }
 						/>

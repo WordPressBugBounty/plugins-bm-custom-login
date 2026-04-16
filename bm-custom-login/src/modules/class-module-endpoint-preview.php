@@ -14,7 +14,7 @@ use WP_REST_Request;
 use WP_REST_Server;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit; // @codeCoverageIgnore
 }
 
 /**
@@ -52,8 +52,14 @@ final class Module_Endpoint_Preview extends Utils\Module {
 				'callback'            => [ $this, 'get_preview' ],
 				'args'                => [
 					'settings' => [
-						'required' => true,
-						'type'     => 'object',
+						'required'          => true,
+						'type'              => 'object',
+						'sanitize_callback' => function ( $value ) {
+							return is_array( $value ) ? $value : [];
+						},
+						'validate_callback' => function ( $value ) {
+							return is_array( $value );
+						},
 					],
 				],
 
@@ -76,7 +82,7 @@ final class Module_Endpoint_Preview extends Utils\Module {
 
 					return true;
 				},
-			]
+			],
 		);
 	}
 
@@ -161,6 +167,7 @@ final class Module_Endpoint_Preview extends Utils\Module {
 
 		// Render the login form markup.
 		require_once ABSPATH . 'wp-login.php';
+
 		exit;
 	}
 }

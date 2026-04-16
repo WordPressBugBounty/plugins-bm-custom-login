@@ -17,13 +17,13 @@ import './styles.scss';
  * SettingsContainer component
  *
  * @param {Object}  properties           Component properties object.
- * @param {JSX}     properties.actions   Actions components.
- * @param {JSX}     properties.children  Child component to render.
+ * @param {Element} properties.actions   Actions components.
+ * @param {Element} properties.children  Child component to render.
  * @param {string}  properties.pageTitle Page title.
  * @param {Object}  properties.product   Product's data object.
  * @param {boolean} properties.width     Width of the inner container; either "full" or "wide".
  *
- * @return {JSX} Settings component.
+ * @return {Element} Settings component.
  */
 export const SettingsContainer = ( { actions, children, pageTitle, product, width = 'full' } ) => {
 	// Destructure the product object.

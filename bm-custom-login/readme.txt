@@ -2,9 +2,9 @@
 Contributors: teydeastudio, bartoszgadomski, BinaryMoon
 Tags: custom login, login page, login customizer, branding, login logo
 Requires at least: 6.6
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 3.0.0
+Stable tag: 3.1.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI: https://wpcustomlogin.com/?utm_source=WP+Custom+Login
@@ -105,6 +105,15 @@ Yes. The settings page includes a custom CSS field where you can add any additio
 
 == Changelog ==
 
+= 3.1.0 (2026-04-16) =
+* Compatibility with WordPress 7.0 confirmed
+* Unnecessary translation files removed since these are loaded from WordPress.org
+* Added missing styles to the checkbox field
+* Fix font family issue on the password field
+* Added support for choosing different WordPress logo color (blue vs. gray)
+* Dependencies updated
+* Code improvements
+
 = 3.0.0 (2026-02-16) =
 * Complete plugin rebuild with a modern, React-based settings page and live preview
 * Add granular styling controls for form container, labels, input fields, checkboxes, and buttons (including separate hover and focus states)
@@ -152,11 +161,5 @@ Yes. The settings page includes a custom CSS field where you can add any additio
 = 2.2.2 (2019-04-30) =
 * Replace deprecated filter
 * Update coding standards
-
-= 2.2.1 (2017-12-01) =
-* Remove text shadow on login button so that it's more consistently readable
-* Make it clearer what the text link colour changes
-* Change CSS label to match the core customizer label
-* Remove CSS vendor prefixes that are no longer needed
 
 (For older records, see the `changelog.txt` file).

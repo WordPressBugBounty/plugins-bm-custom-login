@@ -3,12 +3,11 @@
  * Plugin Name: WP Custom Login
  * Plugin URI: https://wpcustomlogin.com/?utm_source=WP+Custom+Login
  * Description: Customize the WordPress login screen quickly and easily.
- * Version: 3.0.0
+ * Version: 3.1.0
  * Text Domain: bm-custom-login
- * Domain Path: /languages
  * Requires PHP: 7.4
  * Requires at least: 6.6
- * Tested up to: 6.9
+ * Tested up to: 7.0
  * Author: Teydea Studio
  * Author URI: https://teydeastudio.com/?utm_source=WP+Custom+Login
  * Network: true
@@ -21,7 +20,7 @@
 namespace Teydea_Studio\Custom_Login;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit; // @codeCoverageIgnore
 }
 
 /**
@@ -47,6 +46,7 @@ add_action(
 // Note whether the plugin is activated network-wide.
 add_action(
 	sprintf( 'activate_%s', get_container()->get_basename() ),
+
 	/**
 	 * Note whether the plugin is being activated network-wide
 	 *

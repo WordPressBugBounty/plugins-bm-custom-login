@@ -28,7 +28,7 @@ import './styles.scss';
  * @param {Object}   properties.settings    Settings object.
  * @param {Function} properties.setSettings Settings setter.
  *
- * @return {JSX} SettingsTabs component.
+ * @return {Element} SettingsTabs component.
  */
 export const SettingsTabs = ( { product, settings, setSettings } ) => {
 	/**
@@ -52,7 +52,7 @@ export const SettingsTabs = ( { product, settings, setSettings } ) => {
 					 *
 					 * @param {Object} tab Tab object.
 					 *
-					 * @return {JSX} Tab component.
+					 * @return {Element} Tab component.
 					 */
 					( tab ) => <Fragment key={ tab.name }>{ tab.component }</Fragment>
 				}

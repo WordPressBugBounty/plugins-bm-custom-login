@@ -29,7 +29,7 @@ import { FieldNotice } from '../field-notice/index.js';
  * @param {number}   properties.defaultValue Field's default value.
  * @param {Function} properties.onChange     Function callback to trigger on value change.
  *
- * @return {JSX} IntegerControl component.
+ * @return {Element} IntegerControl component.
  */
 export const IntegerControl = ( { label, help, min, max, value, defaultValue, onChange } ) => {
 	// Manage the notice state.
@@ -65,8 +65,8 @@ export const IntegerControl = ( { label, help, min, max, value, defaultValue, on
 					__( '"%1$s" is not within the accepted range (%2$d-%3$d).', 'bm-custom-login' ),
 					editedValue,
 					min,
-					max
-				)
+					max,
+				),
 			);
 		} else {
 			setFieldNotice(
@@ -74,8 +74,8 @@ export const IntegerControl = ( { label, help, min, max, value, defaultValue, on
 					// Translators: %1$s - field value, %2$d - minimum accepted value.
 					__( '"%1$s" must be greater than or equal to %2$d.', 'bm-custom-login' ),
 					editedValue,
-					min
-				)
+					min,
+				),
 			);
 		}
 	}, [ editedValue, min, max ] );
@@ -83,7 +83,7 @@ export const IntegerControl = ( { label, help, min, max, value, defaultValue, on
 	/**
 	 * Return component
 	 *
-	 * @return {JSX} IntegerControl component.
+	 * @return {Element} IntegerControl component.
 	 */
 	return (
 		<div className="tsc-integer-control">
@@ -108,6 +108,7 @@ export const IntegerControl = ( { label, help, min, max, value, defaultValue, on
 					help={ help }
 					value={ editedValue }
 					type="number"
+
 					/**
 					 * Update the value
 					 *

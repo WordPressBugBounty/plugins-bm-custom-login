@@ -23,7 +23,7 @@ import { PanelMiscellaneous } from './component-panel-miscellaneous.js';
  * @param {Object}   properties.settings    Plugin settings.
  * @param {Function} properties.setSettings Function (callback) used to update the settings.
  *
- * @return {JSX} TabFunctionality component.
+ * @return {Element} TabFunctionality component.
  */
 export const TabFunctionality = ( { settings, setSettings } ) => {
 	/**
@@ -44,7 +44,7 @@ export const TabFunctionality = ( { settings, setSettings } ) => {
 		settings,
 		setSettings,
 		{},
-		{}
+		{},
 	);
 
 	/**

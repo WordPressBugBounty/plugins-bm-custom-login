@@ -497,7 +497,7 @@ const presets = {
  * @param {string}   properties.preset   Key of the preset to use.
  * @param {string}   properties.value    Field's value.
  *
- * @return {JSX} IconControl component.
+ * @return {Element} IconControl component.
  */
 export const IconControl = ( { label, onChange, options = [], preset = undefined, value } ) => {
 	// Construct the options object.
@@ -514,13 +514,14 @@ export const IconControl = ( { label, onChange, options = [], preset = undefined
 	/**
 	 * Render the component
 	 *
-	 * @return {JSX} IconControl component.
+	 * @return {Element} IconControl component.
 	 */
 	return (
 		<FieldsGroup className="tsc-icon-control" label={ label } withBaseControl>
 			<Dropdown
 				contentClassName="tsc-icon-control__content"
 				popoverProps={ { placement: 'bottom-end' } }
+
 				/**
 				 * Render toggle component
 				 *
@@ -528,7 +529,7 @@ export const IconControl = ( { label, onChange, options = [], preset = undefined
 				 * @param {boolean}  properties.isOpen   Whether dropdown is currently open.
 				 * @param {Function} properties.onToggle Callback function to call on toggle.
 				 *
-				 * @return {JSX} Toggle component.
+				 * @return {Element} Toggle component.
 				 */
 				renderToggle={ ( { isOpen, onToggle } ) => {
 					const classNames = [ 'tsc-icon-control__option' ];
@@ -544,13 +545,14 @@ export const IconControl = ( { label, onChange, options = [], preset = undefined
 						</button>
 					);
 				} }
+
 				/**
 				 * Render the content component
 				 *
 				 * @param {Object}   properties         Component properties.
 				 * @param {Function} properties.onClose Callback function to call on close.
 				 *
-				 * @return {JSX} Content component.
+				 * @return {Element} Content component.
 				 */
 				renderContent={ ( { onClose } ) => (
 					<div className="tsc-icon-control__options">

@@ -11,7 +11,7 @@ use Teydea_Studio\Custom_Login\Dependencies\Validatable_Fields;
 use WP_Error;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit; // @codeCoverageIgnore
 }
 
 /**
@@ -125,7 +125,7 @@ class Settings {
 	 * - for JS processing and database operation, we use camelCase keys
 	 * - for PHP processing, we use snake_case keys
 	 *
-	 * @return ?array<string,mixed> Array of the normalized settings data, or null in case of unresolved validation errors.
+	 * @return ?array<string,array<string,mixed>> Array of the normalized settings data, or null in case of unresolved validation errors.
 	 */
 	public function get_normalized_data(): ?array {
 		if ( $this->has_validation_errors() ) {
@@ -135,8 +135,14 @@ class Settings {
 		$data = [];
 
 		foreach ( array_keys( $this->fields_config ) as $field_config_key ) {
-			$group                                = $this->fields_groups[ $field_config_key ];
-			$data[ $group->get_key_camel_case() ] = $group->get_value( true );
+			$group = $this->fields_groups[ $field_config_key ];
+			$value = $group->get_value( true );
+
+			if ( ! is_array( $value ) ) {
+				return null;
+			}
+
+			$data[ $group->get_key_camel_case() ] = $value;
 		}
 
 		return $data;

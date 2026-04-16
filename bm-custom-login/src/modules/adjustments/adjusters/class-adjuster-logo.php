@@ -11,15 +11,16 @@ use DOMDocument;
 use DOMXPath;
 use Teydea_Studio\Custom_Login\Adjuster;
 use Teydea_Studio\Custom_Login\Dependencies\Utils;
+use Teydea_Studio\Custom_Login\Settings;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit; // @codeCoverageIgnore
 }
 
 /**
  * The "Adjuster_Logo" class
  *
- * @phpstan-type Type_Adjuster_Logo_Config ?array{alignment:string,as_link:bool,link:string,link_title:string,media_id:int,open_in_new_tab:bool,show:bool,strict_width:int,logo_source:string}
+ * @phpstan-type Type_Adjuster_Logo_Config ?array{alignment:string,as_link:bool,link:string,link_title:string,media_id:int,open_in_new_tab:bool,show:bool,strict_width:int,logo_source:string,core_logo_style:string}
  */
 final class Adjuster_Logo extends Adjuster {
 	/**
@@ -70,11 +71,27 @@ final class Adjuster_Logo extends Adjuster {
 				$logo_image = false;
 
 				if ( 'core' === $config['logo_source'] ) {
+					// Determine which core logo variant to use.
+					$core_logo_style = $config['core_logo_style'];
+
+					if ( Settings::CORE_LOGO_STYLE_DEFAULT === $core_logo_style ) {
+						$core_logo_style = $this->settings->resolve_for_generation(
+							[
+								Settings::GENERATION_V1 => Settings::CORE_LOGO_STYLE_BLUE,
+								Settings::GENERATION_V2 => Settings::CORE_LOGO_STYLE_GRAY,
+							],
+						);
+					}
+
+					$logo_file = ( Settings::CORE_LOGO_STYLE_GRAY === $core_logo_style && Settings::GENERATION_V2 === $this->settings->get_login_style_generation() )
+						? '/images/wordpress-logo-gray.svg'
+						: '/images/wordpress-logo.svg';
+
 					// Use default WordPress logo.
 					$logo_image = $doc->createElement( 'img' );
 
 					if ( false !== $logo_image ) {
-						$logo_image->setAttribute( 'src', esc_url( admin_url( '/images/wordpress-logo.svg?ver=20131107' ) ) );
+						$logo_image->setAttribute( 'src', esc_url( admin_url( $logo_file ) . '?ver=' . Utils\Environment::get_wp_version() ) );
 						$logo_image->setAttribute( 'width', '84px' );
 					}
 				} elseif ( 'site_icon' === $config['logo_source'] || 'custom' === $config['logo_source'] ) {
@@ -82,7 +99,7 @@ final class Adjuster_Logo extends Adjuster {
 					$attachment_id = Utils\Type::ensure_int(
 						'site_icon' === $config['logo_source']
 							? get_option( 'site_icon', 0 )
-							: $config['media_id']
+							: $config['media_id'],
 					);
 
 					if ( 0 !== $attachment_id ) {
@@ -153,7 +170,7 @@ final class Adjuster_Logo extends Adjuster {
 			return null;
 		}
 
-		/** @var array{alignment:string,as_link:bool,link:string,link_title:string,media_id:int,open_in_new_tab:bool,show:bool,strict_width:int,logo_source:string} $results */
+		/** @var array{alignment:string,as_link:bool,link:string,link_title:string,media_id:int,open_in_new_tab:bool,show:bool,strict_width:int,logo_source:string,core_logo_style:string} $results */
 		$results               = $fields_group->get_all_fields_values();
 		$results['link_title'] = Utils\Type::ensure_string( $fields_group->get_field_value( sprintf( 'link_title.%s', $this->locale ) ) ?? '' );
 

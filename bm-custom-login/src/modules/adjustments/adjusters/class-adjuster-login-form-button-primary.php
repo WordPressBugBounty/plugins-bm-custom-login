@@ -13,7 +13,7 @@ use Teydea_Studio\Custom_Login\Adjuster;
 use Teydea_Studio\Custom_Login\Dependencies\Utils;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit; // @codeCoverageIgnore
 }
 
 /**
@@ -263,9 +263,11 @@ final class Adjuster_Login_Form_Button_Primary extends Adjuster {
 				case 'new-line-left':
 					$text_align = 'left';
 					break;
+
 				case 'new-line-center':
 					$text_align = 'center';
 					break;
+
 				case 'new-line-right':
 					$text_align = 'right';
 					break;

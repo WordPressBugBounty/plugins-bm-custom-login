@@ -25,7 +25,7 @@ import { __, sprintf } from '@wordpress/i18n';
  * @param {Object}   properties.settings    Plugin settings.
  * @param {Function} properties.setSettings Function (callback) used to update the settings.
  *
- * @return {JSX} PanelLoginFormRememberMeCheckbox component.
+ * @return {Element} PanelLoginFormRememberMeCheckbox component.
  */
 export const PanelLoginFormRememberMeCheckbox = ( { context, settings, setSettings } ) => {
 	// Destructure the settings object.
@@ -58,7 +58,7 @@ export const PanelLoginFormRememberMeCheckbox = ( { context, settings, setSettin
 	/**
 	 * Return the component
 	 *
-	 * @return {JSX} PanelLoginFormRememberMeCheckbox component.
+	 * @return {Element} PanelLoginFormRememberMeCheckbox component.
 	 */
 	return (
 		<PanelBody initialOpen={ false } title={ __( 'Login form\'s "Remember Me" checkbox', 'bm-custom-login' ) }>
@@ -82,6 +82,7 @@ export const PanelLoginFormRememberMeCheckbox = ( { context, settings, setSettin
 							label: __( 'Hidden, unchecked', 'bm-custom-login' ),
 						},
 					] }
+
 					/**
 					 * Update the value
 					 *
@@ -104,8 +105,9 @@ export const PanelLoginFormRememberMeCheckbox = ( { context, settings, setSettin
 							label={ __( "Field's label", 'bm-custom-login' ) }
 							original={ translations?.[ 'Remember Me' ] }
 							values={ Object.fromEntries(
-								languages.map( ( language ) => [ language, loginFormRememberMeCheckbox?.[ sprintf( 'labelRememberMe.%s', language ) ] ?? '' ] )
+								languages.map( ( language ) => [ language, loginFormRememberMeCheckbox?.[ sprintf( 'labelRememberMe.%s', language ) ] ?? '' ] ),
 							) }
+
 							/**
 							 * Update the values
 							 *
@@ -116,8 +118,8 @@ export const PanelLoginFormRememberMeCheckbox = ( { context, settings, setSettin
 							onChange={ ( updatedValues ) => {
 								setSetting(
 									Object.fromEntries(
-										languages.map( ( language ) => [ sprintf( 'labelRememberMe.%s', language ), updatedValues[ language ] ] )
-									)
+										languages.map( ( language ) => [ sprintf( 'labelRememberMe.%s', language ), updatedValues[ language ] ] ),
+									),
 								);
 							} }
 						/>
@@ -132,6 +134,7 @@ export const PanelLoginFormRememberMeCheckbox = ( { context, settings, setSettin
 								bottom: marginBottom,
 								left: marginLeft,
 							} }
+
 							/**
 							 * Update the value
 							 *

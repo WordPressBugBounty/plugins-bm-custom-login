@@ -7,7 +7,7 @@ import { __, sprintf } from '@wordpress/i18n';
 /**
  * PanelTemplates component
  *
- * @return {JSX} PanelTemplates component.
+ * @return {Element} PanelTemplates component.
  */
 export const PanelTemplates = () => {
 	// Get the plugin directory URL and network admin context.
@@ -48,7 +48,7 @@ export const PanelTemplates = () => {
 	/**
 	 * Return the component
 	 *
-	 * @return {JSX} PanelTemplates component.
+	 * @return {Element} PanelTemplates component.
 	 */
 	return (
 		<PanelBody initialOpen={ false } title={ __( 'Templates (Quick Start)', 'bm-custom-login' ) }>
@@ -57,7 +57,7 @@ export const PanelTemplates = () => {
 				<Notice __nextHasNoMarginBottom __next40pxDefaultSize isDismissible={ false } status="info">
 					{ __(
 						'Image-related features are limited in the Network Admin because the Media Library is not available in this context.',
-						'bm-custom-login'
+						'bm-custom-login',
 					) }
 				</Notice>
 			) }

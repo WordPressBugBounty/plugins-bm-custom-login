@@ -28,7 +28,7 @@ import './styles.scss';
  * @param {boolean}  properties.withColor        Whether the color selector should be shown.
  * @param {boolean}  properties.withGradient     Whether the gradient selector should be shown.
  *
- * @return {JSX} ColorControl component.
+ * @return {Element} ColorControl component.
  */
 export const ColorControl = ( { colorPalettes, gradientPalettes, label, onChange, value, withAlpha = false, withColor = false, withGradient = false } ) => {
 	// Recognize whether a given value represents gradient.
@@ -66,6 +66,7 @@ export const ColorControl = ( { colorPalettes, gradientPalettes, label, onChange
 			popoverProps={ {
 				className: 'tsc-color-control__popover',
 			} }
+
 			/**
 			 * Render the color control toggle button
 			 *
@@ -73,7 +74,7 @@ export const ColorControl = ( { colorPalettes, gradientPalettes, label, onChange
 			 * @param {boolean}  properties.isOpen   Whether the dropdown is currently open.
 			 * @param {Function} properties.onToggle Callback function to call on toggle button click.
 			 *
-			 * @return {JSX} Toggle button component.
+			 * @return {Element} Toggle button component.
 			 */
 			renderToggle={ ( { isOpen, onToggle } ) => {
 				const classNames = [ 'tsc-color-control__button' ];
@@ -89,10 +90,11 @@ export const ColorControl = ( { colorPalettes, gradientPalettes, label, onChange
 					</button>
 				);
 			} }
+
 			/**
 			 * Render the dropdown inner component
 			 *
-			 * @return {JSX} Dropdown inner component.
+			 * @return {Element} Dropdown inner component.
 			 */
 			renderContent={ () => (
 				<TabPanel __nextHasNoMarginBottom __next40pxDefaultSize tabs={ tabsConfig }>
@@ -102,7 +104,7 @@ export const ColorControl = ( { colorPalettes, gradientPalettes, label, onChange
 						 *
 						 * @param {Object} tab Tab object.
 						 *
-						 * @return {JSX} Tab component.
+						 * @return {Element} Tab component.
 						 */
 						( tab ) => <Fragment key={ tab.name }>{ tab.component }</Fragment>
 					}

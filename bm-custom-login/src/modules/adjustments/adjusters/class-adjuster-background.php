@@ -10,7 +10,7 @@ namespace Teydea_Studio\Custom_Login\Modules\Adjustments;
 use Teydea_Studio\Custom_Login\Adjuster;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit; // @codeCoverageIgnore
 }
 
 /**
@@ -41,6 +41,7 @@ final class Adjuster_Background extends Adjuster {
 
 		/** @var array{color:string,focal_point_x:float,focal_point_y:float,media_id:int,size_repeat:string} $results */
 		$results = $fields_group->get_all_fields_values();
+
 		return $results;
 	}
 

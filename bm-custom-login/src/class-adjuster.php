@@ -13,7 +13,7 @@ use Teydea_Studio\Custom_Login\Dependencies\Utils;
 use Teydea_Studio\Custom_Login\Settings;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit; // @codeCoverageIgnore
 }
 
 /**

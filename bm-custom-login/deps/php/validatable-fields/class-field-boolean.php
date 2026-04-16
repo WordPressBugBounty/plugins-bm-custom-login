@@ -12,7 +12,7 @@ use Teydea_Studio\Custom_Login\Dependencies\Utils;
 use WP_Error;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit; // @codeCoverageIgnore
 }
 
 /**
@@ -46,7 +46,7 @@ final class Field_Boolean extends Field {
 	 */
 	protected function validate_value( $value ) {
 		if ( ! is_bool( $value ) ) {
-			if ( ! in_array( $value, [ 1, 0, '1', '0', '' ], true ) && ( is_string( $value ) && ! in_array( strtolower( $value ), [ 'true', 'false' ], true ) ) ) {
+			if ( ! in_array( $value, [ 1, 0, '1', '0', '' ], true ) && ( ! is_string( $value ) || ! in_array( strtolower( $value ), [ 'true', 'false' ], true ) ) ) {
 				return new WP_Error(
 					'non_boolean_value',
 					sprintf(

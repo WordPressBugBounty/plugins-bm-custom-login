@@ -10,7 +10,7 @@ namespace Teydea_Studio\Custom_Login\Dependencies\Universal_Modules;
 use Teydea_Studio\Custom_Login\Dependencies\Utils;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit; // @codeCoverageIgnore
 }
 
 /**
@@ -68,8 +68,10 @@ class Module_Settings_Page extends Utils\Module {
 		// Setup the values of the class properties.
 		add_action( 'init', [ $this, 'setup_class_properties' ] );
 
-		// Register settings pages.
+		// Register settings page in network admin.
 		add_action( 'network_admin_menu', [ $this, 'register_settings_page' ] );
+
+		// Register settings page in single-site admin.
 		add_action( 'admin_menu', [ $this, 'register_settings_page' ] );
 
 		// Maybe redirect user to the settings screen.
@@ -83,8 +85,13 @@ class Module_Settings_Page extends Utils\Module {
 
 		// Filter the plugin action links.
 		if ( 'plugin' === $this->container->get_type() ) {
-			add_filter( sprintf( 'network_admin_plugin_action_links_%s', $this->container->get_basename() ), [ $this, 'filter_plugin_action_links' ] );
-			add_filter( sprintf( 'plugin_action_links_%s', $this->container->get_basename() ), [ $this, 'filter_plugin_action_links' ] );
+			$plugin_basename = $this->container->get_basename();
+
+			// Filter the network admin plugin action links.
+			add_filter( sprintf( 'network_admin_plugin_action_links_%s', $plugin_basename ), [ $this, 'filter_plugin_action_links' ] );
+
+			// Filter the single-site plugin action links.
+			add_filter( sprintf( 'plugin_action_links_%s', $plugin_basename ), [ $this, 'filter_plugin_action_links' ] );
 		}
 	}
 
@@ -301,6 +308,7 @@ class Module_Settings_Page extends Utils\Module {
 
 		$asset->enqueue_script(
 			true,
+
 			/**
 			 * Allow other plugins and modules to filter inline data passed
 			 * to the settings page script
@@ -315,6 +323,7 @@ class Module_Settings_Page extends Utils\Module {
 					'helpLinks' => $this->help_links,
 				],
 			),
+
 			/**
 			 * Allow other plugins and modules to pass some additional
 			 * script dependencies
