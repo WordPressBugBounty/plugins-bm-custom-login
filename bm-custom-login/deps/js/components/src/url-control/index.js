@@ -7,6 +7,7 @@ import { isURL } from '@teydeastudio/utils/src/is-url.js';
 /**
  * WordPress dependencies
  */
+import { useInstanceId } from '@wordpress/compose';
 import { TextControl } from '@wordpress/components';
 import { useState } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
@@ -37,6 +38,9 @@ import './styles.scss';
 export const URLControl = ( { label, help, value, onChange } ) => {
 	// Manage the notice state.
 	const [ fieldNotice, setFieldNotice ] = useState( '' );
+
+	// Stable id so the validation notice can be wired to the input via `aria-describedby`.
+	const noticeId = useInstanceId( URLControl, 'tsc-url-control-notice' );
 
 	/**
 	 * Return component
@@ -76,6 +80,7 @@ export const URLControl = ( { label, help, value, onChange } ) => {
 					label={ label }
 					help={ help }
 					value={ value }
+					aria-describedby={ '' !== fieldNotice ? noticeId : undefined }
 
 					/**
 					 * Update the value
@@ -89,7 +94,7 @@ export const URLControl = ( { label, help, value, onChange } ) => {
 					} }
 				/>
 			</DetectOutside>
-			{ '' !== fieldNotice && <FieldNotice message={ fieldNotice } /> }
+			{ '' !== fieldNotice && <FieldNotice id={ noticeId } message={ fieldNotice } /> }
 		</div>
 	);
 };

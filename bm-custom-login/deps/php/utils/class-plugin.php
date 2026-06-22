@@ -39,6 +39,15 @@ final class Plugin extends Container {
 	}
 
 	/**
+	 * Get the WordPress capability gating activation of this plugin
+	 *
+	 * @return string Capability slug.
+	 */
+	public function get_activate_capability(): string {
+		return 'activate_plugins';
+	}
+
+	/**
 	 * Get the main file of the plugin
 	 *
 	 * @return string Main file of the plugin.

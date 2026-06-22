@@ -54,7 +54,7 @@ final class Field_Float extends Field {
 	 */
 	public function __construct( string $key, float $default_value, float $min, ?float $max = null, int $precision = 2, ?Closure $restorer = null, ?Closure $sanitizer = null, ?Closure $validator = null ) {
 		// Ensure the minimum allowed value is not bigger than maximum.
-		if ( $min > $max ) {
+		if ( null !== $max && $min > $max ) {
 			$max = null;
 		}
 
@@ -120,7 +120,7 @@ final class Field_Float extends Field {
 
 		if ( ! is_float( $value ) ) {
 			if ( is_string( $value ) ) {
-				if ( 1 !== preg_match( '/^\\d+$/', $value ) ) {
+				if ( ! is_numeric( $value ) ) {
 					return new WP_Error(
 						'non_float_value',
 						sprintf(

@@ -120,8 +120,8 @@ final class Type {
 			return round( $value, $precision );
 		}
 
-		if ( is_array( $value ) || is_bool( $value ) || is_int( $value ) || is_string( $value ) || is_null( $value ) ) {
-			return round( absint( $value ), $precision );
+		if ( is_bool( $value ) || is_int( $value ) || is_string( $value ) || is_null( $value ) ) {
+			return round( floatval( $value ), $precision );
 		}
 
 		return round( 0, $precision );

@@ -1,5 +1,14 @@
 == Changelog ==
 
+= 3.2.0 (2026-06-22) =
+* Security fix: prevent stored CSS injection on the login page by sanitizing custom color and box-shadow values on save
+* New margin controls for the login-page logo (top, right, bottom, and left)
+* Fixed the custom logo being cropped to a 150px thumbnail; the full-size image is now rendered
+* Settings page tabs are now reflected in the URL, so a tab can be bookmarked and shared
+* Added a clear admin notice for unmet server requirements (minimum PHP/WordPress version, required extensions)
+* Dependencies updated
+* Code improvements
+
 = 3.1.0 (2026-04-16) =
 * Compatibility with WordPress 7.0 confirmed
 * Unnecessary translation files removed since these are loaded from WordPress.org

@@ -82,7 +82,7 @@ class Settings extends Utils\Settings {
 	 *
 	 * @var array<string,array<string>>
 	 */
-	public array $common_defs = [
+	protected array $common_defs = [
 		'alignment_matrix'   => [
 			'bottom center',
 			'bottom left',
@@ -225,7 +225,8 @@ class Settings extends Utils\Settings {
 		$this->common_defs['font_families'] = array_keys( $preconfigured_styles['font_families'] );
 
 		// Get the list of installed languages.
-		$languages = Utils\Languages::get_installed_languages( 'core' );
+		$languages           = new Utils\Languages();
+		$installed_languages = $languages->get_installed_languages( 'core' );
 
 		// The fields configuration.
 		$fields_config = [
@@ -238,7 +239,7 @@ class Settings extends Utils\Settings {
 			'background'                      => [
 				'type'   => Validatable_Fields\Fields_Group::TYPE,
 				'config' => [
-					'color'         => Validatable_Fields\Configuration::string_field( '#f0f0f1' ),
+					'color'         => Validatable_Fields\Configuration::color_field( '#f0f0f1' ),
 					'focal_point_x' => Validatable_Fields\Configuration::float_field( 0.5, 0, 1, 2 ),
 					'focal_point_y' => Validatable_Fields\Configuration::float_field( 0.5, 0, 1, 2 ),
 					'media_id'      => Validatable_Fields\Configuration::media_id_field( 0, [ 'image' ] ),
@@ -251,6 +252,10 @@ class Settings extends Utils\Settings {
 					'alignment'       => Validatable_Fields\Configuration::string_of_choice_field( 'center', [ 'left', 'center', 'right' ] ),
 					'as_link'         => Validatable_Fields\Configuration::boolean_field( true ),
 					'link'            => Validatable_Fields\Configuration::url_field( 'https://wordpress.org/' ),
+					'margin_bottom'   => Validatable_Fields\Configuration::unit_field( '24px' ),
+					'margin_left'     => Validatable_Fields\Configuration::unit_field( '0px' ),
+					'margin_right'    => Validatable_Fields\Configuration::unit_field( '0px' ),
+					'margin_top'      => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'media_id'        => Validatable_Fields\Configuration::media_id_field( 0, [ 'image' ] ),
 					'open_in_new_tab' => Validatable_Fields\Configuration::boolean_field( false ),
 					'show'            => Validatable_Fields\Configuration::boolean_field( true ),
@@ -263,10 +268,10 @@ class Settings extends Utils\Settings {
 				'type'   => Validatable_Fields\Fields_Group::TYPE,
 				'config' => [
 					'alignment'                    => Validatable_Fields\Configuration::string_of_choice_field( 'default', $this->common_defs['alignment_matrix'] ),
-					'background_color'             => Validatable_Fields\Configuration::string_field( '#ffffff' ),
-					'border_bottom_color'          => Validatable_Fields\Configuration::string_field( '#c3c4c7' ),
-					'border_bottom_color_on_focus' => Validatable_Fields\Configuration::string_field( '#c3c4c7' ),
-					'border_bottom_color_on_hover' => Validatable_Fields\Configuration::string_field( '#c3c4c7' ),
+					'background_color'             => Validatable_Fields\Configuration::color_field( '#ffffff' ),
+					'border_bottom_color'          => Validatable_Fields\Configuration::color_field( '#c3c4c7' ),
+					'border_bottom_color_on_focus' => Validatable_Fields\Configuration::color_field( '#c3c4c7' ),
+					'border_bottom_color_on_hover' => Validatable_Fields\Configuration::color_field( '#c3c4c7' ),
 					'border_bottom_left_radius'    => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'border_bottom_right_radius'   => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'border_bottom_style'          => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
@@ -275,27 +280,27 @@ class Settings extends Utils\Settings {
 					'border_bottom_width'          => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_bottom_width_on_focus' => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_bottom_width_on_hover' => Validatable_Fields\Configuration::unit_field( '1px' ),
-					'border_left_color'            => Validatable_Fields\Configuration::string_field( '#c3c4c7' ),
-					'border_left_color_on_focus'   => Validatable_Fields\Configuration::string_field( '#c3c4c7' ),
-					'border_left_color_on_hover'   => Validatable_Fields\Configuration::string_field( '#c3c4c7' ),
+					'border_left_color'            => Validatable_Fields\Configuration::color_field( '#c3c4c7' ),
+					'border_left_color_on_focus'   => Validatable_Fields\Configuration::color_field( '#c3c4c7' ),
+					'border_left_color_on_hover'   => Validatable_Fields\Configuration::color_field( '#c3c4c7' ),
 					'border_left_style'            => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
 					'border_left_style_on_focus'   => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
 					'border_left_style_on_hover'   => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
 					'border_left_width'            => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_left_width_on_focus'   => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_left_width_on_hover'   => Validatable_Fields\Configuration::unit_field( '1px' ),
-					'border_right_color'           => Validatable_Fields\Configuration::string_field( '#c3c4c7' ),
-					'border_right_color_on_focus'  => Validatable_Fields\Configuration::string_field( '#c3c4c7' ),
-					'border_right_color_on_hover'  => Validatable_Fields\Configuration::string_field( '#c3c4c7' ),
+					'border_right_color'           => Validatable_Fields\Configuration::color_field( '#c3c4c7' ),
+					'border_right_color_on_focus'  => Validatable_Fields\Configuration::color_field( '#c3c4c7' ),
+					'border_right_color_on_hover'  => Validatable_Fields\Configuration::color_field( '#c3c4c7' ),
 					'border_right_style'           => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
 					'border_right_style_on_focus'  => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
 					'border_right_style_on_hover'  => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
 					'border_right_width'           => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_right_width_on_focus'  => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_right_width_on_hover'  => Validatable_Fields\Configuration::unit_field( '1px' ),
-					'border_top_color'             => Validatable_Fields\Configuration::string_field( '#c3c4c7' ),
-					'border_top_color_on_focus'    => Validatable_Fields\Configuration::string_field( '#c3c4c7' ),
-					'border_top_color_on_hover'    => Validatable_Fields\Configuration::string_field( '#c3c4c7' ),
+					'border_top_color'             => Validatable_Fields\Configuration::color_field( '#c3c4c7' ),
+					'border_top_color_on_focus'    => Validatable_Fields\Configuration::color_field( '#c3c4c7' ),
+					'border_top_color_on_hover'    => Validatable_Fields\Configuration::color_field( '#c3c4c7' ),
 					'border_top_left_radius'       => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'border_top_right_radius'      => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'border_top_style'             => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
@@ -315,9 +320,9 @@ class Settings extends Utils\Settings {
 					'padding_left'                 => Validatable_Fields\Configuration::unit_field( '24px' ),
 					'padding_right'                => Validatable_Fields\Configuration::unit_field( '24px' ),
 					'padding_top'                  => Validatable_Fields\Configuration::unit_field( '26px' ),
-					'shadow'                       => Validatable_Fields\Configuration::string_field( '0 1px 3px rgba(0,0,0,.04)' ),
-					'shadow_on_focus'              => Validatable_Fields\Configuration::string_field( '0 1px 3px rgba(0,0,0,.04)' ),
-					'shadow_on_hover'              => Validatable_Fields\Configuration::string_field( '0 1px 3px rgba(0,0,0,.04)' ),
+					'shadow'                       => Validatable_Fields\Configuration::box_shadow_field( '0 1px 3px rgba(0,0,0,.04)' ),
+					'shadow_on_focus'              => Validatable_Fields\Configuration::box_shadow_field( '0 1px 3px rgba(0,0,0,.04)' ),
+					'shadow_on_hover'              => Validatable_Fields\Configuration::box_shadow_field( '0 1px 3px rgba(0,0,0,.04)' ),
 					'size_repeat'                  => Validatable_Fields\Configuration::string_of_choice_field( 'size-cover', $this->common_defs['size_repeat'] ),
 					'width'                        => Validatable_Fields\Configuration::integer_field( 320, 0, 1000 ),
 					'wrap_links_in_container'      => Validatable_Fields\Configuration::boolean_field( false ),
@@ -345,16 +350,16 @@ class Settings extends Utils\Settings {
 					'padding_left'   => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'padding_right'  => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'padding_top'    => Validatable_Fields\Configuration::unit_field( '0px' ),
-					'text_color'     => Validatable_Fields\Configuration::string_field( '#3c434a' ),
+					'text_color'     => Validatable_Fields\Configuration::color_field( '#3c434a' ),
 				],
 			],
 			'login_form_input_fields'         => [
 				'type'   => Validatable_Fields\Fields_Group::TYPE,
 				'config' => [
-					'background_color'             => Validatable_Fields\Configuration::string_field( '#ffffff' ),
-					'background_color_on_focus'    => Validatable_Fields\Configuration::string_field( '#ffffff' ),
-					'background_color_on_hover'    => Validatable_Fields\Configuration::string_field( '#ffffff' ),
-					'border_bottom_color'          => Validatable_Fields\Configuration::string_field(
+					'background_color'             => Validatable_Fields\Configuration::color_field( '#ffffff' ),
+					'background_color_on_focus'    => Validatable_Fields\Configuration::color_field( '#ffffff' ),
+					'background_color_on_hover'    => Validatable_Fields\Configuration::color_field( '#ffffff' ),
+					'border_bottom_color'          => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#8c8f94',
@@ -362,7 +367,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'border_bottom_color_on_focus' => Validatable_Fields\Configuration::string_field(
+					'border_bottom_color_on_focus' => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#2271b1',
@@ -370,7 +375,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'border_bottom_color_on_hover' => Validatable_Fields\Configuration::string_field(
+					'border_bottom_color_on_hover' => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#8c8f94',
@@ -400,7 +405,7 @@ class Settings extends Utils\Settings {
 					'border_bottom_width'          => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_bottom_width_on_focus' => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_bottom_width_on_hover' => Validatable_Fields\Configuration::unit_field( '1px' ),
-					'border_left_color'            => Validatable_Fields\Configuration::string_field(
+					'border_left_color'            => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#8c8f94',
@@ -408,7 +413,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'border_left_color_on_focus'   => Validatable_Fields\Configuration::string_field(
+					'border_left_color_on_focus'   => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#2271b1',
@@ -416,7 +421,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'border_left_color_on_hover'   => Validatable_Fields\Configuration::string_field(
+					'border_left_color_on_hover'   => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#8c8f94',
@@ -430,7 +435,7 @@ class Settings extends Utils\Settings {
 					'border_left_width'            => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_left_width_on_focus'   => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_left_width_on_hover'   => Validatable_Fields\Configuration::unit_field( '1px' ),
-					'border_right_color'           => Validatable_Fields\Configuration::string_field(
+					'border_right_color'           => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#8c8f94',
@@ -438,7 +443,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'border_right_color_on_focus'  => Validatable_Fields\Configuration::string_field(
+					'border_right_color_on_focus'  => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#2271b1',
@@ -446,7 +451,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'border_right_color_on_hover'  => Validatable_Fields\Configuration::string_field(
+					'border_right_color_on_hover'  => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#8c8f94',
@@ -460,7 +465,7 @@ class Settings extends Utils\Settings {
 					'border_right_width'           => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_right_width_on_focus'  => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_right_width_on_hover'  => Validatable_Fields\Configuration::unit_field( '1px' ),
-					'border_top_color'             => Validatable_Fields\Configuration::string_field(
+					'border_top_color'             => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#8c8f94',
@@ -468,7 +473,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'border_top_color_on_focus'    => Validatable_Fields\Configuration::string_field(
+					'border_top_color_on_focus'    => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#2271b1',
@@ -476,7 +481,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'border_top_color_on_hover'    => Validatable_Fields\Configuration::string_field(
+					'border_top_color_on_hover'    => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#8c8f94',
@@ -506,7 +511,7 @@ class Settings extends Utils\Settings {
 					'border_top_width'             => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_top_width_on_focus'    => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_top_width_on_hover'    => Validatable_Fields\Configuration::unit_field( '1px' ),
-					'eye_icon_color'               => Validatable_Fields\Configuration::string_field(
+					'eye_icon_color'               => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#2271b1',
@@ -514,8 +519,8 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'eye_icon_color_on_focus'      => Validatable_Fields\Configuration::string_field( '#0a4b78' ),
-					'eye_icon_color_on_hover'      => Validatable_Fields\Configuration::string_field( '#0a4b78' ),
+					'eye_icon_color_on_focus'      => Validatable_Fields\Configuration::color_field( '#0a4b78' ),
+					'eye_icon_color_on_hover'      => Validatable_Fields\Configuration::color_field( '#0a4b78' ),
 					'font_family'                  => Validatable_Fields\Configuration::string_of_choice_field( 'default', $this->common_defs['font_families'] ),
 					'font_size'                    => Validatable_Fields\Configuration::unit_field( '24px' ),
 					'font_weight'                  => Validatable_Fields\Configuration::string_of_choice_field( '400', $this->common_defs['font_weights'] ),
@@ -528,9 +533,9 @@ class Settings extends Utils\Settings {
 					'padding_left'                 => Validatable_Fields\Configuration::unit_field( '0.3125rem' ),
 					'padding_right'                => Validatable_Fields\Configuration::unit_field( '0.3125rem' ),
 					'padding_top'                  => Validatable_Fields\Configuration::unit_field( '0.1875rem' ),
-					'placeholder_color'            => Validatable_Fields\Configuration::string_field(),
-					'shadow'                       => Validatable_Fields\Configuration::string_field(),
-					'shadow_on_focus'              => Validatable_Fields\Configuration::string_field(
+					'placeholder_color'            => Validatable_Fields\Configuration::color_field(),
+					'shadow'                       => Validatable_Fields\Configuration::box_shadow_field(),
+					'shadow_on_focus'              => Validatable_Fields\Configuration::box_shadow_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '0 0 0 1px #2271b1',
@@ -538,17 +543,17 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'shadow_on_hover'              => Validatable_Fields\Configuration::string_field(),
-					'text_color'                   => Validatable_Fields\Configuration::string_field( '#2c3338' ),
-					'text_color_on_focus'          => Validatable_Fields\Configuration::string_field( '#2c3338' ),
-					'text_color_on_hover'          => Validatable_Fields\Configuration::string_field( '#2c3338' ),
+					'shadow_on_hover'              => Validatable_Fields\Configuration::box_shadow_field(),
+					'text_color'                   => Validatable_Fields\Configuration::color_field( '#2c3338' ),
+					'text_color_on_focus'          => Validatable_Fields\Configuration::color_field( '#2c3338' ),
+					'text_color_on_hover'          => Validatable_Fields\Configuration::color_field( '#2c3338' ),
 				],
 			],
 			'login_form_checkbox_fields'      => [
 				'type'   => Validatable_Fields\Fields_Group::TYPE,
 				'config' => [
-					'background_color'                     => Validatable_Fields\Configuration::string_field( '#ffffff' ),
-					'background_color_checked'             => Validatable_Fields\Configuration::string_field(
+					'background_color'                     => Validatable_Fields\Configuration::color_field( '#ffffff' ),
+					'background_color_checked'             => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#ffffff',
@@ -556,8 +561,8 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'background_color_on_focus'            => Validatable_Fields\Configuration::string_field( '#ffffff' ),
-					'background_color_on_focus_checked'    => Validatable_Fields\Configuration::string_field(
+					'background_color_on_focus'            => Validatable_Fields\Configuration::color_field( '#ffffff' ),
+					'background_color_on_focus_checked'    => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#ffffff',
@@ -565,8 +570,8 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'background_color_on_hover'            => Validatable_Fields\Configuration::string_field( '#ffffff' ),
-					'background_color_on_hover_checked'    => Validatable_Fields\Configuration::string_field(
+					'background_color_on_hover'            => Validatable_Fields\Configuration::color_field( '#ffffff' ),
+					'background_color_on_hover_checked'    => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#ffffff',
@@ -574,8 +579,8 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'border_bottom_color'                  => Validatable_Fields\Configuration::string_field( '#8c8f94' ),
-					'border_bottom_color_checked'          => Validatable_Fields\Configuration::string_field(
+					'border_bottom_color'                  => Validatable_Fields\Configuration::color_field( '#8c8f94' ),
+					'border_bottom_color_checked'          => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#8c8f94',
@@ -583,7 +588,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'border_bottom_color_on_focus'         => Validatable_Fields\Configuration::string_field(
+					'border_bottom_color_on_focus'         => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#2271b1',
@@ -591,7 +596,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'border_bottom_color_on_focus_checked' => Validatable_Fields\Configuration::string_field(
+					'border_bottom_color_on_focus_checked' => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#2271b1',
@@ -599,8 +604,8 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'border_bottom_color_on_hover'         => Validatable_Fields\Configuration::string_field( '#8c8f94' ),
-					'border_bottom_color_on_hover_checked' => Validatable_Fields\Configuration::string_field(
+					'border_bottom_color_on_hover'         => Validatable_Fields\Configuration::color_field( '#8c8f94' ),
+					'border_bottom_color_on_hover_checked' => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#8c8f94',
@@ -636,8 +641,8 @@ class Settings extends Utils\Settings {
 					'border_bottom_width_on_focus_checked' => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_bottom_width_on_hover'         => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_bottom_width_on_hover_checked' => Validatable_Fields\Configuration::unit_field( '1px' ),
-					'border_left_color'                    => Validatable_Fields\Configuration::string_field( '#8c8f94' ),
-					'border_left_color_checked'            => Validatable_Fields\Configuration::string_field(
+					'border_left_color'                    => Validatable_Fields\Configuration::color_field( '#8c8f94' ),
+					'border_left_color_checked'            => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#8c8f94',
@@ -645,7 +650,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'border_left_color_on_focus'           => Validatable_Fields\Configuration::string_field(
+					'border_left_color_on_focus'           => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#2271b1',
@@ -653,7 +658,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'border_left_color_on_focus_checked'   => Validatable_Fields\Configuration::string_field(
+					'border_left_color_on_focus_checked'   => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#2271b1',
@@ -661,8 +666,8 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'border_left_color_on_hover'           => Validatable_Fields\Configuration::string_field( '#8c8f94' ),
-					'border_left_color_on_hover_checked'   => Validatable_Fields\Configuration::string_field(
+					'border_left_color_on_hover'           => Validatable_Fields\Configuration::color_field( '#8c8f94' ),
+					'border_left_color_on_hover_checked'   => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#8c8f94',
@@ -682,8 +687,8 @@ class Settings extends Utils\Settings {
 					'border_left_width_on_focus_checked'   => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_left_width_on_hover'           => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_left_width_on_hover_checked'   => Validatable_Fields\Configuration::unit_field( '1px' ),
-					'border_right_color'                   => Validatable_Fields\Configuration::string_field( '#8c8f94' ),
-					'border_right_color_checked'           => Validatable_Fields\Configuration::string_field(
+					'border_right_color'                   => Validatable_Fields\Configuration::color_field( '#8c8f94' ),
+					'border_right_color_checked'           => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#8c8f94',
@@ -691,7 +696,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'border_right_color_on_focus'          => Validatable_Fields\Configuration::string_field(
+					'border_right_color_on_focus'          => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#2271b1',
@@ -699,7 +704,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'border_right_color_on_focus_checked'  => Validatable_Fields\Configuration::string_field(
+					'border_right_color_on_focus_checked'  => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#2271b1',
@@ -707,8 +712,8 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'border_right_color_on_hover'          => Validatable_Fields\Configuration::string_field( '#8c8f94' ),
-					'border_right_color_on_hover_checked'  => Validatable_Fields\Configuration::string_field(
+					'border_right_color_on_hover'          => Validatable_Fields\Configuration::color_field( '#8c8f94' ),
+					'border_right_color_on_hover_checked'  => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#8c8f94',
@@ -728,8 +733,8 @@ class Settings extends Utils\Settings {
 					'border_right_width_on_focus_checked'  => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_right_width_on_hover'          => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_right_width_on_hover_checked'  => Validatable_Fields\Configuration::unit_field( '1px' ),
-					'border_top_color'                     => Validatable_Fields\Configuration::string_field( '#8c8f94' ),
-					'border_top_color_checked'             => Validatable_Fields\Configuration::string_field(
+					'border_top_color'                     => Validatable_Fields\Configuration::color_field( '#8c8f94' ),
+					'border_top_color_checked'             => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#8c8f94',
@@ -737,7 +742,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'border_top_color_on_focus'            => Validatable_Fields\Configuration::string_field(
+					'border_top_color_on_focus'            => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#2271b1',
@@ -745,7 +750,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'border_top_color_on_focus_checked'    => Validatable_Fields\Configuration::string_field(
+					'border_top_color_on_focus_checked'    => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#2271b1',
@@ -753,8 +758,8 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'border_top_color_on_hover'            => Validatable_Fields\Configuration::string_field( '#8c8f94' ),
-					'border_top_color_on_hover_checked'    => Validatable_Fields\Configuration::string_field(
+					'border_top_color_on_hover'            => Validatable_Fields\Configuration::color_field( '#8c8f94' ),
+					'border_top_color_on_hover_checked'    => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#8c8f94',
@@ -805,7 +810,7 @@ class Settings extends Utils\Settings {
 						50,
 					),
 					'icon'                                 => Validatable_Fields\Configuration::string_of_choice_field( 'default', [ 'default', 'fontawesome-check', 'heroicons-check' ] ),
-					'icon_color'                           => Validatable_Fields\Configuration::string_field(
+					'icon_color'                           => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#3582c4',
@@ -813,7 +818,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'icon_color_on_focus'                  => Validatable_Fields\Configuration::string_field(
+					'icon_color_on_focus'                  => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#3582c4',
@@ -821,7 +826,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'icon_color_on_hover'                  => Validatable_Fields\Configuration::string_field(
+					'icon_color_on_hover'                  => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#3582c4',
@@ -850,9 +855,9 @@ class Settings extends Utils\Settings {
 						0,
 						50,
 					),
-					'shadow'                               => Validatable_Fields\Configuration::string_field( 'inset 0 1px 2px rgba(0,0,0,.1)' ),
-					'shadow_checked'                       => Validatable_Fields\Configuration::string_field( 'inset 0 1px 2px rgba(0,0,0,.1)' ),
-					'shadow_on_focus'                      => Validatable_Fields\Configuration::string_field(
+					'shadow'                               => Validatable_Fields\Configuration::box_shadow_field( 'inset 0 1px 2px rgba(0,0,0,.1)' ),
+					'shadow_checked'                       => Validatable_Fields\Configuration::box_shadow_field( 'inset 0 1px 2px rgba(0,0,0,.1)' ),
+					'shadow_on_focus'                      => Validatable_Fields\Configuration::box_shadow_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '0 0 0 1px #2271b1',
@@ -860,7 +865,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'shadow_on_focus_checked'              => Validatable_Fields\Configuration::string_field(
+					'shadow_on_focus_checked'              => Validatable_Fields\Configuration::box_shadow_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '0 0 0 1px #2271b1',
@@ -868,8 +873,8 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'shadow_on_hover'                      => Validatable_Fields\Configuration::string_field( 'inset 0 1px 2px rgba(0,0,0,.1)' ),
-					'shadow_on_hover_checked'              => Validatable_Fields\Configuration::string_field( 'inset 0 1px 2px rgba(0,0,0,.1)' ),
+					'shadow_on_hover'                      => Validatable_Fields\Configuration::box_shadow_field( 'inset 0 1px 2px rgba(0,0,0,.1)' ),
+					'shadow_on_hover_checked'              => Validatable_Fields\Configuration::box_shadow_field( 'inset 0 1px 2px rgba(0,0,0,.1)' ),
 				],
 			],
 			'login_form_remember_me_checkbox' => [
@@ -886,7 +891,7 @@ class Settings extends Utils\Settings {
 				'type'   => Validatable_Fields\Fields_Group::TYPE,
 				'config' => [
 					'alignment'                    => Validatable_Fields\Configuration::string_of_choice_field( 'default', [ 'default', 'new-line-left', 'new-line-center', 'new-line-right' ] ),
-					'background_color'             => Validatable_Fields\Configuration::string_field(
+					'background_color'             => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#2271b1',
@@ -894,7 +899,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'background_color_on_focus'    => Validatable_Fields\Configuration::string_field(
+					'background_color_on_focus'    => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#135e96',
@@ -902,7 +907,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'background_color_on_hover'    => Validatable_Fields\Configuration::string_field(
+					'background_color_on_hover'    => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#135e96',
@@ -910,7 +915,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'border_bottom_color'          => Validatable_Fields\Configuration::string_field(
+					'border_bottom_color'          => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#2271b1',
@@ -918,7 +923,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'border_bottom_color_on_focus' => Validatable_Fields\Configuration::string_field(
+					'border_bottom_color_on_focus' => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#135e96',
@@ -926,7 +931,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'border_bottom_color_on_hover' => Validatable_Fields\Configuration::string_field(
+					'border_bottom_color_on_hover' => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#135e96',
@@ -956,7 +961,7 @@ class Settings extends Utils\Settings {
 					'border_bottom_width'          => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_bottom_width_on_focus' => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_bottom_width_on_hover' => Validatable_Fields\Configuration::unit_field( '1px' ),
-					'border_left_color'            => Validatable_Fields\Configuration::string_field(
+					'border_left_color'            => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#2271b1',
@@ -964,7 +969,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'border_left_color_on_focus'   => Validatable_Fields\Configuration::string_field(
+					'border_left_color_on_focus'   => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#135e96',
@@ -972,7 +977,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'border_left_color_on_hover'   => Validatable_Fields\Configuration::string_field(
+					'border_left_color_on_hover'   => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#135e96',
@@ -986,7 +991,7 @@ class Settings extends Utils\Settings {
 					'border_left_width'            => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_left_width_on_focus'   => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_left_width_on_hover'   => Validatable_Fields\Configuration::unit_field( '1px' ),
-					'border_right_color'           => Validatable_Fields\Configuration::string_field(
+					'border_right_color'           => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#2271b1',
@@ -994,7 +999,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'border_right_color_on_focus'  => Validatable_Fields\Configuration::string_field(
+					'border_right_color_on_focus'  => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#135e96',
@@ -1002,7 +1007,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'border_right_color_on_hover'  => Validatable_Fields\Configuration::string_field(
+					'border_right_color_on_hover'  => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#135e96',
@@ -1016,7 +1021,7 @@ class Settings extends Utils\Settings {
 					'border_right_width'           => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_right_width_on_focus'  => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_right_width_on_hover'  => Validatable_Fields\Configuration::unit_field( '1px' ),
-					'border_top_color'             => Validatable_Fields\Configuration::string_field(
+					'border_top_color'             => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#2271b1',
@@ -1024,7 +1029,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'border_top_color_on_focus'    => Validatable_Fields\Configuration::string_field(
+					'border_top_color_on_focus'    => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#135e96',
@@ -1032,7 +1037,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'border_top_color_on_hover'    => Validatable_Fields\Configuration::string_field(
+					'border_top_color_on_hover'    => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#135e96',
@@ -1112,22 +1117,22 @@ class Settings extends Utils\Settings {
 						),
 					),
 					'padding_top'                  => Validatable_Fields\Configuration::unit_field( '0px' ),
-					'shadow'                       => Validatable_Fields\Configuration::string_field(),
-					'shadow_on_focus'              => Validatable_Fields\Configuration::string_field(),
-					'shadow_on_hover'              => Validatable_Fields\Configuration::string_field(),
-					'text_color'                   => Validatable_Fields\Configuration::string_field( '#ffffff' ),
-					'text_color_on_focus'          => Validatable_Fields\Configuration::string_field( '#ffffff' ),
-					'text_color_on_hover'          => Validatable_Fields\Configuration::string_field( '#ffffff' ),
+					'shadow'                       => Validatable_Fields\Configuration::box_shadow_field(),
+					'shadow_on_focus'              => Validatable_Fields\Configuration::box_shadow_field(),
+					'shadow_on_hover'              => Validatable_Fields\Configuration::box_shadow_field(),
+					'text_color'                   => Validatable_Fields\Configuration::color_field( '#ffffff' ),
+					'text_color_on_focus'          => Validatable_Fields\Configuration::color_field( '#ffffff' ),
+					'text_color_on_hover'          => Validatable_Fields\Configuration::color_field( '#ffffff' ),
 					'width'                        => Validatable_Fields\Configuration::string_of_choice_field( 'fit-content', [ 'fit-content', '100%' ] ),
 				],
 			],
 			'login_form_button_secondary'     => [
 				'type'   => Validatable_Fields\Fields_Group::TYPE,
 				'config' => [
-					'background_color'             => Validatable_Fields\Configuration::string_field( '#f6f7f7' ),
-					'background_color_on_focus'    => Validatable_Fields\Configuration::string_field( '#f6f7f7' ),
-					'background_color_on_hover'    => Validatable_Fields\Configuration::string_field( '#f0f0f1' ),
-					'border_bottom_color'          => Validatable_Fields\Configuration::string_field(
+					'background_color'             => Validatable_Fields\Configuration::color_field( '#f6f7f7' ),
+					'background_color_on_focus'    => Validatable_Fields\Configuration::color_field( '#f6f7f7' ),
+					'background_color_on_hover'    => Validatable_Fields\Configuration::color_field( '#f0f0f1' ),
+					'border_bottom_color'          => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#3582c4',
@@ -1135,7 +1140,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'border_bottom_color_on_focus' => Validatable_Fields\Configuration::string_field(
+					'border_bottom_color_on_focus' => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#3582c4',
@@ -1143,7 +1148,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'border_bottom_color_on_hover' => Validatable_Fields\Configuration::string_field(
+					'border_bottom_color_on_hover' => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#0a4b78',
@@ -1159,7 +1164,7 @@ class Settings extends Utils\Settings {
 					'border_bottom_width'          => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_bottom_width_on_focus' => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_bottom_width_on_hover' => Validatable_Fields\Configuration::unit_field( '1px' ),
-					'border_left_color'            => Validatable_Fields\Configuration::string_field(
+					'border_left_color'            => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#3582c4',
@@ -1167,7 +1172,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'border_left_color_on_focus'   => Validatable_Fields\Configuration::string_field(
+					'border_left_color_on_focus'   => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#3582c4',
@@ -1175,7 +1180,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'border_left_color_on_hover'   => Validatable_Fields\Configuration::string_field(
+					'border_left_color_on_hover'   => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#0a4b78',
@@ -1189,7 +1194,7 @@ class Settings extends Utils\Settings {
 					'border_left_width'            => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_left_width_on_focus'   => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_left_width_on_hover'   => Validatable_Fields\Configuration::unit_field( '1px' ),
-					'border_right_color'           => Validatable_Fields\Configuration::string_field(
+					'border_right_color'           => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#3582c4',
@@ -1197,7 +1202,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'border_right_color_on_focus'  => Validatable_Fields\Configuration::string_field(
+					'border_right_color_on_focus'  => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#3582c4',
@@ -1205,7 +1210,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'border_right_color_on_hover'  => Validatable_Fields\Configuration::string_field(
+					'border_right_color_on_hover'  => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#0a4b78',
@@ -1219,7 +1224,7 @@ class Settings extends Utils\Settings {
 					'border_right_width'           => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_right_width_on_focus'  => Validatable_Fields\Configuration::unit_field( '1px' ),
 					'border_right_width_on_hover'  => Validatable_Fields\Configuration::unit_field( '1px' ),
-					'border_top_color'             => Validatable_Fields\Configuration::string_field(
+					'border_top_color'             => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#3582c4',
@@ -1227,7 +1232,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'border_top_color_on_focus'    => Validatable_Fields\Configuration::string_field(
+					'border_top_color_on_focus'    => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#3582c4',
@@ -1235,7 +1240,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'border_top_color_on_hover'    => Validatable_Fields\Configuration::string_field(
+					'border_top_color_on_hover'    => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#0a4b78',
@@ -1255,8 +1260,8 @@ class Settings extends Utils\Settings {
 					'padding_left'                 => Validatable_Fields\Configuration::unit_field( '10px' ),
 					'padding_right'                => Validatable_Fields\Configuration::unit_field( '10px' ),
 					'padding_top'                  => Validatable_Fields\Configuration::unit_field( '0px' ),
-					'shadow'                       => Validatable_Fields\Configuration::string_field(),
-					'shadow_on_focus'              => Validatable_Fields\Configuration::string_field(
+					'shadow'                       => Validatable_Fields\Configuration::box_shadow_field(),
+					'shadow_on_focus'              => Validatable_Fields\Configuration::box_shadow_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '0 0 0 1px #3582c4',
@@ -1264,8 +1269,8 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'shadow_on_hover'              => Validatable_Fields\Configuration::string_field(),
-					'text_color'                   => Validatable_Fields\Configuration::string_field(
+					'shadow_on_hover'              => Validatable_Fields\Configuration::box_shadow_field(),
+					'text_color'                   => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#2271b1',
@@ -1273,7 +1278,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'text_color_on_focus'          => Validatable_Fields\Configuration::string_field(
+					'text_color_on_focus'          => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#0a4b78',
@@ -1281,7 +1286,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'text_color_on_hover'          => Validatable_Fields\Configuration::string_field(
+					'text_color_on_hover'          => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#0a4b78',
@@ -1304,7 +1309,7 @@ class Settings extends Utils\Settings {
 					'border_top_left_radius'      => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'border_top_right_radius'     => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'custom_notice_type'          => Validatable_Fields\Configuration::string_of_choice_field( 'notice', [ 'notice', 'error', 'success' ] ),
-					'error_background_color'      => Validatable_Fields\Configuration::string_field(
+					'error_background_color'      => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#ffffff',
@@ -1312,10 +1317,10 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'error_border_bottom_color'   => Validatable_Fields\Configuration::string_field(),
+					'error_border_bottom_color'   => Validatable_Fields\Configuration::color_field(),
 					'error_border_bottom_style'   => Validatable_Fields\Configuration::string_of_choice_field( 'none', $this->common_defs['border_style'] ),
 					'error_border_bottom_width'   => Validatable_Fields\Configuration::unit_field( '0px' ),
-					'error_border_left_color'     => Validatable_Fields\Configuration::string_field(
+					'error_border_left_color'     => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#d63638',
@@ -1325,13 +1330,13 @@ class Settings extends Utils\Settings {
 					),
 					'error_border_left_style'     => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
 					'error_border_left_width'     => Validatable_Fields\Configuration::unit_field( '4px' ),
-					'error_border_right_color'    => Validatable_Fields\Configuration::string_field(),
+					'error_border_right_color'    => Validatable_Fields\Configuration::color_field(),
 					'error_border_right_style'    => Validatable_Fields\Configuration::string_of_choice_field( 'none', $this->common_defs['border_style'] ),
 					'error_border_right_width'    => Validatable_Fields\Configuration::unit_field( '0px' ),
-					'error_border_top_color'      => Validatable_Fields\Configuration::string_field(),
+					'error_border_top_color'      => Validatable_Fields\Configuration::color_field(),
 					'error_border_top_style'      => Validatable_Fields\Configuration::string_of_choice_field( 'none', $this->common_defs['border_style'] ),
 					'error_border_top_width'      => Validatable_Fields\Configuration::unit_field( '0px' ),
-					'error_shadow'                => Validatable_Fields\Configuration::string_field(
+					'error_shadow'                => Validatable_Fields\Configuration::box_shadow_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => 'rgba(0, 0, 0, 0.1) 0px 1px 1px 0px',
@@ -1339,7 +1344,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'error_text_color'            => Validatable_Fields\Configuration::string_field( '#3c434a' ),
+					'error_text_color'            => Validatable_Fields\Configuration::color_field( '#3c434a' ),
 					'font_family'                 => Validatable_Fields\Configuration::string_of_choice_field( 'default', $this->common_defs['font_families'] ),
 					'font_size'                   => Validatable_Fields\Configuration::unit_field( '13px' ),
 					'font_weight'                 => Validatable_Fields\Configuration::string_of_choice_field( '400', $this->common_defs['font_weights'] ),
@@ -1348,11 +1353,11 @@ class Settings extends Utils\Settings {
 					'margin_left'                 => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'margin_right'                => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'margin_top'                  => Validatable_Fields\Configuration::unit_field( '0px' ),
-					'notice_background_color'     => Validatable_Fields\Configuration::string_field( '#ffffff' ),
-					'notice_border_bottom_color'  => Validatable_Fields\Configuration::string_field(),
+					'notice_background_color'     => Validatable_Fields\Configuration::color_field( '#ffffff' ),
+					'notice_border_bottom_color'  => Validatable_Fields\Configuration::color_field(),
 					'notice_border_bottom_style'  => Validatable_Fields\Configuration::string_of_choice_field( 'none', $this->common_defs['border_style'] ),
 					'notice_border_bottom_width'  => Validatable_Fields\Configuration::unit_field( '0px' ),
-					'notice_border_left_color'    => Validatable_Fields\Configuration::string_field(
+					'notice_border_left_color'    => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#72aee6',
@@ -1362,13 +1367,13 @@ class Settings extends Utils\Settings {
 					),
 					'notice_border_left_style'    => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
 					'notice_border_left_width'    => Validatable_Fields\Configuration::unit_field( '4px' ),
-					'notice_border_right_color'   => Validatable_Fields\Configuration::string_field(),
+					'notice_border_right_color'   => Validatable_Fields\Configuration::color_field(),
 					'notice_border_right_style'   => Validatable_Fields\Configuration::string_of_choice_field( 'none', $this->common_defs['border_style'] ),
 					'notice_border_right_width'   => Validatable_Fields\Configuration::unit_field( '0px' ),
-					'notice_border_top_color'     => Validatable_Fields\Configuration::string_field(),
+					'notice_border_top_color'     => Validatable_Fields\Configuration::color_field(),
 					'notice_border_top_style'     => Validatable_Fields\Configuration::string_of_choice_field( 'none', $this->common_defs['border_style'] ),
 					'notice_border_top_width'     => Validatable_Fields\Configuration::unit_field( '0px' ),
-					'notice_shadow'               => Validatable_Fields\Configuration::string_field(
+					'notice_shadow'               => Validatable_Fields\Configuration::box_shadow_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => 'rgba(0, 0, 0, 0.1) 0px 1px 1px 0px',
@@ -1376,7 +1381,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'notice_text_color'           => Validatable_Fields\Configuration::string_field( '#3c434a' ),
+					'notice_text_color'           => Validatable_Fields\Configuration::color_field( '#3c434a' ),
 					'padding_bottom'              => Validatable_Fields\Configuration::unit_field(
 						$this->resolve_for_generation(
 							[
@@ -1396,7 +1401,7 @@ class Settings extends Utils\Settings {
 						),
 					),
 					'show_custom_notice'          => Validatable_Fields\Configuration::boolean_field( false ),
-					'success_background_color'    => Validatable_Fields\Configuration::string_field(
+					'success_background_color'    => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#ffffff',
@@ -1404,10 +1409,10 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'success_border_bottom_color' => Validatable_Fields\Configuration::string_field(),
+					'success_border_bottom_color' => Validatable_Fields\Configuration::color_field(),
 					'success_border_bottom_style' => Validatable_Fields\Configuration::string_of_choice_field( 'none', $this->common_defs['border_style'] ),
 					'success_border_bottom_width' => Validatable_Fields\Configuration::unit_field( '0px' ),
-					'success_border_left_color'   => Validatable_Fields\Configuration::string_field(
+					'success_border_left_color'   => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#00a32a',
@@ -1417,13 +1422,13 @@ class Settings extends Utils\Settings {
 					),
 					'success_border_left_style'   => Validatable_Fields\Configuration::string_of_choice_field( 'solid', $this->common_defs['border_style'] ),
 					'success_border_left_width'   => Validatable_Fields\Configuration::unit_field( '4px' ),
-					'success_border_right_color'  => Validatable_Fields\Configuration::string_field(),
+					'success_border_right_color'  => Validatable_Fields\Configuration::color_field(),
 					'success_border_right_style'  => Validatable_Fields\Configuration::string_of_choice_field( 'none', $this->common_defs['border_style'] ),
 					'success_border_right_width'  => Validatable_Fields\Configuration::unit_field( '0px' ),
-					'success_border_top_color'    => Validatable_Fields\Configuration::string_field(),
+					'success_border_top_color'    => Validatable_Fields\Configuration::color_field(),
 					'success_border_top_style'    => Validatable_Fields\Configuration::string_of_choice_field( 'none', $this->common_defs['border_style'] ),
 					'success_border_top_width'    => Validatable_Fields\Configuration::unit_field( '0px' ),
-					'success_shadow'              => Validatable_Fields\Configuration::string_field(
+					'success_shadow'              => Validatable_Fields\Configuration::box_shadow_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => 'rgba(0, 0, 0, 0.1) 0px 1px 1px 0px',
@@ -1431,7 +1436,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'success_text_color'          => Validatable_Fields\Configuration::string_field( '#3c434a' ),
+					'success_text_color'          => Validatable_Fields\Configuration::color_field( '#3c434a' ),
 				],
 			],
 			'under_form_links'                => [
@@ -1444,9 +1449,9 @@ class Settings extends Utils\Settings {
 					'font_weight'         => Validatable_Fields\Configuration::string_of_choice_field( '400', $this->common_defs['font_weights'] ),
 					'letter_case'         => Validatable_Fields\Configuration::string_of_choice_field( 'none', $this->common_defs['letter_case'] ),
 					'line_height'         => Validatable_Fields\Configuration::float_field( 1.5, 0 ),
-					'link_color'          => Validatable_Fields\Configuration::string_field( '#50575e' ),
-					'link_color_on_focus' => Validatable_Fields\Configuration::string_field( '#135e96' ),
-					'link_color_on_hover' => Validatable_Fields\Configuration::string_field(
+					'link_color'          => Validatable_Fields\Configuration::color_field( '#50575e' ),
+					'link_color_on_focus' => Validatable_Fields\Configuration::color_field( '#135e96' ),
+					'link_color_on_hover' => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#135e96',
@@ -1463,9 +1468,9 @@ class Settings extends Utils\Settings {
 					'padding_right'       => Validatable_Fields\Configuration::unit_field( '24px' ),
 					'padding_top'         => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'separator'           => Validatable_Fields\Configuration::string_field( '|' ),
-					'separator_color'     => Validatable_Fields\Configuration::string_field( '#50575e' ),
-					'shadow'              => Validatable_Fields\Configuration::string_field(),
-					'shadow_on_focus'     => Validatable_Fields\Configuration::string_field(
+					'separator_color'     => Validatable_Fields\Configuration::color_field( '#50575e' ),
+					'shadow'              => Validatable_Fields\Configuration::box_shadow_field(),
+					'shadow_on_focus'     => Validatable_Fields\Configuration::box_shadow_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '0 0 0 2px #2271b1',
@@ -1473,7 +1478,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'shadow_on_hover'     => Validatable_Fields\Configuration::string_field(),
+					'shadow_on_hover'     => Validatable_Fields\Configuration::box_shadow_field(),
 					'text_decoration'     => Validatable_Fields\Configuration::string_of_choice_field( 'none', [ 'none', 'underline', 'line-through' ] ),
 				],
 			],
@@ -1494,12 +1499,12 @@ class Settings extends Utils\Settings {
 				'type'   => Validatable_Fields\Fields_Group::TYPE,
 				'config' => [
 					'alignment'                    => Validatable_Fields\Configuration::string_of_choice_field( 'center', [ 'left', 'center', 'right' ] ),
-					'background_color'             => Validatable_Fields\Configuration::string_field(),
-					'background_color_on_focus'    => Validatable_Fields\Configuration::string_field(),
-					'background_color_on_hover'    => Validatable_Fields\Configuration::string_field(),
-					'border_bottom_color'          => Validatable_Fields\Configuration::string_field(),
-					'border_bottom_color_on_focus' => Validatable_Fields\Configuration::string_field(),
-					'border_bottom_color_on_hover' => Validatable_Fields\Configuration::string_field(),
+					'background_color'             => Validatable_Fields\Configuration::color_field(),
+					'background_color_on_focus'    => Validatable_Fields\Configuration::color_field(),
+					'background_color_on_hover'    => Validatable_Fields\Configuration::color_field(),
+					'border_bottom_color'          => Validatable_Fields\Configuration::color_field(),
+					'border_bottom_color_on_focus' => Validatable_Fields\Configuration::color_field(),
+					'border_bottom_color_on_hover' => Validatable_Fields\Configuration::color_field(),
 					'border_bottom_left_radius'    => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'border_bottom_right_radius'   => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'border_bottom_style'          => Validatable_Fields\Configuration::string_of_choice_field( 'none', $this->common_defs['border_style'] ),
@@ -1508,27 +1513,27 @@ class Settings extends Utils\Settings {
 					'border_bottom_width'          => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'border_bottom_width_on_focus' => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'border_bottom_width_on_hover' => Validatable_Fields\Configuration::unit_field( '0px' ),
-					'border_left_color'            => Validatable_Fields\Configuration::string_field(),
-					'border_left_color_on_focus'   => Validatable_Fields\Configuration::string_field(),
-					'border_left_color_on_hover'   => Validatable_Fields\Configuration::string_field(),
+					'border_left_color'            => Validatable_Fields\Configuration::color_field(),
+					'border_left_color_on_focus'   => Validatable_Fields\Configuration::color_field(),
+					'border_left_color_on_hover'   => Validatable_Fields\Configuration::color_field(),
 					'border_left_style'            => Validatable_Fields\Configuration::string_of_choice_field( 'none', $this->common_defs['border_style'] ),
 					'border_left_style_on_focus'   => Validatable_Fields\Configuration::string_of_choice_field( 'none', $this->common_defs['border_style'] ),
 					'border_left_style_on_hover'   => Validatable_Fields\Configuration::string_of_choice_field( 'none', $this->common_defs['border_style'] ),
 					'border_left_width'            => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'border_left_width_on_focus'   => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'border_left_width_on_hover'   => Validatable_Fields\Configuration::unit_field( '0px' ),
-					'border_right_color'           => Validatable_Fields\Configuration::string_field(),
-					'border_right_color_on_focus'  => Validatable_Fields\Configuration::string_field(),
-					'border_right_color_on_hover'  => Validatable_Fields\Configuration::string_field(),
+					'border_right_color'           => Validatable_Fields\Configuration::color_field(),
+					'border_right_color_on_focus'  => Validatable_Fields\Configuration::color_field(),
+					'border_right_color_on_hover'  => Validatable_Fields\Configuration::color_field(),
 					'border_right_style'           => Validatable_Fields\Configuration::string_of_choice_field( 'none', $this->common_defs['border_style'] ),
 					'border_right_style_on_focus'  => Validatable_Fields\Configuration::string_of_choice_field( 'none', $this->common_defs['border_style'] ),
 					'border_right_style_on_hover'  => Validatable_Fields\Configuration::string_of_choice_field( 'none', $this->common_defs['border_style'] ),
 					'border_right_width'           => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'border_right_width_on_focus'  => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'border_right_width_on_hover'  => Validatable_Fields\Configuration::unit_field( '0px' ),
-					'border_top_color'             => Validatable_Fields\Configuration::string_field(),
-					'border_top_color_on_focus'    => Validatable_Fields\Configuration::string_field(),
-					'border_top_color_on_hover'    => Validatable_Fields\Configuration::string_field(),
+					'border_top_color'             => Validatable_Fields\Configuration::color_field(),
+					'border_top_color_on_focus'    => Validatable_Fields\Configuration::color_field(),
+					'border_top_color_on_hover'    => Validatable_Fields\Configuration::color_field(),
 					'border_top_left_radius'       => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'border_top_right_radius'      => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'border_top_style'             => Validatable_Fields\Configuration::string_of_choice_field( 'none', $this->common_defs['border_style'] ),
@@ -1538,8 +1543,8 @@ class Settings extends Utils\Settings {
 					'border_top_width_on_focus'    => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'border_top_width_on_hover'    => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'gap'                          => Validatable_Fields\Configuration::unit_field( '1em' ),
-					'icon_color'                   => Validatable_Fields\Configuration::string_field( '#3c434a' ),
-					'icon_color_on_focus'          => Validatable_Fields\Configuration::string_field(
+					'icon_color'                   => Validatable_Fields\Configuration::color_field( '#3c434a' ),
+					'icon_color_on_focus'          => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#135e96',
@@ -1547,7 +1552,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'icon_color_on_hover'          => Validatable_Fields\Configuration::string_field(
+					'icon_color_on_hover'          => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#135e96',
@@ -1565,8 +1570,8 @@ class Settings extends Utils\Settings {
 					'padding_right'                => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'padding_top'                  => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'placement'                    => Validatable_Fields\Configuration::string_of_choice_field( 'at_the_bottom', [ 'above_logo', 'above_form', 'above_inline_links', 'above_privacy_policy_link', 'above_language_switcher', 'at_the_bottom' ] ),
-					'shadow'                       => Validatable_Fields\Configuration::string_field(),
-					'shadow_on_focus'              => Validatable_Fields\Configuration::string_field(
+					'shadow'                       => Validatable_Fields\Configuration::box_shadow_field(),
+					'shadow_on_focus'              => Validatable_Fields\Configuration::box_shadow_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '0 0 0 2px #2271b1',
@@ -1574,7 +1579,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'shadow_on_hover'              => Validatable_Fields\Configuration::string_field(),
+					'shadow_on_hover'              => Validatable_Fields\Configuration::box_shadow_field(),
 					'show'                         => Validatable_Fields\Configuration::boolean_field( false ),
 				],
 			],
@@ -1602,7 +1607,7 @@ class Settings extends Utils\Settings {
 					'hide'                => Validatable_Fields\Configuration::boolean_field( false ),
 					'letter_case'         => Validatable_Fields\Configuration::string_of_choice_field( 'none', $this->common_defs['letter_case'] ),
 					'line_height'         => Validatable_Fields\Configuration::float_field( 1.4, 0 ),
-					'link_color'          => Validatable_Fields\Configuration::string_field(
+					'link_color'          => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#2271b1',
@@ -1610,7 +1615,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'link_color_on_focus' => Validatable_Fields\Configuration::string_field(
+					'link_color_on_focus' => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#135e96',
@@ -1618,7 +1623,7 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'link_color_on_hover' => Validatable_Fields\Configuration::string_field(
+					'link_color_on_hover' => Validatable_Fields\Configuration::color_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '#043959',
@@ -1634,8 +1639,8 @@ class Settings extends Utils\Settings {
 					'padding_left'        => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'padding_right'       => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'padding_top'         => Validatable_Fields\Configuration::unit_field( '0px' ),
-					'shadow'              => Validatable_Fields\Configuration::string_field(),
-					'shadow_on_focus'     => Validatable_Fields\Configuration::string_field(
+					'shadow'              => Validatable_Fields\Configuration::box_shadow_field(),
+					'shadow_on_focus'     => Validatable_Fields\Configuration::box_shadow_field(
 						$this->resolve_for_generation(
 							[
 								'v1' => '0 0 0 2px #2271b1',
@@ -1643,14 +1648,14 @@ class Settings extends Utils\Settings {
 							],
 						),
 					),
-					'shadow_on_hover'     => Validatable_Fields\Configuration::string_field(),
+					'shadow_on_hover'     => Validatable_Fields\Configuration::box_shadow_field(),
 					'text_decoration'     => Validatable_Fields\Configuration::string_of_choice_field( 'underline', [ 'none', 'underline', 'line-through' ] ),
 				],
 			],
 			'language_switcher'               => [
 				'type'   => Validatable_Fields\Fields_Group::TYPE,
 				'config' => [
-					'icon_color'     => Validatable_Fields\Configuration::string_field( '#3c434a' ),
+					'icon_color'     => Validatable_Fields\Configuration::color_field( '#3c434a' ),
 					'show'           => Validatable_Fields\Configuration::boolean_field( true ),
 					'margin_bottom'  => Validatable_Fields\Configuration::unit_field( '24px' ),
 					'margin_left'    => Validatable_Fields\Configuration::unit_field( '0px' ),
@@ -1679,7 +1684,7 @@ class Settings extends Utils\Settings {
 					'padding_left'    => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'padding_right'   => Validatable_Fields\Configuration::unit_field( '0px' ),
 					'padding_top'     => Validatable_Fields\Configuration::unit_field( '0px' ),
-					'text_color'      => Validatable_Fields\Configuration::string_field( '#50575e' ),
+					'text_color'      => Validatable_Fields\Configuration::color_field( '#50575e' ),
 					'text_decoration' => Validatable_Fields\Configuration::string_of_choice_field( 'none', [ 'none', 'underline', 'line-through' ] ),
 					'text'            => Validatable_Fields\Configuration::string_field( '' ),
 				],
@@ -1697,15 +1702,15 @@ class Settings extends Utils\Settings {
 		/**
 		 * Add language-specific fields
 		 */
-		foreach ( $languages as $lang ) {
+		foreach ( $installed_languages as $lang ) {
 			// For "logo" group.
-			$fields_config['logo']['config'][ sprintf( 'link_title.%s', $lang ) ] = Validatable_Fields\Configuration::string_field( Utils\Languages::get_single_translation( 'Powered by WordPress', $lang ) );
+			$fields_config['logo']['config'][ sprintf( 'link_title.%s', $lang ) ] = Validatable_Fields\Configuration::string_field( $languages->get_single_translation( 'Powered by WordPress', $lang ) );
 
 			// For "login form labels" group.
-			$fields_config['login_form_labels']['config'][ sprintf( 'label_email.%s', $lang ) ]                     = Validatable_Fields\Configuration::string_field( Utils\Languages::get_single_translation( 'Email', $lang ) );
-			$fields_config['login_form_labels']['config'][ sprintf( 'label_password.%s', $lang ) ]                  = Validatable_Fields\Configuration::string_field( Utils\Languages::get_single_translation( 'Password', $lang ) );
-			$fields_config['login_form_labels']['config'][ sprintf( 'label_username.%s', $lang ) ]                  = Validatable_Fields\Configuration::string_field( Utils\Languages::get_single_translation( 'Username', $lang ) );
-			$fields_config['login_form_labels']['config'][ sprintf( 'label_username_or_email_address.%s', $lang ) ] = Validatable_Fields\Configuration::string_field( Utils\Languages::get_single_translation( 'Username or Email Address', $lang ) );
+			$fields_config['login_form_labels']['config'][ sprintf( 'label_email.%s', $lang ) ]                     = Validatable_Fields\Configuration::string_field( $languages->get_single_translation( 'Email', $lang ) );
+			$fields_config['login_form_labels']['config'][ sprintf( 'label_password.%s', $lang ) ]                  = Validatable_Fields\Configuration::string_field( $languages->get_single_translation( 'Password', $lang ) );
+			$fields_config['login_form_labels']['config'][ sprintf( 'label_username.%s', $lang ) ]                  = Validatable_Fields\Configuration::string_field( $languages->get_single_translation( 'Username', $lang ) );
+			$fields_config['login_form_labels']['config'][ sprintf( 'label_username_or_email_address.%s', $lang ) ] = Validatable_Fields\Configuration::string_field( $languages->get_single_translation( 'Username or Email Address', $lang ) );
 
 			// For "login form input fields" group.
 			$fields_config['login_form_input_fields']['config'][ sprintf( 'placeholder_email.%s', $lang ) ]                     = Validatable_Fields\Configuration::string_field();
@@ -1714,22 +1719,22 @@ class Settings extends Utils\Settings {
 			$fields_config['login_form_input_fields']['config'][ sprintf( 'placeholder_username_or_email_address.%s', $lang ) ] = Validatable_Fields\Configuration::string_field();
 
 			// For "login form remember me checkbox" group.
-			$fields_config['login_form_remember_me_checkbox']['config'][ sprintf( 'label_remember_me.%s', $lang ) ] = Validatable_Fields\Configuration::string_field( Utils\Languages::get_single_translation( 'Remember Me', $lang ) );
+			$fields_config['login_form_remember_me_checkbox']['config'][ sprintf( 'label_remember_me.%s', $lang ) ] = Validatable_Fields\Configuration::string_field( $languages->get_single_translation( 'Remember Me', $lang ) );
 
 			// For "login form button primary" group.
-			$fields_config['login_form_button_primary']['config'][ sprintf( 'label_get_new_password.%s', $lang ) ] = Validatable_Fields\Configuration::string_field( Utils\Languages::get_single_translation( 'Get New Password', $lang ) );
-			$fields_config['login_form_button_primary']['config'][ sprintf( 'label_log_in.%s', $lang ) ]           = Validatable_Fields\Configuration::string_field( Utils\Languages::get_single_translation( 'Log In', $lang ) );
-			$fields_config['login_form_button_primary']['config'][ sprintf( 'label_register.%s', $lang ) ]         = Validatable_Fields\Configuration::string_field( Utils\Languages::get_single_translation( 'Register', $lang ) );
-			$fields_config['login_form_button_primary']['config'][ sprintf( 'label_save_password.%s', $lang ) ]    = Validatable_Fields\Configuration::string_field( Utils\Languages::get_single_translation( 'Save Password', $lang ) );
+			$fields_config['login_form_button_primary']['config'][ sprintf( 'label_get_new_password.%s', $lang ) ] = Validatable_Fields\Configuration::string_field( $languages->get_single_translation( 'Get New Password', $lang ) );
+			$fields_config['login_form_button_primary']['config'][ sprintf( 'label_log_in.%s', $lang ) ]           = Validatable_Fields\Configuration::string_field( $languages->get_single_translation( 'Log In', $lang ) );
+			$fields_config['login_form_button_primary']['config'][ sprintf( 'label_register.%s', $lang ) ]         = Validatable_Fields\Configuration::string_field( $languages->get_single_translation( 'Register', $lang ) );
+			$fields_config['login_form_button_primary']['config'][ sprintf( 'label_save_password.%s', $lang ) ]    = Validatable_Fields\Configuration::string_field( $languages->get_single_translation( 'Save Password', $lang ) );
 
 			// For "login form button secondary" group.
-			$fields_config['login_form_button_secondary']['config'][ sprintf( 'label_change.%s', $lang ) ]            = Validatable_Fields\Configuration::string_field( Utils\Languages::get_single_translation( 'Change', $lang ) );
-			$fields_config['login_form_button_secondary']['config'][ sprintf( 'label_generate_password.%s', $lang ) ] = Validatable_Fields\Configuration::string_field( Utils\Languages::get_single_translation( 'Generate Password', $lang ) );
+			$fields_config['login_form_button_secondary']['config'][ sprintf( 'label_change.%s', $lang ) ]            = Validatable_Fields\Configuration::string_field( $languages->get_single_translation( 'Change', $lang ) );
+			$fields_config['login_form_button_secondary']['config'][ sprintf( 'label_generate_password.%s', $lang ) ] = Validatable_Fields\Configuration::string_field( $languages->get_single_translation( 'Generate Password', $lang ) );
 
 			// For "notices" group.
 			$fields_config['notices']['config'][ sprintf( 'notice_custom.%s', $lang ) ]         = Validatable_Fields\Configuration::string_field();
-			$fields_config['notices']['config'][ sprintf( 'notice_password_reset.%s', $lang ) ] = Validatable_Fields\Configuration::string_field( Utils\Languages::get_single_translation( 'Please enter your username or email address. You will receive an email message with instructions on how to reset your password.', $lang ) );
-			$fields_config['notices']['config'][ sprintf( 'notice_register.%s', $lang ) ]       = Validatable_Fields\Configuration::string_field( Utils\Languages::get_single_translation( 'Register For This Site', $lang ) );
+			$fields_config['notices']['config'][ sprintf( 'notice_password_reset.%s', $lang ) ] = Validatable_Fields\Configuration::string_field( $languages->get_single_translation( 'Please enter your username or email address. You will receive an email message with instructions on how to reset your password.', $lang ) );
+			$fields_config['notices']['config'][ sprintf( 'notice_register.%s', $lang ) ]       = Validatable_Fields\Configuration::string_field( $languages->get_single_translation( 'Register For This Site', $lang ) );
 		}
 
 		/**

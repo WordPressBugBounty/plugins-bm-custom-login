@@ -5,27 +5,26 @@
  * @package Teydea_Studio\Custom_Login
  */
 
-namespace Teydea_Studio\Custom_Login\Modules;
+namespace Teydea_Studio\Custom_Login\Modules\Adjustments;
 
 use DOMDocument;
 use DOMXPath;
-use Teydea_Studio\Custom_Login\Adjuster;
 use Teydea_Studio\Custom_Login\Dependencies\Utils;
-use Teydea_Studio\Custom_Login\Modules\Adjustments\Adjuster_Background;
-use Teydea_Studio\Custom_Login\Modules\Adjustments\Adjuster_Footer;
-use Teydea_Studio\Custom_Login\Modules\Adjustments\Adjuster_Language_Switcher;
-use Teydea_Studio\Custom_Login\Modules\Adjustments\Adjuster_Login_Form_Button_Primary;
-use Teydea_Studio\Custom_Login\Modules\Adjustments\Adjuster_Login_Form_Button_Secondary;
-use Teydea_Studio\Custom_Login\Modules\Adjustments\Adjuster_Login_Form_Checkbox_Fields;
-use Teydea_Studio\Custom_Login\Modules\Adjustments\Adjuster_Login_Form_Container;
-use Teydea_Studio\Custom_Login\Modules\Adjustments\Adjuster_Login_Form_Input_Fields;
-use Teydea_Studio\Custom_Login\Modules\Adjustments\Adjuster_Login_Form_Labels;
-use Teydea_Studio\Custom_Login\Modules\Adjustments\Adjuster_Login_Form_Remember_Me_Checkbox;
-use Teydea_Studio\Custom_Login\Modules\Adjustments\Adjuster_Logo;
-use Teydea_Studio\Custom_Login\Modules\Adjustments\Adjuster_Notices;
-use Teydea_Studio\Custom_Login\Modules\Adjustments\Adjuster_Privacy_Policy_Link;
-use Teydea_Studio\Custom_Login\Modules\Adjustments\Adjuster_Social_Media_Links;
-use Teydea_Studio\Custom_Login\Modules\Adjustments\Adjuster_Under_Form_Links;
+use Teydea_Studio\Custom_Login\Modules\Adjustments\Internal\Adjuster_Background;
+use Teydea_Studio\Custom_Login\Modules\Adjustments\Internal\Adjuster_Footer;
+use Teydea_Studio\Custom_Login\Modules\Adjustments\Internal\Adjuster_Language_Switcher;
+use Teydea_Studio\Custom_Login\Modules\Adjustments\Internal\Adjuster_Login_Form_Button_Primary;
+use Teydea_Studio\Custom_Login\Modules\Adjustments\Internal\Adjuster_Login_Form_Button_Secondary;
+use Teydea_Studio\Custom_Login\Modules\Adjustments\Internal\Adjuster_Login_Form_Checkbox_Fields;
+use Teydea_Studio\Custom_Login\Modules\Adjustments\Internal\Adjuster_Login_Form_Container;
+use Teydea_Studio\Custom_Login\Modules\Adjustments\Internal\Adjuster_Login_Form_Input_Fields;
+use Teydea_Studio\Custom_Login\Modules\Adjustments\Internal\Adjuster_Login_Form_Labels;
+use Teydea_Studio\Custom_Login\Modules\Adjustments\Internal\Adjuster_Login_Form_Remember_Me_Checkbox;
+use Teydea_Studio\Custom_Login\Modules\Adjustments\Internal\Adjuster_Logo;
+use Teydea_Studio\Custom_Login\Modules\Adjustments\Internal\Adjuster_Notices;
+use Teydea_Studio\Custom_Login\Modules\Adjustments\Internal\Adjuster_Privacy_Policy_Link;
+use Teydea_Studio\Custom_Login\Modules\Adjustments\Internal\Adjuster_Social_Media_Links;
+use Teydea_Studio\Custom_Login\Modules\Adjustments\Internal\Adjuster_Under_Form_Links;
 use Teydea_Studio\Custom_Login\Styles;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -56,16 +55,6 @@ final class Module_Adjustments extends Utils\Module {
 	 * @return void
 	 */
 	public function register(): void {
-		// Do not apply adjustments for interim login requests.
-		if ( isset( $_REQUEST['interim-login'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			return;
-		}
-
-		// Do not apply adjustments on the "confirm_admin_email" login action.
-		if ( isset( $_REQUEST['action'] ) && 'confirm_admin_email' === $_REQUEST['action'] ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			return;
-		}
-
 		// Render inline styles in the "head" section of the login screen.
 		add_action( 'login_head', [ $this, 'render_inline_styles' ] );
 
@@ -73,6 +62,10 @@ final class Module_Adjustments extends Utils\Module {
 		add_action(
 			'login_init',
 			function (): void {
+				if ( $this->should_skip_adjustments() ) {
+					return;
+				}
+
 				foreach ( $this->get_adjusters() as $adjuster ) {
 					$adjuster->register();
 				}
@@ -81,6 +74,48 @@ final class Module_Adjustments extends Utils\Module {
 
 		// Allow specific adjusters to apply their markup adjustments.
 		add_filter( 'custom_login__markup_adjustments', [ $this, 'apply_markup_adjustments' ], 10, 2 );
+	}
+
+	/**
+	 * Determine whether the login-page adjustments should be skipped
+	 *
+	 * Adjustments are not applied to interim login requests or the
+	 * "confirm_admin_email" login action.
+	 *
+	 * @return bool Whether to skip the adjustments for the current request.
+	 */
+	private function should_skip_adjustments(): bool {
+		/**
+		 * Read GET/POST explicitly rather than $_REQUEST, which can include cookies
+		 * (a stray "interim-login" / "action" cookie must not disable the styling).
+		 *
+		 * This only inspects the request to decide whether to skip cosmetic login
+		 * styling -- it changes no state, and the action value is sanitized with
+		 * sanitize_key(), so the nonce / sanitization sniffs are suppressed here.
+		 */
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+
+		// Do not apply adjustments for interim login requests.
+		if ( isset( $_GET['interim-login'] ) || isset( $_POST['interim-login'] ) ) {
+			return true;
+		}
+
+		$action = '';
+
+		if ( isset( $_POST['action'] ) ) {
+			$action = sanitize_key( Utils\Type::ensure_string( wp_unslash( $_POST['action'] ) ) );
+		} elseif ( isset( $_GET['action'] ) ) {
+			$action = sanitize_key( Utils\Type::ensure_string( wp_unslash( $_GET['action'] ) ) );
+		}
+
+		// phpcs:enable WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+
+		// Do not apply adjustments on the "confirm_admin_email" login action.
+		if ( 'confirm_admin_email' === $action ) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -117,7 +152,8 @@ final class Module_Adjustments extends Utils\Module {
 				],
 			);
 
-			$adjusters = [];
+			$adjusters      = [];
+			$current_locale = ( new Utils\Languages() )->get_current_locale();
 
 			/** @var Adjuster $adjuster */
 			foreach ( $adjuster_classes as $adjuster ) {
@@ -125,7 +161,7 @@ final class Module_Adjustments extends Utils\Module {
 					$this->container,
 					$this->get_settings(),
 					$this->get_styles(),
-					Utils\Languages::get_current_locale(),
+					$current_locale,
 				);
 			}
 
@@ -173,6 +209,10 @@ final class Module_Adjustments extends Utils\Module {
 	 * @return void
 	 */
 	public function render_inline_styles(): void {
+		if ( $this->should_skip_adjustments() ) {
+			return;
+		}
+
 		// Start with core styles.
 		$styles = [
 			'#login { padding: 0; }',
@@ -213,6 +253,10 @@ final class Module_Adjustments extends Utils\Module {
 	 * @return DOMDocument Updated DOMDocument object after applying adjustments.
 	 */
 	public function apply_markup_adjustments( DOMDocument $doc, DOMXPath $xpath ): DOMDocument {
+		if ( $this->should_skip_adjustments() ) {
+			return $doc;
+		}
+
 		// Create the wrapper container.
 		$wrapper = $doc->createElement( 'div' );
 		$wrapper->setAttribute( 'class', 'bm-custom-login__form-wrapper' );

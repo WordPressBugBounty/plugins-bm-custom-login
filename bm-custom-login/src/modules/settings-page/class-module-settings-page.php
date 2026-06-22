@@ -5,7 +5,7 @@
  * @package Teydea_Studio\Custom_Login
  */
 
-namespace Teydea_Studio\Custom_Login\Modules;
+namespace Teydea_Studio\Custom_Login\Modules\Settings_Page;
 
 use Teydea_Studio\Custom_Login\Dependencies\Universal_Modules;
 use Teydea_Studio\Custom_Login\Dependencies\Utils;
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * The "Module_Settings_Page" class
  */
-final class Module_Settings_Page extends Universal_Modules\Module_Settings_Page {
+final class Module_Settings_Page extends Universal_Modules\Settings_Page\Module_Settings_Page {
 	/**
 	 * Register hooks
 	 *
@@ -104,8 +104,9 @@ final class Module_Settings_Page extends Universal_Modules\Module_Settings_Page 
 		 * Get the list of installed languages and translations
 		 * for certain strings
 		 */
-		$languages = Utils\Languages::get_installed_languages( 'core' );
-		$tokens    = [
+		$languages           = new Utils\Languages();
+		$installed_languages = $languages->get_installed_languages( 'core' );
+		$tokens              = [
 			'Change',
 			'Email',
 			'Get New Password',
@@ -123,9 +124,9 @@ final class Module_Settings_Page extends Universal_Modules\Module_Settings_Page 
 
 		$translations = [];
 
-		foreach ( $languages as $lang ) {
+		foreach ( $installed_languages as $lang ) {
 			foreach ( $tokens as $token ) {
-				$translations[ $token ][ Utils\Strings::to_camel_case( $lang ) ] = Utils\Languages::get_single_translation( $token, $lang );
+				$translations[ $token ][ Utils\Strings::to_camel_case( $lang ) ] = $languages->get_single_translation( $token, $lang );
 			}
 		}
 
@@ -158,14 +159,14 @@ final class Module_Settings_Page extends Universal_Modules\Module_Settings_Page 
 				function ( string $language ): string {
 					return Utils\Strings::to_camel_case( $language );
 				},
-				$languages,
+				$installed_languages,
 			),
 
 			// Whether multiple languages are supported.
-			'supportsMultipleLanguages' => 1 < count( $languages ),
+			'supportsMultipleLanguages' => 1 < count( $installed_languages ),
 
 			// Current language.
-			'currentLocale'             => Utils\Languages::get_current_locale(),
+			'currentLocale'             => $languages->get_current_locale(),
 
 			// Translations for certain strings.
 			'translations'              => $translations,

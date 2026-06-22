@@ -101,6 +101,54 @@ final class Configuration {
 	}
 
 	/**
+	 * Configure the "color" field
+	 *
+	 * Stores a CSS color value, restricting it on save to a valid hex,
+	 * rgb(a)/hsl(a), or named color so that an attacker-controlled value
+	 * cannot break out of the CSS declaration it is later composed into.
+	 *
+	 * @param string   $default_value Default value of the field.
+	 * @param ?Closure $restorer      Additional function for value restore.
+	 * @param ?Closure $sanitizer     Additional sanitizer function.
+	 * @param ?Closure $validator     Additional validation function.
+	 *
+	 * @return array{type:'string',default_value:string,restorer:?Closure,sanitizer:?Closure,validator:?Closure} Field configuration array.
+	 */
+	public static function color_field( string $default_value = '', ?Closure $restorer = null, ?Closure $sanitizer = null, ?Closure $validator = null ): array {
+		return [
+			'type'          => 'string',
+			'default_value' => $default_value,
+			'restorer'      => $restorer,
+			'sanitizer'     => $sanitizer ?? Closures::color_field_sanitizer(),
+			'validator'     => $validator,
+		];
+	}
+
+	/**
+	 * Configure the "box shadow" field
+	 *
+	 * Stores a CSS box-shadow value, restricting it on save to the character
+	 * set valid for box-shadow so that an attacker-controlled value cannot
+	 * break out of the CSS declaration it is later composed into.
+	 *
+	 * @param string   $default_value Default value of the field.
+	 * @param ?Closure $restorer      Additional function for value restore.
+	 * @param ?Closure $sanitizer     Additional sanitizer function.
+	 * @param ?Closure $validator     Additional validation function.
+	 *
+	 * @return array{type:'string',default_value:string,restorer:?Closure,sanitizer:?Closure,validator:?Closure} Field configuration array.
+	 */
+	public static function box_shadow_field( string $default_value = '', ?Closure $restorer = null, ?Closure $sanitizer = null, ?Closure $validator = null ): array {
+		return [
+			'type'          => 'string',
+			'default_value' => $default_value,
+			'restorer'      => $restorer,
+			'sanitizer'     => $sanitizer ?? Closures::box_shadow_field_sanitizer(),
+			'validator'     => $validator,
+		];
+	}
+
+	/**
 	 * Configure the "date" field
 	 *
 	 * @param string   $default_value Default value of the field.
@@ -335,6 +383,28 @@ final class Configuration {
 	}
 
 	/**
+	 * Configure the "restricted phrases" field
+	 *
+	 * @param int      $max_entries      Maximum number of entries allowed in the list.
+	 * @param int      $max_entry_length Maximum length of a single entry, in characters.
+	 * @param string[] $default_value    Default value of the field.
+	 * @param ?Closure $restorer         Additional function for value restore.
+	 * @param ?Closure $sanitizer        Additional sanitizer function.
+	 * @param ?Closure $validator        Additional validation function.
+	 *
+	 * @return array{type:'array_of_strings',default_value:string[],restorer:?Closure,sanitizer:?Closure,validator:?Closure} Field configuration array.
+	 */
+	public static function restricted_phrases_field( int $max_entries, int $max_entry_length, array $default_value = [], ?Closure $restorer = null, ?Closure $sanitizer = null, ?Closure $validator = null ): array {
+		return [
+			'type'          => 'array_of_strings',
+			'default_value' => $default_value,
+			'restorer'      => $restorer ?? Closures::restricted_phrases_field_restorer_and_sanitizer(),
+			'sanitizer'     => $sanitizer ?? Closures::restricted_phrases_field_restorer_and_sanitizer(),
+			'validator'     => $validator ?? Closures::restricted_phrases_field_validator( $max_entries, $max_entry_length ),
+		];
+	}
+
+	/**
 	 * Configure the "string of choice" field
 	 *
 	 * @param string   $default_value  Default value of the field.
@@ -369,6 +439,33 @@ final class Configuration {
 	public static function string_field( string $default_value = '', ?Closure $restorer = null, ?Closure $sanitizer = null, ?Closure $validator = null ): array {
 		return [
 			'type'          => 'string',
+			'default_value' => $default_value,
+			'restorer'      => $restorer,
+			'sanitizer'     => $sanitizer,
+			'validator'     => $validator,
+		];
+	}
+
+	/**
+	 * Configure the "textarea" field
+	 *
+	 * Multi-line counterpart to {@see string_field()}. Same shape and storage
+	 * type. The newline-preserving default sanitization (`sanitize_textarea_field()`)
+	 * is applied by the `Field_Textarea` class, not by this factory; the
+	 * `$sanitizer` argument here is an optional additional sanitizer layered on
+	 * top. Use for any value an admin edits in a `<textarea>` — email bodies,
+	 * restricted-phrases lists, etc.
+	 *
+	 * @param string   $default_value Default value of the field.
+	 * @param ?Closure $restorer      Additional function for value restore.
+	 * @param ?Closure $sanitizer     Additional sanitizer function.
+	 * @param ?Closure $validator     Additional validation function.
+	 *
+	 * @return array{type:'textarea',default_value:string,restorer:?Closure,sanitizer:?Closure,validator:?Closure} Field configuration array.
+	 */
+	public static function textarea_field( string $default_value = '', ?Closure $restorer = null, ?Closure $sanitizer = null, ?Closure $validator = null ): array {
+		return [
+			'type'          => 'textarea',
 			'default_value' => $default_value,
 			'restorer'      => $restorer,
 			'sanitizer'     => $sanitizer,
@@ -420,7 +517,7 @@ final class Configuration {
 	/**
 	 * Configure the "user roles" field
 	 *
-	 * @param Utils\Users $users         Users utility instance.
+	 * @param Utils\Users $users         Users utility instance; hinted as `object` to avoid coupling this shared package to the consumer-rewritten `Utils` namespace.
 	 * @param string[]    $default_value Default value of the field.
 	 * @param ?Closure    $restorer      Additional function for value restore.
 	 * @param ?Closure    $sanitizer     Additional sanitizer function.

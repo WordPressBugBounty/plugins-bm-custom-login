@@ -10,7 +10,7 @@ namespace Teydea_Studio\Custom_Login\Dependencies\Validatable_Fields;
 use Closure;
 use Teydea_Studio\Custom_Login\Dependencies\Utils;
 use WP_Error;
-use WP_User;
+use WP_User_Query;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // @codeCoverageIgnore
@@ -36,8 +36,8 @@ final class Closures {
 		 */
 		return function ( $values ): array {
 			return array_map(
-				function ( $value ) {
-					return preg_replace( '/[\W]/', '', $value );
+				function ( $value ): string {
+					return Utils\Type::ensure_string( preg_replace( '/[\W]/', '', $value ) );
 				},
 				Utils\Type::ensure_array_of_strings( $values, [] ),
 			);
@@ -109,6 +109,116 @@ final class Closures {
 	}
 
 	/**
+	 * Return the restricted phrases field restorer and sanitizer closure function
+	 *
+	 * @return Closure Field restorer and sanitizer closure function.
+	 */
+	public static function restricted_phrases_field_restorer_and_sanitizer(): Closure {
+		/**
+		 * Restorer / sanitizer for the "restricted_phrases" field
+		 *
+		 * @param mixed $values Values to normalize.
+		 *
+		 * @return string[] Normalized values.
+		 */
+		return function ( $values ): array {
+			$values = Utils\Type::ensure_array_of_strings( $values, [] );
+			$seen   = [];
+			$result = [];
+
+			foreach ( $values as $value ) {
+				$trimmed = Utils\Strings::trim( $value );
+
+				if ( '' === $trimmed || Utils\Strings::str_starts_with( $trimmed, '#' ) ) {
+					continue;
+				}
+
+				$normalized = mb_strtolower( $trimmed );
+
+				if ( isset( $seen[ $normalized ] ) ) {
+					continue;
+				}
+
+				$seen[ $normalized ] = true;
+				$result[]            = $trimmed;
+			}
+
+			return $result;
+		};
+	}
+
+	/**
+	 * Return the restricted phrases field validator closure function
+	 *
+	 * @param int $max_entries      Maximum number of entries allowed in the list.
+	 * @param int $max_entry_length Maximum length of a single entry, in characters.
+	 *
+	 * @return Closure Field validator closure function.
+	 */
+	public static function restricted_phrases_field_validator( int $max_entries, int $max_entry_length ): Closure {
+		/**
+		 * Validator for the "restricted_phrases" field
+		 *
+		 * @param mixed $values Values to validate.
+		 *
+		 * @return true|WP_Error Boolean "true" on success, instance of WP_Error otherwise.
+		 */
+		return function ( $values ) use ( $max_entries, $max_entry_length ) {
+			if ( ! is_array( $values ) ) {
+				return new WP_Error(
+					'non_array_value',
+					sprintf(
+						// Translators: %s - type of the value given.
+						__( 'Value must be an array, %s given.', 'bm-custom-login' ),
+						gettype( $values ),
+					),
+				);
+			}
+
+			$count = count( $values );
+
+			if ( $count > $max_entries ) {
+				return new WP_Error(
+					'too_many_entries',
+					sprintf(
+						// Translators: %1$d - maximum allowed entries, %2$d - given entries.
+						__( 'Too many entries; maximum allowed is %1$d, %2$d given.', 'bm-custom-login' ),
+						$max_entries,
+						$count,
+					),
+				);
+			}
+
+			foreach ( $values as $value ) {
+				if ( ! is_string( $value ) ) {
+					return new WP_Error(
+						'field_value_incorrect',
+						sprintf(
+							// Translators: %s - type of the value given.
+							__( 'Each entry must be a string, %s given.', 'bm-custom-login' ),
+							gettype( $value ),
+						),
+					);
+				}
+
+				if ( mb_strlen( $value ) > $max_entry_length ) {
+					return new WP_Error(
+						'entry_too_long',
+						sprintf(
+							// Translators: %1$d - maximum allowed characters, %2$s - offending entry.
+							__( 'Each entry must be %1$d characters or fewer; "%2$s" is too long.', 'bm-custom-login' ),
+							$max_entry_length,
+							$value,
+						),
+					);
+				}
+			}
+
+			return true;
+		};
+	}
+
+	/**
 	 * Return the field sanitizer closure function that removes
 	 * disallowed characters from the user-entered CSS
 	 *
@@ -125,6 +235,46 @@ final class Closures {
 		 */
 		return function ( $value ): string {
 			return Utils\Strings::sanitize_css( $value );
+		};
+	}
+
+	/**
+	 * Return the field sanitizer closure function that restricts the value
+	 * to a valid CSS color, emptying anything else
+	 *
+	 * @return Closure Field sanitizer closure function.
+	 */
+	public static function color_field_sanitizer(): Closure {
+		/**
+		 * Sanitizer for the dynamic field build based on the
+		 * "color" field template
+		 *
+		 * @param mixed $value Value to sanitize.
+		 *
+		 * @return string Sanitized value.
+		 */
+		return function ( $value ): string {
+			return Utils\Strings::sanitize_color( Utils\Type::ensure_string( $value ) );
+		};
+	}
+
+	/**
+	 * Return the field sanitizer closure function that restricts the value
+	 * to a valid CSS box-shadow, emptying anything else
+	 *
+	 * @return Closure Field sanitizer closure function.
+	 */
+	public static function box_shadow_field_sanitizer(): Closure {
+		/**
+		 * Sanitizer for the dynamic field build based on the
+		 * "box_shadow" field template
+		 *
+		 * @param mixed $value Value to sanitize.
+		 *
+		 * @return string Sanitized value.
+		 */
+		return function ( $value ): string {
+			return Utils\Strings::sanitize_box_shadow( Utils\Type::ensure_string( $value ) );
 		};
 	}
 
@@ -149,7 +299,6 @@ final class Closures {
 				? ''
 				: $fields_group->get_field_value( 'default_value' );
 
-			// Verify the default value.
 			if ( Utils\Type::is_date( $default_value ) ) {
 				return $default_value;
 			}
@@ -205,7 +354,6 @@ final class Closures {
 				return true;
 			}
 
-			// Validate the date.
 			if ( Utils\Type::is_date( $value ) ) {
 				return true;
 			}
@@ -254,7 +402,6 @@ final class Closures {
 				return true;
 			}
 
-			// Get the post type.
 			$post_type = get_post_type( $value );
 
 			if ( 'attachment' !== $post_type ) {
@@ -268,7 +415,6 @@ final class Closures {
 				);
 			}
 
-			// Get the mime type.
 			$mime_type = get_post_mime_type( $value );
 
 			if ( false === $mime_type ) {
@@ -307,6 +453,17 @@ final class Closures {
 	 * @return Closure Field validator closure function.
 	 */
 	public static function unit_field_validator( array $supported_units ): Closure {
+		$pattern = sprintf(
+			'/^-?(?:\d+(?:\.\d+)?|\.\d+)(?:%s)$/',
+			implode(
+				'|',
+				array_map(
+					static fn ( string $unit ): string => preg_quote( $unit, '/' ),
+					$supported_units,
+				),
+			),
+		);
+
 		/**
 		 * Validator for the dynamic field build based on the
 		 * "unit" field template
@@ -315,7 +472,7 @@ final class Closures {
 		 *
 		 * @return true|WP_Error Boolean "true" on success, instance of WP_Error otherwise.
 		 */
-		return function ( $value ) use ( $supported_units ) {
+		return function ( $value ) use ( $pattern ) {
 			if ( ! is_string( $value ) ) {
 				return new WP_Error(
 					'non_string_value',
@@ -326,8 +483,6 @@ final class Closures {
 					),
 				);
 			}
-
-			$pattern = sprintf( '/(\d+(%s)+)/', implode( '|', $supported_units ) );
 
 			if ( 1 !== preg_match( $pattern, $value ) ) {
 				return new WP_Error(
@@ -401,7 +556,6 @@ final class Closures {
 				return true;
 			}
 
-			// Validate URL.
 			if ( Utils\Type::is_url( $value ) ) {
 				return true;
 			}
@@ -514,7 +668,7 @@ final class Closures {
 	/**
 	 * Return the user roles restorer closure function
 	 *
-	 * @param Utils\Users $users Users utility instance.
+	 * @param Utils\Users $users Users utility instance; hinted as `object` to avoid coupling this shared package to the consumer-rewritten `Utils` namespace.
 	 *
 	 * @return Closure Field restorer closure function.
 	 */
@@ -546,7 +700,7 @@ final class Closures {
 	/**
 	 * Return the user roles field validator closure function
 	 *
-	 * @param Utils\Users $users Users utility instance.
+	 * @param Utils\Users $users Users utility instance; hinted as `object` to avoid coupling this shared package to the consumer-rewritten `Utils` namespace.
 	 *
 	 * @return Closure Field validator closure function.
 	 */
@@ -606,19 +760,16 @@ final class Closures {
 		 * @return array Restored values array.
 		 */
 		return function ( $values ): array {
-			$valid_users = [];
+			if ( ! is_array( $values ) ) {
+				return [];
+			}
 
-			if ( is_array( $values ) ) {
-				foreach ( $values as $value ) {
-					if ( ! is_string( $value ) ) {
-						continue;
-					}
+			$known_logins = self::resolve_known_user_logins( $values );
+			$valid_users  = [];
 
-					$user = get_user_by( 'login', $value );
-
-					if ( $user instanceof WP_User ) {
-						$valid_users[] = $value;
-					}
+			foreach ( $values as $value ) {
+				if ( is_string( $value ) && isset( $known_logins[ $value ] ) ) {
+					$valid_users[] = $value;
 				}
 			}
 
@@ -652,14 +803,21 @@ final class Closures {
 				);
 			}
 
+			$known_logins = self::resolve_known_user_logins( $values );
+
 			foreach ( $values as $value ) {
 				if ( ! is_string( $value ) ) {
-					continue;
+					return new WP_Error(
+						'field_value_incorrect',
+						sprintf(
+							// Translators: %s - type of the value given.
+							__( 'Each entry must be a string, %s given.', 'bm-custom-login' ),
+							gettype( $value ),
+						),
+					);
 				}
 
-				$user = get_user_by( 'login', $value );
-
-				if ( false === $user ) {
+				if ( ! isset( $known_logins[ $value ] ) ) {
 					return new WP_Error(
 						'field_value_out_of_scope',
 						sprintf(
@@ -673,5 +831,41 @@ final class Closures {
 
 			return true;
 		};
+	}
+
+	/**
+	 * Resolve which of the given values correspond to existing user logins
+	 *
+	 * Collapses what would otherwise be one `get_user_by()` lookup per entry into
+	 * a single user query — the "users" field closures run on the settings
+	 * read/write path, so a per-login lookup is an N+1 against the user table.
+	 *
+	 * @param mixed[] $values Values to resolve; non-string entries are ignored.
+	 *
+	 * @return array<string,true> Set of input logins that match an existing user, keyed by login.
+	 */
+	private static function resolve_known_user_logins( array $values ): array {
+		$logins = array_values( array_unique( array_filter( $values, 'is_string' ) ) );
+
+		if ( [] === $logins ) {
+			return [];
+		}
+
+		$users = ( new WP_User_Query(
+			[
+				'count_total' => false,
+				'login__in'   => $logins,
+				'fields'      => [ 'user_login' ],
+				'number'      => count( $logins ),
+			],
+		) )->get_results();
+
+		$known_logins = [];
+
+		foreach ( $users as $user ) {
+			$known_logins[ Utils\Type::ensure_string( $user->user_login ) ] = true;
+		}
+
+		return $known_logins;
 	}
 }

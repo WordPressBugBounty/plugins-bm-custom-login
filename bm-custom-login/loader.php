@@ -52,18 +52,21 @@ function get_container(): Utils\Plugin {
 		$plugin->set_slug( 'bm-custom-login' );
 		$plugin->set_supports_network( true );
 		$plugin->set_text_domain( 'bm-custom-login' );
-		$plugin->set_version( '3.1.0' );
+		$plugin->set_version( '3.2.0' );
+
+		// Login form markup adjustments rely on DOMDocument/DOMXPath.
+		$plugin->add_required_extension( 'dom' );
 
 		$plugin->register_modules(
 			[
-				Modules\Module_Adjustments::class,
-				Modules\Module_Endpoint_Preview::class,
-				Modules\Module_Settings_Adopter::class,
-				Modules\Module_Settings_Page::class,
-				Modules\Module_Markup_Adjustments::class,
-				Modules\Module_Miscellaneous::class,
-				Modules\Module_Plugin_Upgrade_Action_Link::class,
-				Universal_Modules\Module_Endpoint_Settings::class,
+				Modules\Adjustments\Module_Adjustments::class,
+				Modules\Endpoint_Preview\Module_Endpoint_Preview::class,
+				Modules\Settings_Adopter\Module_Settings_Adopter::class,
+				Modules\Settings_Page\Module_Settings_Page::class,
+				Modules\Markup_Adjustments\Module_Markup_Adjustments::class,
+				Modules\Miscellaneous\Module_Miscellaneous::class,
+				Modules\Plugin_Upgrade_Action_Link\Module_Plugin_Upgrade_Action_Link::class,
+				Universal_Modules\Endpoint_Settings\Module_Endpoint_Settings::class,
 			],
 		);
 	}

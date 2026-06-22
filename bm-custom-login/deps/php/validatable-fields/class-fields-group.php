@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Fields_Group class
  *
- * @phpstan-type Type_Fields_Config array<string,array{type:'array_of_strings',default_value:string[],restorer?:?Closure,sanitizer?:?Closure,validator?:?Closure,skip_default_sanitization?:bool}|array{type:'boolean',default_value:bool,restorer?:?Closure,sanitizer?:?Closure,validator?:?Closure}|array{type:'float',default_value:float,min:float,max:?float,precision?:int,restorer?:?Closure,sanitizer?:?Closure,validator?:?Closure}|array{type:'integer',default_value:int,min:int,max:?int,restorer?:?Closure,sanitizer?:?Closure,validator?:?Closure}|array{type:'integer_of_choice',default_value:int,allowed_values?:int[],restorer?:?Closure,sanitizer?:?Closure,validator?:?Closure}|array{type:'string_of_choice',default_value:string,allowed_values?:string[],restorer?:?Closure,sanitizer?:?Closure,validator?:?Closure,skip_default_sanitization?:bool}|array{type:'string',default_value:string|Closure,restorer?:?Closure,sanitizer?:?Closure,validator?:?Closure,skip_default_sanitization?:bool}>
+ * @phpstan-type Type_Fields_Config array<string,array{type:'array_of_strings',default_value:string[],restorer?:?Closure,sanitizer?:?Closure,validator?:?Closure,skip_default_sanitization?:bool}|array{type:'boolean',default_value:bool,restorer?:?Closure,sanitizer?:?Closure,validator?:?Closure}|array{type:'float',default_value:float,min:float,max:?float,precision?:int,restorer?:?Closure,sanitizer?:?Closure,validator?:?Closure}|array{type:'integer',default_value:int,min:int,max:?int,restorer?:?Closure,sanitizer?:?Closure,validator?:?Closure}|array{type:'integer_of_choice',default_value:int,allowed_values?:int[],restorer?:?Closure,sanitizer?:?Closure,validator?:?Closure}|array{type:'string_of_choice',default_value:string,allowed_values?:string[],restorer?:?Closure,sanitizer?:?Closure,validator?:?Closure,skip_default_sanitization?:bool}|array{type:'string',default_value:string|Closure,restorer?:?Closure,sanitizer?:?Closure,validator?:?Closure,skip_default_sanitization?:bool}|array{type:'textarea',default_value:string|Closure,restorer?:?Closure,sanitizer?:?Closure,validator?:?Closure,skip_default_sanitization?:bool}>
  */
 class Fields_Group {
 	/**
@@ -144,6 +144,21 @@ class Fields_Group {
 					);
 
 					break;
+
+				case 'textarea':
+					$field = new Field_Textarea(
+						$field_key,
+						$field_config['default_value'],
+						$field_config['restorer'] ?? null,
+						$field_config['sanitizer'] ?? null,
+						$field_config['validator'] ?? null,
+						$field_config['skip_default_sanitization'] ?? false,
+					);
+
+					break;
+
+				default:
+					continue 2;
 			}
 
 			$this->fields[ $field_key ] = $field;
@@ -351,71 +366,9 @@ class Fields_Group {
 				continue;
 			}
 
-			self::set_nested_value( $result, $field->get_key(), $field->get_value() );
+			Utils\Nested_Array::set_nested_value( $result, $field->get_key(), $field->get_value() );
 		}
 
 		return $result;
-	}
-
-	/**
-	 * Recursively flatten nested snake_case arrays into camelCase dot-notation
-	 *
-	 * @param array<string,mixed> $input  Input array with snake_case keys.
-	 * @param string              $prefix Current key prefix.
-	 *
-	 * @return array<string,mixed> Flattened array with camelCase dot-notation keys.
-	 */
-	public static function flatten_to_camel_case( array $input, string $prefix = '' ): array {
-		$flat = [];
-
-		foreach ( $input as $key => $value ) {
-			$camel_key = Utils\Strings::to_camel_case( (string) $key );
-			$full_key  = '' !== $prefix ? $prefix . '.' . $camel_key : $camel_key;
-
-			if ( is_array( $value ) && ! wp_is_numeric_array( $value ) ) {
-				/** @var array<string,mixed> $value */
-				$nested = self::flatten_to_camel_case( $value, $full_key );
-
-				foreach ( $nested as $nested_key => $nested_value ) {
-					$flat[ $nested_key ] = $nested_value;
-				}
-
-				continue;
-			}
-
-			$flat[ $full_key ] = $value;
-		}
-
-		return $flat;
-	}
-
-	/**
-	 * Set a value at a dot-notation path in a nested array
-	 *
-	 * @param array<string,mixed> $result Result array (modified by reference).
-	 * @param string              $key    Dot-notation key.
-	 * @param mixed               $value  Value to set.
-	 *
-	 * @return void
-	 */
-	private static function set_nested_value( array &$result, string $key, $value ): void {
-		$segments      = explode( '.', $key );
-		$segment_count = count( $segments );
-
-		/** @var array<string,mixed> $current */
-		$current = &$result;
-
-		for ( $i = 0; $i < $segment_count - 1; $i++ ) {
-			$segment = $segments[ $i ];
-
-			if ( ! isset( $current[ $segment ] ) || ! is_array( $current[ $segment ] ) ) {
-				$current[ $segment ] = [];
-			}
-
-			/** @var array<string,mixed> $current */
-			$current = &$current[ $segment ];
-		}
-
-		$current[ end( $segments ) ] = $value;
 	}
 }

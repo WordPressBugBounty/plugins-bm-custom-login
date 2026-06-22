@@ -126,19 +126,16 @@ abstract class Field {
 	 * @return void
 	 */
 	public function set_value( $value, bool $use_restore = false ): void {
-		// Check if provided value is valid.
 		$validated = $this->validate_value( $value );
 
 		if ( $validated instanceof WP_Error ) {
 			if ( true === $use_restore ) {
-				// Restore invalid value is possible.
 				$value = $this->restore_value( $value );
 			} else {
 				// Assign WP_Error as value to pass it to the user notice.
 				$value = $validated;
 			}
 		} else {
-			// Sanitize valid value.
 			$value = $this->sanitize_value( $value );
 		}
 

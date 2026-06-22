@@ -13,6 +13,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Languages utils class
+ *
+ * Memoizes the resolved locale and loaded translation maps on the
+ * instance, so repeated lookups on the same instance reuse a single
+ * read. Reuse one instance for the lookups in a given code path (e.g.
+ * a settings page that translates many tokens in a loop); separate
+ * instances do not share the memo.
  */
 final class Languages {
 	/**
@@ -20,14 +26,14 @@ final class Languages {
 	 *
 	 * @var ?string
 	 */
-	protected static ?string $locale = null;
+	protected ?string $locale = null;
 
 	/**
 	 * Loaded translations
 	 *
 	 * @var array<string,array<string,string>> Translations.
 	 */
-	protected static array $translations = [];
+	protected array $translations = [];
 
 	/**
 	 * Get the current locale
@@ -38,16 +44,16 @@ final class Languages {
 	 *
 	 * @return string Current locale.
 	 */
-	public static function get_current_locale(): string {
-		if ( null === self::$locale ) {
+	public function get_current_locale(): string {
+		if ( null === $this->locale ) {
 			/**
 			 * Check if the locale is set in the $_GET variable
 			 */
 			if ( isset( $_GET['wp_lang'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 				$lang = sanitize_text_field( Type::ensure_string( wp_unslash( $_GET['wp_lang'] ) ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
-				if ( ! empty( $lang ) && in_array( $lang, self::get_installed_languages( 'core' ), true ) ) {
-					self::$locale = $lang;
+				if ( ! empty( $lang ) && in_array( $lang, $this->get_installed_languages( 'core' ), true ) ) {
+					$this->locale = $lang;
 				}
 			}
 
@@ -55,21 +61,21 @@ final class Languages {
 			 * If the locale is not set in the $_GET variable,
 			 * we can try to read it from the user cookie.
 			 */
-			if ( null === self::$locale && isset( $_COOKIE['wp_lang'] ) ) {
+			if ( null === $this->locale && isset( $_COOKIE['wp_lang'] ) ) {
 				$lang = sanitize_text_field( Type::ensure_string( wp_unslash( $_COOKIE['wp_lang'] ) ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
-				if ( ! empty( $lang ) && in_array( $lang, self::get_installed_languages( 'core' ), true ) ) {
-					self::$locale = $lang;
+				if ( ! empty( $lang ) && in_array( $lang, $this->get_installed_languages( 'core' ), true ) ) {
+					$this->locale = $lang;
 				}
 			}
 
 			// Still nothing at this point? Use core function as a fallback.
-			if ( null === self::$locale ) {
-				self::$locale = get_locale();
+			if ( null === $this->locale ) {
+				$this->locale = get_locale();
 			}
 		}
 
-		return self::$locale;
+		return $this->locale;
 	}
 
 	/**
@@ -81,7 +87,7 @@ final class Languages {
 	 *
 	 * @return string[] List of installed language keys.
 	 */
-	public static function get_installed_languages( string $type = 'core', string $file = 'default' ): array {
+	public function get_installed_languages( string $type = 'core', string $file = 'default' ): array {
 		$installed_translations = wp_get_installed_translations( $type );
 		$languages              = [ 'en_US' ];
 
@@ -110,7 +116,7 @@ final class Languages {
 	 *
 	 * @return string Translated string if found, original string otherwise.
 	 */
-	public static function get_single_translation( string $token, string $lang ): string {
+	public function get_single_translation( string $token, string $lang ): string {
 		// Do not translate native tokens.
 		if ( 'en_US' === $lang ) {
 			return $token;
@@ -120,20 +126,32 @@ final class Languages {
 		 * Read the translation file and collect
 		 * all the translated strings
 		 */
-		if ( ! isset( self::$translations[ $lang ] ) ) {
-			$path     = sprintf( '%1$s/%2$s.l10n.php', WP_LANG_DIR, $lang );
+		if ( ! isset( $this->translations[ $lang ] ) ) {
 			$messages = [];
 
-			if ( file_exists( $path ) ) {
-				$contents = include $path;
-				$messages = $contents['messages'];
+			/**
+			 * Constrain $lang to an installed language before interpolating
+			 * it into a filesystem path; an unvalidated value would allow
+			 * including arbitrary *.l10n.php files via path traversal.
+			 */
+			if ( in_array( $lang, $this->get_installed_languages( 'core' ), true ) ) {
+				$path = sprintf( '%1$s/%2$s.l10n.php', WP_LANG_DIR, $lang );
+
+				if ( file_exists( $path ) ) {
+					$contents = include $path;
+
+					if ( is_array( $contents ) && isset( $contents['messages'] ) && is_array( $contents['messages'] ) ) {
+						/** @var array<string,string> $messages */
+						$messages = $contents['messages'];
+					}
+				}
 			}
 
-			self::$translations[ $lang ] = $messages;
+			$this->translations[ $lang ] = $messages;
 			unset( $contents, $messages );
 		}
 
 		// Find the translated token.
-		return self::$translations[ $lang ][ $token ] ?? $token;
+		return $this->translations[ $lang ][ $token ] ?? $token;
 	}
 }

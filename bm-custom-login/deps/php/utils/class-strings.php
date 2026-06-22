@@ -106,6 +106,8 @@ final class Strings {
 	 * @return string Sanitized color value or empty string.
 	 */
 	public static function sanitize_color( string $color ): string {
+		$color = self::trim( $color );
+
 		if ( '' === $color ) {
 			return '';
 		}
@@ -126,6 +128,31 @@ final class Strings {
 		}
 
 		return '';
+	}
+
+	/**
+	 * Sanitize a CSS box-shadow value
+	 *
+	 * Allows only the characters that make up valid box-shadow values: lengths,
+	 * colors (hex, rgb(a)/hsl(a), named), the "inset" keyword, and commas
+	 * separating multiple shadows. Any value containing a CSS-structural
+	 * character ( { } ; : @ < > ) that could break out of the declaration and
+	 * inject arbitrary rules is rejected as an empty string.
+	 *
+	 * @param string $shadow Box-shadow value to sanitize.
+	 *
+	 * @return string Sanitized box-shadow value or empty string.
+	 */
+	public static function sanitize_box_shadow( string $shadow ): string {
+		$shadow = self::trim( $shadow );
+
+		if ( '' === $shadow ) {
+			return '';
+		}
+
+		return 1 === preg_match( '/^[a-zA-Z0-9\s.,%#()\/+\-]+$/', $shadow )
+			? $shadow
+			: '';
 	}
 
 	/**
@@ -217,6 +244,49 @@ final class Strings {
 	public static function str_contains_any( string $haystack, array $needles ): bool {
 		foreach ( $needles as $needle ) {
 			if ( self::str_contains( $haystack, $needle ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Case-insensitive variant of "str_contains"
+	 *
+	 * Empty needle returns true (consistent with PHP's str_contains).
+	 * Invalid UTF-8 in either input returns false so security-sensitive
+	 * callers (e.g., the restricted-phrases compliance check) don't trust a
+	 * substring match against a malformed encoding.
+	 *
+	 * @param string $haystack The string to search in.
+	 * @param string $needle   The substring to search for in the haystack.
+	 *
+	 * @return bool Returns true if needle is in haystack ignoring case, false otherwise.
+	 */
+	public static function str_icontains( string $haystack, string $needle ): bool {
+		if ( '' === $needle ) {
+			return true;
+		}
+
+		if ( ! mb_check_encoding( $haystack, 'UTF-8' ) || ! mb_check_encoding( $needle, 'UTF-8' ) ) {
+			return false;
+		}
+
+		return false !== mb_stripos( $haystack, $needle, 0, 'UTF-8' );
+	}
+
+	/**
+	 * Case-insensitive variant of "str_contains_any"
+	 *
+	 * @param string   $haystack The string to search in.
+	 * @param string[] $needles  An array of substrings to search for in the haystack.
+	 *
+	 * @return bool Returns true if any of the needles is in haystack ignoring case, false otherwise.
+	 */
+	public static function str_icontains_any( string $haystack, array $needles ): bool {
+		foreach ( $needles as $needle ) {
+			if ( self::str_icontains( $haystack, $needle ) ) {
 				return true;
 			}
 		}

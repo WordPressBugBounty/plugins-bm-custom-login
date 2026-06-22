@@ -8,7 +8,6 @@
 namespace Teydea_Studio\Custom_Login\Dependencies\Utils;
 
 use WP_Post;
-use WP_Site;
 use WP_User;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -19,6 +18,23 @@ if ( ! defined( 'ABSPATH' ) ) {
  * The "Cache" class
  */
 final class Cache {
+	/**
+	 * `wp_cache` group suffix where version counters are stored
+	 *
+	 * Joined with the container's data prefix to form
+	 * `{data_prefix}:cache_versions`. Lives outside the groups it
+	 * controls — otherwise reading a counter would recurse through
+	 * {@see get_group_version()}.
+	 *
+	 * Inside this group, each versioned cache group's counter is
+	 * stored under a `wp_cache` key matching the group's own name —
+	 * e.g. group `findings`'s counter lives at
+	 * `wp_cache_get('findings', '{data_prefix}:cache_versions')`.
+	 *
+	 * @var string
+	 */
+	protected const VERSION_STORAGE_GROUP = 'cache_versions';
+
 	/**
 	 * Container instance
 	 *
@@ -39,6 +55,13 @@ final class Cache {
 	 * @var string
 	 */
 	protected string $group = '';
+
+	/**
+	 * Whether this instance's keys participate in group-version invalidation
+	 *
+	 * @var bool
+	 */
+	protected bool $group_versioning_enabled = false;
 
 	/**
 	 * One-of key
@@ -86,6 +109,84 @@ final class Cache {
 	 */
 	public function set_group( string $group ): void {
 		$this->group = $group;
+	}
+
+	/**
+	 * Opt this instance's keys into group-version invalidation
+	 *
+	 * When enabled, the resolved cache group is suffixed with the
+	 * current group-version counter, so a single
+	 * {@see bump_group_version()} call invalidates every cached key in
+	 * the group at once — no per-key delete list to maintain. Reads
+	 * cost one extra `wp_cache_get()` for the version counter, which
+	 * is request-memoized so the cost is paid at most once per
+	 * request per group.
+	 *
+	 * @return void
+	 */
+	public function enable_group_versioning(): void {
+		$this->group_versioning_enabled = true;
+	}
+
+	/**
+	 * Read the current group-version counter
+	 *
+	 * Returns `1` when the counter has never been written. The counter
+	 * is fetched at most once per request per group (memoized on the
+	 * container) so frequently-accessed groups don't pay repeated
+	 * `wp_cache_get()` costs.
+	 *
+	 * @return int Current version (always >= 1).
+	 */
+	public function get_group_version(): int {
+		$storage_group = $this->get_version_storage_group();
+		$memo_index    = sprintf( '%1$s/%2$s', $storage_group, $this->group );
+		$memoized      = $this->container->get_cache_version_memo( $memo_index );
+
+		if ( null === $memoized ) {
+			// The counter for this group lives in wp_cache at `key=$this->group, group=$storage_group`.
+			$value    = wp_cache_get( $this->group, $storage_group );
+			$memoized = ( is_int( $value ) && $value > 0 ) ? $value : 1;
+
+			$this->container->set_cache_version_memo( $memo_index, $memoized );
+		}
+
+		return $memoized;
+	}
+
+	/**
+	 * Increment the group-version counter
+	 *
+	 * Atomically invalidates every cached key in the group that
+	 * participates in versioning (i.e. every reader that called
+	 * {@see enable_group_versioning()}). Old keys at the previous
+	 * version remain in cache but become unreachable; they expire on
+	 * TTL or get evicted by the object cache.
+	 *
+	 * Updates the request-scoped memo as well so a writer that bumps
+	 * mid-request sees its own new version on subsequent reads
+	 * without a fresh `wp_cache_get()`.
+	 *
+	 * @return int New version after the bump.
+	 */
+	public function bump_group_version(): int {
+		$next          = $this->get_group_version() + 1;
+		$storage_group = $this->get_version_storage_group();
+		$memo_index    = sprintf( '%1$s/%2$s', $storage_group, $this->group );
+
+		wp_cache_set( $this->group, $next, $storage_group );
+		$this->container->set_cache_version_memo( $memo_index, $next );
+
+		return $next;
+	}
+
+	/**
+	 * Build the `wp_cache` group string under which version counters live
+	 *
+	 * @return string Storage group for version counters.
+	 */
+	protected function get_version_storage_group(): string {
+		return sprintf( '%1$s:%2$s', $this->container->get_data_prefix(), self::VERSION_STORAGE_GROUP );
 	}
 
 	/**
@@ -154,9 +255,22 @@ final class Cache {
 			return null;
 		}
 
+		$group = sprintf( '%1$s:%2$s', $this->container->get_data_prefix(), $this->group );
+
+		/**
+		 * When versioning is enabled, suffix the resolved group with
+		 * `:gv{N}` so a `bump_group_version()` call automatically
+		 * routes future reads to a new group namespace, leaving the
+		 * previous generation of keys unreachable (and eligible for
+		 * LRU eviction / TTL expiry).
+		 */
+		if ( $this->group_versioning_enabled ) {
+			$group = sprintf( '%1$s:gv%2$d', $group, $this->get_group_version() );
+		}
+
 		$tokens = [
 			'key'   => '',
-			'group' => sprintf( '%1$s:%2$s', $this->container->get_data_prefix(), $this->group ),
+			'group' => $group,
 		];
 
 		switch ( $this->resource ) {
@@ -207,7 +321,6 @@ final class Cache {
 				break;
 		}
 
-		// Extend key with container version to ensure cache invalidation on container updates.
 		if ( ! empty( $tokens['key'] ) ) {
 			$tokens['key'] = sprintf( '%1$s:%2$s', $tokens['key'], $this->container->get_version() );
 		}
@@ -258,9 +371,16 @@ final class Cache {
 			return $this->delete();
 		}
 
-		/** @var WP_Site $site */
-		foreach ( get_sites() as $site ) {
-			switch_to_blog( Type::ensure_int( $site->blog_id ) );
+		/** @var array<int,int|string> $blog_ids */
+		$blog_ids = get_sites(
+			[
+				'fields' => 'ids',
+				'number' => 0,
+			],
+		);
+
+		foreach ( $blog_ids as $blog_id ) {
+			switch_to_blog( Type::ensure_int( $blog_id ) );
 			$this->delete();
 			restore_current_blog();
 		}

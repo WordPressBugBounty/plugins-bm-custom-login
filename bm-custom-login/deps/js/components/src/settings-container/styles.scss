@@ -185,6 +185,15 @@ body.teydeastudio-admin-page {
 		p + p {
 			margin-top: 0.5rem;
 		}
+
+		ul {
+			list-style: disc;
+			margin-left: 1rem;
+
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
 	}
 
 	.components-button.is-tertiary {

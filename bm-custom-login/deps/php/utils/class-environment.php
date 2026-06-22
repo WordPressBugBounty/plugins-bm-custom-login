@@ -82,8 +82,9 @@ final class Environment {
 	 * Get the WordPress version
 	 *
 	 * Uses wp_get_wp_version() when available (WP 6.7+),
-	 * falls back to loading the version from version.php
-	 * for older WordPress versions.
+	 * and reads the $wp_version global on older versions.
+	 * The global is populated by wp-includes/version.php, which
+	 * core loads during wp-settings.php before any plugin runs.
 	 *
 	 * @return string WordPress version string.
 	 */
@@ -92,12 +93,7 @@ final class Environment {
 			return wp_get_wp_version();
 		}
 
-		// Fallback for WP < 6.7: mirror the wp_get_wp_version() implementation.
-		static $wp_version;
-
-		if ( ! isset( $wp_version ) ) {
-			require_once ABSPATH . WPINC . '/version.php';
-		}
+		global $wp_version;
 
 		return Type::ensure_string( $wp_version );
 	}
@@ -120,6 +116,47 @@ final class Environment {
 	}
 
 	/**
+	 * Get the PHP version
+	 *
+	 * @return string PHP version string.
+	 */
+	public static function get_php_version(): string {
+		return PHP_VERSION;
+	}
+
+	/**
+	 * Compare the current PHP version against a given version
+	 *
+	 * Strips pre-release suffixes (e.g. '-dev') before comparing,
+	 * mirroring the behavior of compare_wp_version().
+	 *
+	 * @param string $version  Version to compare against (e.g. '7.4').
+	 * @param string $operator Comparison operator ('>', '>=', '<', '<=', '==', '!=').
+	 *
+	 * @return bool Whether the comparison is true.
+	 */
+	public static function compare_php_version( string $version, string $operator ): bool {
+		$php_version = Type::ensure_string( preg_replace( '/-.*$/', '', self::get_php_version() ) );
+		return version_compare( $php_version, $version, $operator );
+	}
+
+	/**
+	 * Check whether a given PHP extension is loaded
+	 *
+	 * Thin wrapper around extension_loaded() for testability — using
+	 * extension_loaded() (not function_exists() checks per function)
+	 * avoids false positives from polyfills that cover only part of
+	 * an extension's surface.
+	 *
+	 * @param string $extension Extension name (e.g. 'mbstring').
+	 *
+	 * @return bool Whether the extension is loaded.
+	 */
+	public static function is_extension_loaded( string $extension ): bool {
+		return extension_loaded( $extension );
+	}
+
+	/**
 	 * Get the domain name
 	 *
 	 * @return ?string Domain name, null if not recognized.
@@ -127,5 +164,63 @@ final class Environment {
 	public static function get_domain(): ?string {
 		$parts = wp_parse_url( get_home_url() );
 		return isset( $parts['host'] ) ? $parts['host'] : null;
+	}
+
+	/**
+	 * Get the site's bare domain label
+	 *
+	 * For `example.com`, returns `example`. For `subdomain.example.com`,
+	 * returns the leftmost label (`subdomain`). A leading `www.` is
+	 * stripped before the leftmost label is taken. The result is always
+	 * lowercased.
+	 *
+	 * Returns an empty string for hosts that have no meaningful "domain
+	 * label" to match against: localhost variants (`localhost`,
+	 * `127.0.0.1`, `::1`) and any host whose entire value is a numeric
+	 * IP literal (IPv4 or IPv6, with or without surrounding brackets).
+	 * Without this short-circuit a leftmost-label rule would flag a user
+	 * named `localhost` on a local install, or any user named `192` (the
+	 * first octet of an IP-hosted site) — both are false positives by
+	 * definition.
+	 *
+	 * @return string Bare domain label, or empty string when unavailable or non-applicable.
+	 */
+	public static function get_domain_label(): string {
+		$host = wp_parse_url( get_home_url(), PHP_URL_HOST );
+
+		if ( ! is_string( $host ) || '' === $host ) {
+			return '';
+		}
+
+		$host = strtolower( $host );
+
+		// Strip an IPv6 literal's surrounding brackets so the IP check below catches it.
+		if ( '[' === substr( $host, 0, 1 ) && ']' === substr( $host, -1 ) ) {
+			$host = Type::ensure_string( substr( $host, 1, -1 ) );
+		}
+
+		// Local-only hostnames carry no externally meaningful "site name".
+		if ( in_array( $host, [ 'localhost', '127.0.0.1', '::1' ], true ) ) {
+			return '';
+		}
+
+		// IP-hosted sites (IPv4 or IPv6) have no domain label.
+		if ( false !== filter_var( $host, FILTER_VALIDATE_IP ) ) {
+			return '';
+		}
+
+		// Strip the leading "www." if present.
+		if ( Strings::str_starts_with( $host, 'www.' ) ) {
+			$trimmed = substr( $host, 4 );
+			$host    = false === $trimmed ? $host : $trimmed;
+		}
+
+		$parts = explode( '.', $host );
+
+		if ( '' === $parts[0] ) {
+			return '';
+		}
+
+		return $parts[0];
 	}
 }

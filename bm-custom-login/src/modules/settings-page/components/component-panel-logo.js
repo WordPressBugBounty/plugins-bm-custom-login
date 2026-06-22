@@ -11,7 +11,13 @@ import PropTypes from 'prop-types';
 /**
  * WordPress dependencies
  */
-import { PanelBody, SelectControl, ToggleControl } from '@wordpress/components';
+import {
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalBoxControl as BoxControl,
+	PanelBody,
+	SelectControl,
+	ToggleControl,
+} from '@wordpress/components';
 import { Fragment } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 
@@ -28,10 +34,11 @@ import { __, sprintf } from '@wordpress/i18n';
 export const PanelLogo = ( { context, settings, setSettings } ) => {
 	// Destructure the settings object.
 	const { logo } = settings.data;
-	const { alignment, asLink, coreLogoStyle, link, mediaId, openInNewTab, show, strictWidth, logoSource } = logo;
+	const { alignment, asLink, coreLogoStyle, link, marginBottom, marginLeft, marginRight, marginTop, mediaId, openInNewTab, show, strictWidth, logoSource } =
+		logo;
 
 	// Destructure the context object.
-	const { isNetworkAdmin, languages, translations } = context;
+	const { isNetworkAdmin, languages, loginStyleGeneration, translations } = context;
 
 	/**
 	 * Helper setter
@@ -83,40 +90,6 @@ export const PanelLogo = ( { context, settings, setSettings } ) => {
 						<SelectControl
 							__nextHasNoMarginBottom
 							__next40pxDefaultSize
-							label={ __( 'Logo image alignment', 'bm-custom-login' ) }
-							value={ alignment }
-							options={ [
-								{
-									value: 'left',
-									label: __( 'Left', 'bm-custom-login' ),
-								},
-								{
-									value: 'center',
-									label: __( 'Center', 'bm-custom-login' ),
-								},
-								{
-									value: 'right',
-									label: __( 'Right', 'bm-custom-login' ),
-								},
-							] }
-
-							/**
-							 * Update the value
-							 *
-							 * @param {string} updatedValue Updated value.
-							 *
-							 * @return {void}
-							 */
-							onChange={ ( updatedValue ) => {
-								setSetting( {
-									alignment: updatedValue,
-								} );
-							} }
-						/>
-						<hr />
-						<SelectControl
-							__nextHasNoMarginBottom
-							__next40pxDefaultSize
 							label={ __( 'Logo source', 'bm-custom-login' ) }
 							value={ logoSource }
 							options={ [
@@ -162,10 +135,16 @@ export const PanelLogo = ( { context, settings, setSettings } ) => {
 										value: 'blue',
 										label: __( 'Blue', 'bm-custom-login' ),
 									},
-									{
-										value: 'gray',
-										label: __( 'Gray', 'bm-custom-login' ),
-									},
+
+									// The gray WordPress logo (wordpress-logo-gray.svg) only ships with WP 7.0+; hide the option on older versions.
+									...( 'v2' === loginStyleGeneration
+										? [
+												{
+													value: 'gray',
+													label: __( 'Gray', 'bm-custom-login' ),
+												},
+										  ]
+										: [] ),
 								] }
 
 								/**
@@ -232,6 +211,78 @@ export const PanelLogo = ( { context, settings, setSettings } ) => {
 				) }
 				{ show && (
 					<Fragment>
+						<hr />
+						<SelectControl
+							__nextHasNoMarginBottom
+							__next40pxDefaultSize
+							label={ __( 'Logo image alignment', 'bm-custom-login' ) }
+							value={ alignment }
+							options={ [
+								{
+									value: 'left',
+									label: __( 'Left', 'bm-custom-login' ),
+								},
+								{
+									value: 'center',
+									label: __( 'Center', 'bm-custom-login' ),
+								},
+								{
+									value: 'right',
+									label: __( 'Right', 'bm-custom-login' ),
+								},
+							] }
+
+							/**
+							 * Update the value
+							 *
+							 * @param {string} updatedValue Updated value.
+							 *
+							 * @return {void}
+							 */
+							onChange={ ( updatedValue ) => {
+								setSetting( {
+									alignment: updatedValue,
+								} );
+							} }
+						/>
+						<hr />
+						<BoxControl
+							__nextHasNoMarginBottom
+							__next40pxDefaultSize
+							label={ __( 'Margin', 'bm-custom-login' ) }
+							values={ {
+								top: marginTop,
+								right: marginRight,
+								bottom: marginBottom,
+								left: marginLeft,
+							} }
+
+							/**
+							 * Update the value
+							 *
+							 * @param {Object} updatedValues        Updated values.
+							 * @param {string} updatedValues.top    Value for "top" side.
+							 * @param {string} updatedValues.right  Value for "right" side.
+							 * @param {string} updatedValues.bottom Value for "bottom" side.
+							 * @param {string} updatedValues.left   Value for "left" side.
+							 *
+							 * @return {void}
+							 */
+							onChange={ ( { top, right, bottom, left } ) => {
+								setSetting( {
+									marginTop: 'undefined' === typeof top ? '0px' : top,
+									marginRight: 'undefined' === typeof right ? '0px' : right,
+									marginBottom: 'undefined' === typeof bottom ? '0px' : bottom,
+									marginLeft: 'undefined' === typeof left ? '0px' : left,
+								} );
+							} }
+							resetValues={ {
+								top: '0px',
+								right: '0px',
+								bottom: '24px',
+								left: '0px',
+							} }
+						/>
 						<hr />
 						<ToggleControl
 							__nextHasNoMarginBottom

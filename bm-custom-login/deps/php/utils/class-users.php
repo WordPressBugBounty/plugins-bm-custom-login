@@ -9,6 +9,7 @@ namespace Teydea_Studio\Custom_Login\Dependencies\Utils;
 
 use WP_Site;
 use WP_User;
+use WP_User_Query;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // @codeCoverageIgnore
@@ -84,7 +85,7 @@ class Users {
 			// Note: current user may be excluded from processing.
 			$coverage = $exclude_current_user ? $total_users - 1 : $total_users;
 		} else {
-			$coverage = count( $this->get_users_batch( $include_all, $roles, $users, null, null, $exclude_current_user ) );
+			$coverage = $this->count_covered_users( $roles, $users, $exclude_current_user );
 		}
 
 		// Calculate coverage and return.
@@ -93,6 +94,115 @@ class Users {
 			'count_formatted' => number_format_i18n( $coverage ),
 			'coverage'        => $total_users > 0 ? round( $coverage / $total_users, 4 ) : 0.0,
 		];
+	}
+
+	/**
+	 * Count the distinct users a role / explicit-user coverage selection resolves to
+	 *
+	 * Split out of {@see get_users_batch()} so the coverage indicator does not
+	 * have to materialize every matching user ID into PHP just to `count()` it.
+	 *
+	 * On a single site the role-matched portion is counted with a SQL `COUNT`
+	 * (`WP_User_Query::get_total()`); only the explicit-user list — bounded by
+	 * what an administrator can type — is resolved to IDs and reconciled against
+	 * the role match so the union is not double-counted. A site with a very large
+	 * matching role therefore costs one indexed `COUNT`, not a full ID fetch.
+	 *
+	 * On a network the coverage count is the number of users matched on *any*
+	 * site, deduplicated network-wide. That distinct cross-site count cannot be
+	 * expressed as a single SQL `COUNT` (summing per-site counts would
+	 * double-count users who belong to several sites), so it necessarily resolves
+	 * the matching IDs via {@see get_users_batch()} and counts the deduplicated set.
+	 *
+	 * @param string[] $roles                Concrete role slugs to match.
+	 * @param int[]    $users                Explicit user IDs / logins to include.
+	 * @param bool     $exclude_current_user Whether to drop the current user from the count.
+	 *
+	 * @return int Distinct covered-user count.
+	 */
+	protected function count_covered_users( array $roles, array $users, bool $exclude_current_user ): int {
+		if ( true === $this->container->is_network_enabled() ) {
+			return count( $this->get_users_batch( false, $roles, $users, null, null, $exclude_current_user ) );
+		}
+
+		$current_user = wp_get_current_user();
+
+		// Mirror get_users_batch()'s auth gate so the count matches the ID-resolving path in every context.
+		if ( 0 === $current_user->ID && ! Environment::is_wp_cli_request() ) {
+			return 0;
+		}
+
+		$roles        = array_values( $roles );
+		$explicit_ids = empty( $users ) ? [] : $this->maybe_map_user_logins_to_user_ids( $users );
+
+		// The mapper preserves duplicates (a login and its own numeric ID resolve alike); de-duplicate so the explicit-user counts below don't double-count.
+		$explicit_ids = array_values( array_unique( $explicit_ids, SORT_NUMERIC ) );
+
+		if ( empty( $roles ) ) {
+			// Explicit-users-only coverage: the resolved explicit set is the whole covered set.
+			$count = count( $explicit_ids );
+
+			if ( true === $exclude_current_user && in_array( $current_user->ID, $explicit_ids, true ) ) {
+				--$count;
+			}
+
+			return max( 0, $count );
+		}
+
+		$count = $this->count_users_in_roles( $roles, [] );
+
+		if ( ! empty( $explicit_ids ) ) {
+			// Union: add the explicit users the role match did not already include.
+			$count += count( $explicit_ids ) - $this->count_users_in_roles( $roles, $explicit_ids );
+		}
+
+		if ( true === $exclude_current_user && $this->single_site_user_is_covered( $current_user, $roles, $explicit_ids ) ) {
+			--$count;
+		}
+
+		return max( 0, $count );
+	}
+
+	/**
+	 * Count users matching any of the given roles via a SQL `COUNT`
+	 *
+	 * @param string[] $roles       Role slugs to match (OR semantics).
+	 * @param int[]    $include_ids When non-empty, restrict the count to these user IDs (intersection).
+	 *
+	 * @return int Number of matching users.
+	 */
+	protected function count_users_in_roles( array $roles, array $include_ids ): int {
+		$args = [
+			'role__in'    => $roles,
+			'fields'      => 'ID',
+			'number'      => 1,
+			'count_total' => true,
+		];
+
+		if ( ! empty( $include_ids ) ) {
+			$args['include'] = $include_ids;
+		}
+
+		$query = new WP_User_Query( $args );
+
+		return Type::ensure_int( $query->get_total() );
+	}
+
+	/**
+	 * Whether the given user falls within a single-site role / explicit-user coverage selection
+	 *
+	 * @param WP_User  $user         User to test.
+	 * @param string[] $roles        Role slugs in the selection.
+	 * @param int[]    $explicit_ids Explicit user IDs in the selection.
+	 *
+	 * @return bool True when the user is covered by the selection.
+	 */
+	protected function single_site_user_is_covered( WP_User $user, array $roles, array $explicit_ids ): bool {
+		if ( in_array( $user->ID, $explicit_ids, true ) ) {
+			return true;
+		}
+
+		return ! empty( array_intersect( $user->roles, $roles ) );
 	}
 
 	/**
@@ -113,38 +223,39 @@ class Users {
 			$roles = wp_roles();
 			$data  = [];
 
+			// Tracks role slugs already collected so the per-site dedup is an O(1) set lookup rather than an O(n) scan of `$data`.
+			$seen = [];
+
 			foreach ( $roles->role_names as $role => $display_name ) {
 				$data[] = [
 					'id'    => count( $data ),
 					'value' => $role,
 					'title' => $display_name,
 				];
+
+				$seen[ $role ] = true;
 			}
 
 			if ( true === $this->container->is_network_enabled() ) {
 				$current_blog_id = get_current_blog_id();
 
-				/**
-				 * Include roles from other sub-sites
-				 *
-				 * @var WP_Site $site
-				 */
-				foreach ( get_sites() as $site ) {
-					// Skip the current blog as it was already processed.
+				/** @var WP_Site $site */
+				foreach ( get_sites( [ 'number' => 0 ] ) as $site ) {
 					if ( Type::ensure_int( $site->blog_id ) === $current_blog_id ) {
 						continue;
 					}
 
 					switch_to_blog( Type::ensure_int( $site->blog_id ) );
 
-					// Get roles for the current site after switching.
 					$site_roles = wp_roles();
 
 					foreach ( $site_roles->role_names as $role => $display_name ) {
 						// Add unique roles only.
-						if ( in_array( $role, array_column( $data, 'value' ), true ) ) {
+						if ( isset( $seen[ $role ] ) ) {
 							continue;
 						}
+
+						$seen[ $role ] = true;
 
 						$data[] = [
 							'id'    => count( $data ),
@@ -198,7 +309,30 @@ class Users {
 	}
 
 	/**
+	 * Resolve the site's default role for new user registrations
+	 *
+	 * Returns the configured "default_role" option when it is a role actually
+	 * registered on this site, falling back to "subscriber" otherwise. Useful
+	 * when code needs the role a freshly-registered account would receive but
+	 * has no trusted role supplied by its caller. The result is always a
+	 * registered role slug, never an empty or unknown value.
+	 *
+	 * @return string Registered default registration role slug.
+	 */
+	public function get_default_registration_role(): string {
+		$default_role = Type::ensure_string( get_option( 'default_role', 'subscriber' ), 'subscriber' );
+		return ( '' !== $default_role && null !== get_role( $default_role ) ) ? $default_role : 'subscriber';
+	}
+
+	/**
 	 * Get users batch
+	 *
+	 * Use this when you need the actual user IDs (e.g. to iterate and act on each
+	 * user). On a network it walks every site, materializes the matching IDs, and
+	 * deduplicates them in PHP — necessary to return a distinct ID list across
+	 * sites, but it loads every match into memory. If you only need the *count*
+	 * of covered users, prefer {@see calculate_coverage()} / {@see count_covered_users()},
+	 * which count via SQL on single sites instead of materializing the IDs.
 	 *
 	 * @param bool     $include_all          Whether the all users should be fetch, or by role or specific ID.
 	 * @param string[] $roles                User roles to include in query.
@@ -220,12 +354,8 @@ class Users {
 		$results = [];
 
 		if ( true === $this->container->is_network_enabled() ) {
-			/**
-			 * Loop through all network sites
-			 *
-			 * @var WP_Site $site
-			 */
-			foreach ( get_sites() as $site ) {
+			/** @var WP_Site $site */
+			foreach ( get_sites( [ 'number' => 0 ] ) as $site ) {
 				switch_to_blog( Type::ensure_int( $site->blog_id ) );
 
 				$results = array_merge(
@@ -261,6 +391,15 @@ class Users {
 	/**
 	 * Get user IDs from a single site based on
 	 * a given criteria
+	 *
+	 * The per-site building block for {@see get_users_batch()} (which adds the
+	 * logged-in/WP-CLI auth gate, the network-wide site loop, and PHP-side
+	 * pagination on top). Background callers that run without a logged-in user
+	 * or need native SQL pagination should use the context-free
+	 * {@see get_paginated_coverage_ids()} / {@see get_explicit_coverage_ids()}
+	 * pair instead, which encapsulate the same role / super-admin-sentinel /
+	 * explicit-user coverage semantics without this path's auth gate. Keep the
+	 * two in sync when the coverage rules change.
 	 *
 	 * @param bool     $include_all Whether the all users should be fetch, or by role or specific ID.
 	 * @param string[] $roles       User roles to include in query.
@@ -325,6 +464,121 @@ class Users {
 		$results = Type::ensure_array_of_ints( $results );
 
 		return array_unique( $results, SORT_NUMERIC );
+	}
+
+	/**
+	 * Resolve the apply-to-all / role-based coverage user IDs for the current site, context-free
+	 *
+	 * The shared, background-safe coverage primitive: unlike {@see get_users_batch()}
+	 * it applies **no** logged-in/WP-CLI auth gate, so it is safe to call from
+	 * scheduled-actions or other background contexts where no user is logged in,
+	 * and it paginates natively through `WP_User_Query` (`number`/`paged`) rather
+	 * than materializing every match and slicing in PHP. It resolves the current
+	 * site only — callers iterate sites themselves (e.g. via `switch_to_blog()`).
+	 *
+	 * The synthetic super-admin sentinel role is stripped here because it is not a
+	 * real WordPress role; resolve those users via {@see get_explicit_coverage_ids()}.
+	 * A stable `ID ASC` ordering makes the paged windows deterministic across calls,
+	 * and `count_total` is disabled because callers only need the returned rows.
+	 *
+	 * @param bool     $include_all Whether to cover every user on the site (ignores `$roles`).
+	 * @param string[] $roles       Concrete role slugs to match; the super-admin sentinel is ignored.
+	 * @param ?int     $limit       Page size; pass with `$paged` to paginate. Null returns every match.
+	 * @param ?int     $paged       1-based page number; pass with `$limit` to paginate. Null returns every match.
+	 *
+	 * @return int[] Matching user IDs for the current site.
+	 */
+	public function get_paginated_coverage_ids( bool $include_all, array $roles, ?int $limit = null, ?int $paged = null ): array {
+		$args = [
+			'fields'      => 'ID',
+			'orderby'     => 'ID',
+			'order'       => 'ASC',
+			// Callers only need the returned rows, so skip the extra SELECT FOUND_ROWS().
+			'count_total' => false,
+		];
+
+		if ( false === $include_all ) {
+			$roles = $this->strip_super_admin_sentinel( $roles );
+
+			if ( empty( $roles ) ) {
+				return [];
+			}
+
+			$args['role__in'] = $roles;
+		}
+
+		if ( null !== $limit && null !== $paged ) {
+			$args['number'] = $limit;
+			$args['paged']  = $paged;
+		}
+
+		$query = new WP_User_Query( $args );
+
+		/** @var int[]|string[] $results */
+		$results = $query->get_results();
+
+		return Type::ensure_array_of_ints( $results );
+	}
+
+	/**
+	 * Resolve the explicit-users + super-admin coverage IDs for the current site, context-free
+	 *
+	 * The one-shot companion to {@see get_paginated_coverage_ids()}: the explicit
+	 * `user_coverage.users` login list plus the network super-admins implied by the
+	 * sentinel role. Bounded by what an administrator can enter manually, so it is
+	 * not paginated. Applies no auth gate, so it is safe in background contexts.
+	 *
+	 * @param string[]       $roles       Role slugs; consulted only for the super-admin sentinel.
+	 * @param int[]|string[] $user_logins Explicit user logins (or IDs) to include.
+	 *
+	 * @return int[] Matching user IDs for the current site.
+	 */
+	public function get_explicit_coverage_ids( array $roles, array $user_logins ): array {
+		$resolved     = empty( $user_logins ) ? [] : $this->maybe_map_user_logins_to_user_ids( $user_logins );
+		$super_admins = $this->resolve_super_admins_for_sentinel( $roles );
+
+		return array_values( array_unique( array_merge( $resolved, $super_admins ), SORT_NUMERIC ) );
+	}
+
+	/**
+	 * Strip the synthetic super-admin sentinel role from a role list
+	 *
+	 * The sentinel is exposed only by the plugin settings UI to target network
+	 * super admins; it is not a real role and `WP_User_Query` would reject it.
+	 *
+	 * @param string[] $roles Role slugs.
+	 *
+	 * @return string[] Concrete role slugs safe to hand to `WP_User_Query`.
+	 */
+	private function strip_super_admin_sentinel( array $roles ): array {
+		if ( false === $this->container->is_network_enabled() ) {
+			return $roles;
+		}
+
+		$sentinel = $this->get_network_super_admin_role_key();
+
+		return array_values( array_filter( $roles, static fn ( string $role ): bool => $role !== $sentinel ) );
+	}
+
+	/**
+	 * Resolve network super-admin user IDs when the role list includes the sentinel
+	 *
+	 * @param string[] $roles Role slugs.
+	 *
+	 * @return int[] Super-admin user IDs, or empty when the sentinel is absent or the install is not multisite.
+	 */
+	private function resolve_super_admins_for_sentinel( array $roles ): array {
+		if ( false === $this->container->is_network_enabled() ) {
+			return [];
+		}
+
+		if ( ! in_array( $this->get_network_super_admin_role_key(), $roles, true ) ) {
+			return [];
+		}
+
+		$super_admins = get_super_admins();
+
+		return empty( $super_admins ) ? [] : $this->maybe_map_user_logins_to_user_ids( $super_admins );
 	}
 
 	/**

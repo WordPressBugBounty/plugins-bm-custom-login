@@ -7,10 +7,19 @@ import { WaitingIndicator } from '@teydeastudio/components/src/waiting-indicator
 /**
  * WordPress dependencies
  */
+import { speak } from '@wordpress/a11y';
 import apiFetch from '@wordpress/api-fetch';
 import { Notice, Panel } from '@wordpress/components';
 import { useEffect, useRef, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
+
+/**
+ * Name of the custom DOM event dispatched when the login-page preview
+ * has finished refreshing.
+ *
+ * @type {string}
+ */
+export const PREVIEW_UPDATED_EVENT = 'custom-login/preview-updated';
 
 /**
  * Preview component
@@ -102,10 +111,20 @@ export const Preview = ( { settings } ) => {
 	 */
 	useEffect( () => {
 		if ( false === isLoading && null !== previewHTML && '' === loadingError ) {
-			const event = new Event( 'custom-login/preview-updated' );
+			const event = new Event( PREVIEW_UPDATED_EVENT );
 			window.dispatchEvent( event );
 		}
 	}, [ isLoading, previewHTML, loadingError ] );
+
+	/**
+	 * Announce a preview loading failure to assistive technology, since the
+	 * error notice is otherwise conveyed only visually.
+	 */
+	useEffect( () => {
+		if ( '' !== loadingError ) {
+			speak( loadingError, 'assertive' );
+		}
+	}, [ loadingError ] );
 
 	/**
 	 * Return the component

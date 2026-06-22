@@ -6,6 +6,7 @@ import { FieldsGroup } from '@teydeastudio/components/src/fields-group/index.js'
 import { FontControl } from '@teydeastudio/components/src/font-control/index.js';
 import { SortableContainer } from '@teydeastudio/components/src/sortable-container/index.js';
 import { ShadowControl } from '@teydeastudio/components/src/shadow-control/index.js';
+import { generateDynamicFieldKey } from '@teydeastudio/utils/src/generate-dynamic-field-key.js';
 import PropTypes from 'prop-types';
 
 /**
@@ -109,7 +110,7 @@ export const PanelUnderFormLinks = ( { presets, settings, setSettings } ) => {
 					 * @return {void}
 					 */
 					onAdd={ () => {
-						const itemKey = `d:${ Date.now().toString() }0000`;
+						const itemKey = generateDynamicFieldKey();
 						const { underFormLink: itemTemplate } = settings.templates.underFormLinksList;
 
 						setSettings( {

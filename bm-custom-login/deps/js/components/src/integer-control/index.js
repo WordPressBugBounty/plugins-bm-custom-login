@@ -7,6 +7,7 @@ import { getIntegerWithinRange } from '@teydeastudio/utils/src/get-integer-withi
 /**
  * WordPress dependencies
  */
+import { useInstanceId } from '@wordpress/compose';
 import { TextControl } from '@wordpress/components';
 import { useEffect, useState } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
@@ -27,16 +28,20 @@ import { FieldNotice } from '../field-notice/index.js';
  * @param {number}   properties.max          Field's maximum accepted value.
  * @param {number}   properties.value        Field's value.
  * @param {number}   properties.defaultValue Field's default value.
+ * @param {boolean}  properties.disabled     Whether the field is disabled.
  * @param {Function} properties.onChange     Function callback to trigger on value change.
  *
  * @return {Element} IntegerControl component.
  */
-export const IntegerControl = ( { label, help, min, max, value, defaultValue, onChange } ) => {
+export const IntegerControl = ( { label, help, min, max, value, defaultValue, disabled = false, onChange } ) => {
 	// Manage the notice state.
 	const [ fieldNotice, setFieldNotice ] = useState( '' );
 
 	// Manage edited value.
 	const [ editedValue, setEditedValue ] = useState( value.toString() );
+
+	// Stable id so the validation notice can be wired to the input via `aria-describedby`.
+	const noticeId = useInstanceId( IntegerControl, 'tsc-integer-control-notice' );
 
 	/**
 	 * Ensure data consistency
@@ -94,10 +99,22 @@ export const IntegerControl = ( { label, help, min, max, value, defaultValue, on
 				 * @return {void}
 				 */
 				onFocusOutside={ () => {
+					// A disabled field is non-interactive: never commit a pending edited value (e.g. one left over from before the field was disabled).
+					if ( disabled ) {
+						return;
+					}
+
 					const updatedValue =
 						editedValue === getIntegerWithinRange( editedValue, min, max ).toString() ? Number.parseInt( editedValue, 10 ) : defaultValue;
 
-					onChange( updatedValue );
+					/**
+					 * Only propagate a real change; a no-op commit on blur would otherwise
+					 * fire spurious updates (and can resurrect a row being deleted).
+					 */
+					if ( updatedValue !== value ) {
+						onChange( updatedValue );
+					}
+
 					setEditedValue( updatedValue.toString() );
 				} }
 			>
@@ -108,6 +125,8 @@ export const IntegerControl = ( { label, help, min, max, value, defaultValue, on
 					help={ help }
 					value={ editedValue }
 					type="number"
+					disabled={ disabled }
+					aria-describedby={ '' !== fieldNotice ? noticeId : undefined }
 
 					/**
 					 * Update the value
@@ -121,7 +140,7 @@ export const IntegerControl = ( { label, help, min, max, value, defaultValue, on
 					} }
 				/>
 			</DetectOutside>
-			{ '' !== fieldNotice && <FieldNotice message={ fieldNotice } /> }
+			{ '' !== fieldNotice && <FieldNotice id={ noticeId } message={ fieldNotice } /> }
 		</div>
 	);
 };
@@ -136,5 +155,6 @@ IntegerControl.propTypes = {
 	max: PropTypes.number,
 	value: PropTypes.number.isRequired,
 	defaultValue: PropTypes.number.isRequired,
+	disabled: PropTypes.bool,
 	onChange: PropTypes.func.isRequired,
 };

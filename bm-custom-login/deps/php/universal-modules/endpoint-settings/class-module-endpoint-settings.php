@@ -1,0 +1,156 @@
+<?php
+/**
+ * REST API endpoint for getting and updating settings
+ *
+ * @package Teydea_Studio\Custom_Login\Dependencies\Universal_Modules
+ */
+
+namespace Teydea_Studio\Custom_Login\Dependencies\Universal_Modules\Endpoint_Settings;
+
+use Teydea_Studio\Custom_Login\Settings;
+use Teydea_Studio\Custom_Login\Dependencies\Utils;
+use WP_Error;
+use WP_REST_Request;
+use WP_REST_Response;
+use WP_REST_Server;
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // @codeCoverageIgnore
+}
+
+/**
+ * The "Module_Endpoint_Settings" class
+ */
+class Module_Endpoint_Settings extends Utils\Module {
+	/**
+	 * Shared managing-permissions gate and nonce-argument schema
+	 */
+	use Utils\With_REST_Helpers;
+
+	/**
+	 * Register hooks
+	 *
+	 * @return void
+	 */
+	public function register(): void {
+		// Register endpoints.
+		add_action( 'rest_api_init', [ $this, 'register_endpoints' ] );
+	}
+
+	/**
+	 * Register endpoints
+	 *
+	 * @return void
+	 */
+	public function register_endpoints(): void {
+		register_rest_route(
+			sprintf( '%s/v1', $this->container->get_slug() ),
+			'/settings',
+			[
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => [ $this, 'get_saved_settings' ],
+				'permission_callback' => $this->get_managing_permissions_callback(
+					__( 'You do not have permission to read settings.', 'bm-custom-login' ),
+				),
+			],
+		);
+
+		register_rest_route(
+			sprintf( '%s/v1', $this->container->get_slug() ),
+			'/settings',
+			[
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => [ $this, 'save_settings' ],
+				'args'                => [
+					'nonce'    => $this->get_nonce_arg( 'save_settings' ),
+					'settings' => [
+						'required'          => true,
+						'type'              => 'array',
+
+						/**
+						 * Settings data sanitization
+						 *
+						 * @return Settings Instance of a Settings class.
+						 */
+						'sanitize_callback' => function (): Settings {
+							return $this->get_settings();
+						},
+
+						/**
+						 * Settings data validation
+						 *
+						 * @param array<string,array<string,mixed>> $settings Settings array.
+						 *
+						 * @return true|WP_Error Boolean "true" if a given settings data are valid, instance of WP_Error otherwise.
+						 */
+						'validate_callback' => function ( array $settings ) {
+							if ( ! isset( $settings['data'] ) || ! is_array( $settings['data'] ) ) {
+								return new WP_Error(
+									'invalid_settings_data',
+									__( 'Settings data is missing or invalid.', 'bm-custom-login' ),
+								);
+							}
+
+							$this->settings = new Settings( $this->container, $settings['data'] ); // @phpstan-ignore-line argument.type
+
+							return $this->settings->has_validation_errors()
+								? $this->settings->get_first_validation_error()
+								: true;
+						},
+					],
+				],
+				'permission_callback' => $this->get_managing_permissions_callback(
+					__( 'You do not have permission to save settings.', 'bm-custom-login' ),
+				),
+			],
+		);
+	}
+
+	/**
+	 * Get saved settings of the plugin
+	 *
+	 * @return WP_Error|WP_REST_Response Instance of WP_REST_Response on success, instance of WP_Error on failure.
+	 */
+	public function get_saved_settings() {
+		$settings = new Settings( $this->container );
+
+		if ( $settings->has_validation_errors() ) {
+			return $settings->get_first_validation_error();
+		}
+
+		$data = $settings->get_normalized_data();
+
+		if ( null === $data ) {
+			return new WP_Error(
+				'validation_errors_found',
+				__( 'Can\'t get settings data; resolve validation errors first.', 'bm-custom-login' ),
+			);
+		}
+
+		return new WP_REST_Response(
+			[
+				'data'      => $data,
+				'defaults'  => $settings->get_defaults(),
+				'templates' => $settings->get_templates(),
+			],
+			200,
+		);
+	}
+
+	/**
+	 * Save plugin settings
+	 *
+	 * @param WP_REST_Request $request REST request.
+	 *
+	 * @return WP_Error|WP_REST_Response Instance of WP_REST_Response on success, instance of WP_Error on failure.
+	 */
+	public function save_settings( WP_REST_Request $request ) {
+		/** @var Settings $settings */
+		$settings = $request->get_param( 'settings' );
+		$saved    = $settings->save();
+
+		return $saved instanceof WP_Error
+			? $saved
+			: new WP_REST_Response( [], 200 );
+	}
+}

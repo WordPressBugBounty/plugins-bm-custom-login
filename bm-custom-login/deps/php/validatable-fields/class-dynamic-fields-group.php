@@ -219,6 +219,7 @@ final class Dynamic_Fields_Group extends Fields_Group {
 				case 'integer':
 					/** @var ?int $default_value */
 					$default_value = $group->get_field_value( 'default_value' );
+					$default_value = $default_value ?? 0;
 
 					/** @var int $min */
 					$min = $group->get_field_value( 'min' );
@@ -245,7 +246,7 @@ final class Dynamic_Fields_Group extends Fields_Group {
 					}
 
 					$field_config = Configuration::integer_field(
-						$default_value ?? 0,
+						$default_value,
 						$min,
 						$max,
 						$restorer,

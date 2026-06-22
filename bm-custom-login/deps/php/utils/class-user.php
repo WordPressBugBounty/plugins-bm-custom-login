@@ -124,24 +124,30 @@ class User {
 	}
 
 	/**
-	 * Add prefix to the user meta key, respecting network installations
+	 * Compose the fully-qualified user meta key for a short, plugin-relative key
 	 *
-	 * @param string $meta_key     Meta key to prefix.
+	 * Prepends the container's data prefix (matching the pattern used by
+	 * {@see Post_Meta} and {@see Settings}) so callers store unprefixed
+	 * constants and let the helper own the namespace boundary. On
+	 * multisite, when `$network_wide` is `false`, also suffixes the key
+	 * with `:<blog_id>` so per-site storage stays disjoint from
+	 * network-wide storage.
+	 *
+	 * **Contract:** the `$meta_key` argument is expected to be a *short*,
+	 * unprefixed key.
+	 *
+	 * @param string $meta_key     Short, plugin-relative meta key — e.g. `'past_passwords'`.
 	 * @param bool   $network_wide Whether the user meta should apply network-wide.
 	 *
-	 * @return string User meta key.
+	 * @return string Fully-qualified user meta key as stored in `wp_usermeta`.
 	 */
 	public function get_prefixed_meta_key( string $meta_key, bool $network_wide = true ): string {
-		// Add prefix for network installations.
-		$meta_key = is_multisite() && false === $network_wide
-			? sprintf(
-				'%s:%d',
-				$meta_key,
-				get_current_blog_id(),
-			)
-			: $meta_key;
+		$meta_key = sprintf( '%s__%s', $this->container->get_data_prefix(), $meta_key );
 
-		// Return the value.
+		if ( is_multisite() && false === $network_wide ) {
+			$meta_key = sprintf( '%s:%d', $meta_key, get_current_blog_id() );
+		}
+
 		return $meta_key;
 	}
 

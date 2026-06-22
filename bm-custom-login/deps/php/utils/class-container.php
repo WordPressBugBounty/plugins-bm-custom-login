@@ -29,6 +29,17 @@ abstract class Container {
 	const CAPABILITIES_VERSION = 'v1';
 
 	/**
+	 * Request-scoped memo of cache group-version counters
+	 *
+	 * Shared across every {@see Cache} instance built from this container
+	 * within a single request, so a version counter is read from the
+	 * object cache at most once per request per group.
+	 *
+	 * @var array<string,int>
+	 */
+	protected array $cache_version_memo = [];
+
+	/**
 	 * Data prefix for the container settings
 	 *
 	 * @var string
@@ -76,6 +87,20 @@ abstract class Container {
 	 * @var string
 	 */
 	protected string $name;
+
+	/**
+	 * Lazy-constructed post-meta registry for this container
+	 *
+	 * @var ?Post_Meta_Registry
+	 */
+	protected ?Post_Meta_Registry $post_meta_registry = null;
+
+	/**
+	 * Lazy-constructed runtime requirements checker
+	 *
+	 * @var ?Runtime_Requirements
+	 */
+	protected ?Runtime_Requirements $requirements = null;
 
 	/**
 	 * Container's slug
@@ -182,6 +207,69 @@ abstract class Container {
 	}
 
 	/**
+	 * Declare an additional required PHP extension
+	 *
+	 * Adds to the baseline list of required extensions. Idempotent —
+	 * declaring the same extension twice does not duplicate it.
+	 *
+	 * @param string $extension Extension name (e.g. 'dom').
+	 *
+	 * @return void
+	 */
+	public function add_required_extension( string $extension ): void {
+		$this->get_requirements()->add_extension( $extension );
+	}
+
+	/**
+	 * Get (lazy-construct) the runtime requirements checker for this container
+	 *
+	 * @return Runtime_Requirements Requirements checker tied to this container.
+	 */
+	protected function get_requirements(): Runtime_Requirements {
+		if ( null === $this->requirements ) {
+			$this->requirements = new Runtime_Requirements( $this );
+		}
+
+		return $this->requirements;
+	}
+
+	/**
+	 * Read a memoized cache group-version counter for this request
+	 *
+	 * @param string $index Fully-qualified version-counter index.
+	 *
+	 * @return ?int Memoized counter, or null when this index has not been read yet.
+	 */
+	public function get_cache_version_memo( string $index ): ?int {
+		return $this->cache_version_memo[ $index ] ?? null;
+	}
+
+	/**
+	 * Store a cache group-version counter in this request's memo
+	 *
+	 * @param string $index Fully-qualified version-counter index.
+	 * @param int    $value Counter value to memoize.
+	 *
+	 * @return void
+	 */
+	public function set_cache_version_memo( string $index, int $value ): void {
+		$this->cache_version_memo[ $index ] = $value;
+	}
+
+	/**
+	 * Get (lazy-construct) the post-meta registry for this container
+	 *
+	 * @return Post_Meta_Registry Registry scoped to this container.
+	 */
+	public function get_post_meta_registry(): Post_Meta_Registry {
+		if ( null === $this->post_meta_registry ) {
+			$this->post_meta_registry = new Post_Meta_Registry();
+		}
+
+		return $this->post_meta_registry;
+	}
+
+	/**
 	 * Set container's name
 	 *
 	 * @param string $name Container's name.
@@ -263,6 +351,19 @@ abstract class Container {
 	 * @return void
 	 */
 	public function init(): void {
+		/**
+		 * Short-circuit before any module registration if declared runtime
+		 * requirements (PHP version, WordPress version, required extensions)
+		 * are not met, and hook an undismissable admin error notice instead.
+		 */
+		$requirements = $this->get_requirements();
+		$requirements->check();
+
+		if ( $requirements->has_failures() ) {
+			$requirements->register_failure_notice();
+			return;
+		}
+
 		// Register modules.
 		$this->for_all_modules( 'register' );
 
@@ -285,6 +386,17 @@ abstract class Container {
 	 * @return string Container's basename.
 	 */
 	abstract public function get_basename(): string;
+
+	/**
+	 * Get the WordPress capability gating activation/install of this container
+	 *
+	 * Used by Runtime_Requirements to decide who sees the unmet-requirements
+	 * admin notice. Plugins return 'activate_plugins'; themes return
+	 * 'switch_themes'.
+	 *
+	 * @return string Capability slug.
+	 */
+	abstract public function get_activate_capability(): string;
 
 	/**
 	 * Get the path to the JSON file with metadata definition for the block
@@ -548,9 +660,19 @@ abstract class Container {
 	/**
 	 * Run custom actions on each module during the container activation
 	 *
+	 * Aborts activation with wp_die() if declared runtime requirements
+	 * are not met, so the plugin remains inactive afterwards.
+	 *
 	 * @return void
 	 */
 	public function on_activation(): void {
+		$requirements = $this->get_requirements();
+		$requirements->check();
+
+		if ( $requirements->has_failures() ) {
+			$requirements->abort_activation();
+		}
+
 		$this->maybe_update_capabilities();
 		$this->for_all_modules( 'on_container_activation' );
 	}

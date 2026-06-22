@@ -4,7 +4,7 @@ Tags: custom login, login page, login customizer, branding, login logo
 Requires at least: 6.6
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 3.1.0
+Stable tag: 3.2.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI: https://wpcustomlogin.com/?utm_source=WP+Custom+Login
@@ -95,6 +95,10 @@ The free version gives you full control over colors, fonts, layout, logo, social
 
 Yes. The settings page includes a custom CSS field where you can add any additional styles that go beyond what the visual controls offer.
 
+= Where can I find the unminified source code? =
+
+All source ships with the plugin: the plugin's own JavaScript is in `src/`, and the bundled `@teydeastudio/components` and `@teydeastudio/utils` libraries are in `deps/js/components/src/` and `deps/js/utils/src/`. To rebuild, install Node.js 20 and run `npm install && npm run build` in the plugin directory.
+
 == Screenshots ==
 
 1. The settings page with the Design tab open, showing all customizable elements and a live preview of the login page.
@@ -105,6 +109,15 @@ Yes. The settings page includes a custom CSS field where you can add any additio
 
 == Changelog ==
 
+= 3.2.0 (2026-06-22) =
+* Security fix: prevent stored CSS injection on the login page by sanitizing custom color and box-shadow values on save
+* New margin controls for the login-page logo (top, right, bottom, and left)
+* Fixed the custom logo being cropped to a 150px thumbnail; the full-size image is now rendered
+* Settings page tabs are now reflected in the URL, so a tab can be bookmarked and shared
+* Added a clear admin notice for unmet server requirements (minimum PHP/WordPress version, required extensions)
+* Dependencies updated
+* Code improvements
+
 = 3.1.0 (2026-04-16) =
 * Compatibility with WordPress 7.0 confirmed
 * Unnecessary translation files removed since these are loaded from WordPress.org
@@ -114,7 +127,7 @@ Yes. The settings page includes a custom CSS field where you can add any additio
 * Dependencies updated
 * Code improvements
 
-= 3.0.0 (2026-02-16) =
+= 3.0.0 (2026-03-04) =
 * Complete plugin rebuild with a modern, React-based settings page and live preview
 * Add granular styling controls for form container, labels, input fields, checkboxes, and buttons (including separate hover and focus states)
 * Add primary and secondary button customization with font, color, size, width, and alignment options

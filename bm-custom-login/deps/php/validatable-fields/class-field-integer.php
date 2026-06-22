@@ -46,7 +46,7 @@ final class Field_Integer extends Field {
 	 */
 	public function __construct( string $key, int $default_value, int $min, ?int $max = null, ?Closure $restorer = null, ?Closure $sanitizer = null, ?Closure $validator = null ) {
 		// Ensure the minimum allowed value is not bigger than maximum.
-		if ( $min > $max ) {
+		if ( null !== $max && $min > $max ) {
 			$max = null;
 		}
 
@@ -102,6 +102,13 @@ final class Field_Integer extends Field {
 	protected function validate_value( $value ) {
 		if ( ! is_int( $value ) ) {
 			if ( is_string( $value ) ) {
+				/**
+				 * Reject a leading sign: this field is unsigned because string coercion
+				 * runs through `Utils\Type::ensure_int()` → `absint()`, which would turn
+				 * "-5" into 5 and silently store the positive magnitude. Rejecting "-5"
+				 * outright is safer than mangling it; native negative `int` values still
+				 * reach the `min`/`max` range checks below unchanged.
+				 */
 				if ( 1 !== preg_match( '/^\\d+$/', $value ) ) {
 					return new WP_Error(
 						'non_integer_value',
