@@ -8,6 +8,7 @@
 namespace Teydea_Studio\Custom_Login\Modules\Endpoint_Preview;
 
 use Teydea_Studio\Custom_Login\Dependencies\Utils;
+use Teydea_Studio\Custom_Login\Modules\Endpoint_Preview\Internal\Asset_Inliner;
 use Teydea_Studio\Custom_Login\Settings;
 use WP_REST_Request;
 use WP_REST_Server;
@@ -138,6 +139,20 @@ final class Module_Endpoint_Preview extends Utils\Module {
 		header( 'Content-Type: text/html; charset=UTF-8' );
 
 		/**
+		 * Disable script/style concatenation for this request.
+		 *
+		 * With concatenation on, WordPress emits core assets through the
+		 * "load-scripts.php" / "load-styles.php" endpoints, which are not
+		 * static files and so cannot be inlined below (and cannot load from
+		 * the null-origin iframe). Disabling it makes each asset print as an
+		 * individual file URL that the inliner can resolve and embed.
+		 */
+		global $concatenate_scripts, $compress_scripts, $compress_css;
+		$concatenate_scripts = false; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+		$compress_scripts    = false; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+		$compress_css        = false; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+
+		/**
 		 * Add custom JS script to disable all click events. Printed via core's
 		 * helper so the inline script participates in any Content-Security-Policy
 		 * nonce (applied through the "wp_inline_script_attributes" filter).
@@ -162,7 +177,7 @@ final class Module_Endpoint_Preview extends Utils\Module {
 		add_filter(
 			'style_loader_tag',
 			function ( $tag, $handle, $href, $media ) {
-				$file_path = $this->resolve_url_to_path( $href );
+				$file_path = Asset_Inliner::resolve_url_to_path( $href );
 
 				if ( null === $file_path ) {
 					return $tag;
@@ -178,22 +193,7 @@ final class Module_Endpoint_Preview extends Utils\Module {
 				 * Resolve relative url() references to absolute URLs so
 				 * that images and fonts can still be loaded by the browser.
 				 */
-				$base_url = dirname( strtok( $href, '?' ) ?: $href ) . '/';
-				$css      = preg_replace_callback(
-					'/url\(\s*[\'"]?(?!data:|https?:|\/\/|#)([^\'"\)\s]+)[\'"]?\s*\)/i',
-					function ( $matches ) use ( $base_url ) {
-						$path = $matches[1];
-
-						// Absolute path: prepend site URL.
-						if ( 0 === strpos( $path, '/' ) ) {
-							return 'url(' . site_url( $path ) . ')';
-						}
-
-						// Relative path: prepend base URL of the original stylesheet.
-						return 'url(' . $base_url . $path . ')';
-					},
-					$css,
-				) ?? $css;
+				$css = Asset_Inliner::absolutize_css_urls( $css, $href );
 
 				return sprintf(
 					'<style id="%s-css" media="%s">%s</style>' . "\n",
@@ -211,11 +211,18 @@ final class Module_Endpoint_Preview extends Utils\Module {
 		 *
 		 * Same sandbox restriction as stylesheets: external
 		 * <script src> tags cannot load from a null origin.
+		 *
+		 * For a script with a delayed (defer/async) strategy, WordPress
+		 * folds the handle's "before" / "after" inline scripts (added via
+		 * wp_add_inline_script(), e.g. a script's localized data) into the
+		 * very tag passed to this filter, so replacing the tag wholesale
+		 * would otherwise drop them — and with them any data the script
+		 * needs to run (which would never execute from the null origin).
 		 */
 		add_filter(
 			'script_loader_tag',
 			function ( $tag, $handle, $src ) {
-				$file_path = $this->resolve_url_to_path( $src );
+				$file_path = Asset_Inliner::resolve_url_to_path( $src );
 
 				if ( null === $file_path ) {
 					return $tag;
@@ -227,74 +234,79 @@ final class Module_Endpoint_Preview extends Utils\Module {
 					return $tag;
 				}
 
-				return sprintf(
-					'<script id="%s-js">%s</script>' . "\n",
-					esc_attr( $handle ),
+				$scripts = wp_scripts();
+				$before  = $scripts->get_inline_script_data( $handle, 'before' );
+				$after   = $scripts->get_inline_script_data( $handle, 'after' );
+
+				$output = '';
+
+				/**
+				 * Re-emit the script's translation bootstrap (set via
+				 * wp_set_script_translations()) ahead of everything else.
+				 * WordPress prints it separately from the tag, so rebuilding
+				 * the tag here would otherwise drop it and leave the script's
+				 * i18n broken inside the null-origin preview. print_translations()
+				 * returns the bare JS, so it is wrapped in a script tag here.
+				 */
+				$translations = $scripts->print_translations( $handle, false );
+
+				if ( is_string( $translations ) && '' !== $translations ) {
+					$output .= wp_get_inline_script_tag(
+						str_ireplace( '</script>', '<\/script>', $translations ),
+						[ 'id' => $handle . '-js-translations' ],
+					) . "\n";
+				}
+
+				/**
+				 * Build the tags via wp_get_inline_script_tag() so the inline
+				 * scripts pick up any inline-script attributes (e.g. a
+				 * Content-Security-Policy nonce) consistently, the same way
+				 * the click-disable script above does.
+				 */
+				if ( '' !== $before ) {
+					$output .= wp_get_inline_script_tag(
+						str_ireplace( '</script>', '<\/script>', $before ),
+						[ 'id' => $handle . '-js-before' ],
+					) . "\n";
+				}
+
+				$output .= wp_get_inline_script_tag(
 					str_ireplace( '</script>', '<\/script>', $js ),
-				);
+					[ 'id' => $handle . '-js' ],
+				) . "\n";
+
+				if ( '' !== $after ) {
+					$output .= wp_get_inline_script_tag(
+						str_ireplace( '</script>', '<\/script>', $after ),
+						[ 'id' => $handle . '-js-after' ],
+					) . "\n";
+				}
+
+				return $output;
 			},
 			PHP_INT_MAX,
 			3,
 		);
 
-		// Render the login form markup.
+		/**
+		 * Render the login form markup, capturing it so that locally
+		 * resolvable images can be inlined as data URIs before output.
+		 *
+		 * The preview iframe uses sandbox="allow-scripts" without
+		 * allow-same-origin, giving it a null origin. Images referenced
+		 * by URL (logo <img> tags, background-image styles, url() refs in
+		 * inlined stylesheets) cannot load from a null origin — most
+		 * visibly under WordPress Playground, where requests are served by
+		 * a Service Worker that does not control the opaque-origin iframe.
+		 * Inlining them as data URIs makes the preview self-contained, the
+		 * same way local CSS and JS are already inlined above.
+		 */
+		ob_start();
 		require_once ABSPATH . 'wp-login.php';
+		$html = Utils\Type::ensure_string( ob_get_clean() );
+
+		echo Asset_Inliner::inline_local_images( $html ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output is the wp-login.php markup with locally resolvable images replaced by data URIs; the surrounding markup is already escaped at its source.
 
 		exit;
-	}
-
-	/**
-	 * Resolve a URL to a local filesystem path
-	 *
-	 * Converts WordPress content, includes, and site URLs to their
-	 * corresponding local filesystem paths for stylesheet and script
-	 * inlining in the preview endpoint.
-	 *
-	 * @param string $url The URL to resolve.
-	 *
-	 * @return ?string The local file path, or null if not resolvable.
-	 */
-	private function resolve_url_to_path( string $url ): ?string {
-		// Strip query string and fragment.
-		$clean_url = strtok( $url, '?#' );
-
-		if ( false === $clean_url ) {
-			return null;
-		}
-
-		/**
-		 * Map URL prefixes to filesystem paths, ordered from most
-		 * specific to least specific.
-		 */
-		$mappings = [
-			content_url( '/' )  => WP_CONTENT_DIR . '/',
-			includes_url( '/' ) => ABSPATH . WPINC . '/',
-			site_url( '/' )     => rtrim( ABSPATH, '/' ) . '/',
-		];
-
-		foreach ( $mappings as $url_prefix => $fs_prefix ) {
-			if ( 0 === strpos( $clean_url, $url_prefix ) ) {
-				$file_path = $fs_prefix . substr( $clean_url, strlen( $url_prefix ) );
-
-				/**
-				 * Resolve to canonical path and verify it stays within
-				 * the allowed directory to prevent path traversal.
-				 */
-				$real_path   = realpath( $file_path );
-				$real_prefix = realpath( $fs_prefix );
-
-				if ( false === $real_path || false === $real_prefix ) {
-					return null;
-				}
-
-				if ( 0 !== strpos( $real_path, rtrim( $real_prefix, '/' ) . '/' ) ) {
-					return null;
-				}
-
-				return is_file( $real_path ) ? $real_path : null;
-			}
-		}
-
-		return null;
 	}
 }

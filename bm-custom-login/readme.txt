@@ -4,7 +4,7 @@ Tags: custom login, login page, login customizer, branding, login logo
 Requires at least: 6.6
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 3.2.0
+Stable tag: 3.2.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI: https://wpcustomlogin.com/?utm_source=WP+Custom+Login
@@ -109,6 +109,9 @@ All source ships with the plugin: the plugin's own JavaScript is in `src/`, and 
 
 == Changelog ==
 
+= 3.2.1 (2026-06-25) =
+* Fixed images and template slider backgrounds not rendering in the sandboxed login-page preview
+
 = 3.2.0 (2026-06-22) =
 * Security fix: prevent stored CSS injection on the login page by sanitizing custom color and box-shadow values on save
 * New margin controls for the login-page logo (top, right, bottom, and left)
@@ -167,12 +170,5 @@ All source ships with the plugin: the plugin's own JavaScript is in `src/`, and 
 
 = 2.2.4 (2020-03-05) =
 * Update CSSTidy to latest version
-
-= 2.2.3 (2019-08-23) =
-* Switch to submit_button function for settings form
-
-= 2.2.2 (2019-04-30) =
-* Replace deprecated filter
-* Update coding standards
 
 (For older records, see the `changelog.txt` file).

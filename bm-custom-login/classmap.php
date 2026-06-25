@@ -69,6 +69,7 @@ return [
 	'Teydea_Studio\\Custom_Login\\Modules\\Adjustments\\Internal\\Adjuster_Social_Media_Links' => '/src/modules/adjustments/internal/class-adjuster-social-media-links.php',
 	'Teydea_Studio\\Custom_Login\\Modules\\Adjustments\\Internal\\Adjuster_Under_Form_Links' => '/src/modules/adjustments/internal/class-adjuster-under-form-links.php',
 	'Teydea_Studio\\Custom_Login\\Modules\\Adjustments\\Module_Adjustments' => '/src/modules/adjustments/class-module-adjustments.php',
+	'Teydea_Studio\\Custom_Login\\Modules\\Endpoint_Preview\\Internal\\Asset_Inliner' => '/src/modules/endpoint-preview/internal/class-asset-inliner.php',
 	'Teydea_Studio\\Custom_Login\\Modules\\Endpoint_Preview\\Module_Endpoint_Preview' => '/src/modules/endpoint-preview/class-module-endpoint-preview.php',
 	'Teydea_Studio\\Custom_Login\\Modules\\Markup_Adjustments\\Module_Markup_Adjustments' => '/src/modules/markup-adjustments/class-module-markup-adjustments.php',
 	'Teydea_Studio\\Custom_Login\\Modules\\Miscellaneous\\Module_Miscellaneous' => '/src/modules/miscellaneous/class-module-miscellaneous.php',

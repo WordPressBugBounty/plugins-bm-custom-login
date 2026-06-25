@@ -52,7 +52,7 @@ function get_container(): Utils\Plugin {
 		$plugin->set_slug( 'bm-custom-login' );
 		$plugin->set_supports_network( true );
 		$plugin->set_text_domain( 'bm-custom-login' );
-		$plugin->set_version( '3.2.0' );
+		$plugin->set_version( '3.2.1' );
 
 		// Login form markup adjustments rely on DOMDocument/DOMXPath.
 		$plugin->add_required_extension( 'dom' );

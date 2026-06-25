@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 3.2.1 (2026-06-25) =
+* Fixed images and template slider backgrounds not rendering in the sandboxed login-page preview
+
 = 3.2.0 (2026-06-22) =
 * Security fix: prevent stored CSS injection on the login page by sanitizing custom color and box-shadow values on save
 * New margin controls for the login-page logo (top, right, bottom, and left)

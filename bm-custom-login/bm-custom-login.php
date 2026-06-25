@@ -3,7 +3,7 @@
  * Plugin Name: WP Custom Login
  * Plugin URI: https://wpcustomlogin.com/?utm_source=WP+Custom+Login
  * Description: Customize the WordPress login screen quickly and easily.
- * Version: 3.2.0
+ * Version: 3.2.1
  * Text Domain: bm-custom-login
  * Requires PHP: 7.4
  * Requires at least: 6.6
