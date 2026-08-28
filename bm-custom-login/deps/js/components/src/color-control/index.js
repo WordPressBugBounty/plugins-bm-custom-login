@@ -97,7 +97,7 @@ export const ColorControl = ( { colorPalettes, gradientPalettes, label, onChange
 			 * @return {Element} Dropdown inner component.
 			 */
 			renderContent={ () => (
-				<TabPanel __nextHasNoMarginBottom __next40pxDefaultSize tabs={ tabsConfig }>
+				<TabPanel tabs={ tabsConfig }>
 					{
 						/**
 						 * Render single tab

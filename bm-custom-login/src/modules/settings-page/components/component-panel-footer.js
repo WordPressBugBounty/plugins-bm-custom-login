@@ -192,7 +192,6 @@ export const PanelFooter = ( { presets, settings, setSettings } ) => {
 				/>
 				<hr />
 				<BoxControl
-					__nextHasNoMarginBottom
 					__next40pxDefaultSize
 					label={ __( 'Padding', 'bm-custom-login' ) }
 					values={ {
@@ -230,7 +229,6 @@ export const PanelFooter = ( { presets, settings, setSettings } ) => {
 				/>
 				<hr />
 				<BoxControl
-					__nextHasNoMarginBottom
 					__next40pxDefaultSize
 					label={ __( 'Margin', 'bm-custom-login' ) }
 					values={ {

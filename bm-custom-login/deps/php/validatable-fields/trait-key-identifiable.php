@@ -2,12 +2,12 @@
 /**
  * Set of methods and properties to be inherited by objects identifiable by a key
  *
- * @package Teydea_Studio\Custom_Login\Dependencies\Validatable_Fields
+ * @package Teydea_Studio\Login_Customizer\Dependencies\Validatable_Fields
  */
 
-namespace Teydea_Studio\Custom_Login\Dependencies\Validatable_Fields;
+namespace Teydea_Studio\Login_Customizer\Dependencies\Validatable_Fields;
 
-use Teydea_Studio\Custom_Login\Dependencies\Utils;
+use Teydea_Studio\Login_Customizer\Dependencies\Utils;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // @codeCoverageIgnore

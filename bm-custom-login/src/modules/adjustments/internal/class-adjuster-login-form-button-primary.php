@@ -2,15 +2,15 @@
 /**
  * Implement style and markup adjustments controlled by the "login_form_button_primary" fields group
  *
- * @package Teydea_Studio\Custom_Login
+ * @package Teydea_Studio\Login_Customizer
  */
 
-namespace Teydea_Studio\Custom_Login\Modules\Adjustments\Internal;
+namespace Teydea_Studio\Login_Customizer\Modules\Adjustments\Internal;
 
 use DOMDocument;
 use DOMXPath;
-use Teydea_Studio\Custom_Login\Dependencies\Utils;
-use Teydea_Studio\Custom_Login\Modules\Adjustments\Adjuster;
+use Teydea_Studio\Login_Customizer\Dependencies\Utils;
+use Teydea_Studio\Login_Customizer\Modules\Adjustments\Adjuster;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // @codeCoverageIgnore

@@ -93,7 +93,7 @@
 
 		&:hover,
 		&:focus {
-			color: var(--wp-components-color-accent, $text-color--red) !important;
+			color: $wp-admin-default--destructive !important;
 		}
 	}
 }

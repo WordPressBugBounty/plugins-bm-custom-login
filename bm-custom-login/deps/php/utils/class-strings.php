@@ -2,10 +2,12 @@
 /**
  * Strings utils class
  *
- * @package Teydea_Studio\Custom_Login\Dependencies\Utils
+ * @package Teydea_Studio\Login_Customizer\Dependencies\Utils
  */
 
-namespace Teydea_Studio\Custom_Login\Dependencies\Utils;
+namespace Teydea_Studio\Login_Customizer\Dependencies\Utils;
+
+use Normalizer;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // @codeCoverageIgnore
@@ -29,39 +31,33 @@ final class Strings {
 		$content = self::trim( $content );
 
 		// Do nothing if content length is smaller than limit.
-		if ( $limit >= strlen( $content ) ) {
+		if ( $limit >= mb_strlen( $content, 'UTF-8' ) ) {
 			return $content;
 		}
 
 		// Truncate string to $limit length.
-		$content = substr( wp_strip_all_tags( $content ), 0, $limit );
+		$content = mb_substr( wp_strip_all_tags( $content ), 0, $limit, 'UTF-8' );
 
 		// Find last word end position.
-		$last_word_end_pos = strrpos( $content, ' ' );
+		$last_word_end_pos = mb_strrpos( $content, ' ', 0, 'UTF-8' );
 
 		// Truncate after the last word.
-		if ( false === $last_word_end_pos ) {
-			$content = substr( $content, 0 );
-		} else {
-			$content = substr( $content, 0, $last_word_end_pos );
-		}
-
-		if ( false === $content ) {
-			$content = '';
+		if ( false !== $last_word_end_pos ) {
+			$content = mb_substr( $content, 0, $last_word_end_pos, 'UTF-8' );
 		}
 
 		// Do not allow the last word to be a single char.
-		if ( ' ' === substr( $content, -2, 1 ) ) {
-			$content = substr( $content, 0, -2 );
+		if ( ' ' === mb_substr( $content, -2, 1, 'UTF-8' ) ) {
+			$content = mb_substr( $content, 0, -2, 'UTF-8' );
 		}
 
 		// Do not allow the last char to be a stop char, other than a dot.
-		if ( in_array( substr( $content, -1, 1 ), [ ',', '!', '?', '-', ';', '…' ], true ) ) {
-			$content = substr( $content, 0, -1 );
+		if ( in_array( mb_substr( $content, -1, 1, 'UTF-8' ), [ ',', '!', '?', '-', ';', '…' ], true ) ) {
+			$content = mb_substr( $content, 0, -1, 'UTF-8' );
 		}
 
 		// Add three dots if the last char is not a dot.
-		if ( true === $add_ellipsis && '.' !== substr( $content, -1, 1 ) ) {
+		if ( true === $add_ellipsis && '.' !== mb_substr( $content, -1, 1, 'UTF-8' ) ) {
 			$content .= '…';
 		}
 
@@ -173,14 +169,14 @@ final class Strings {
 		$cut_at = 0;
 
 		foreach ( [ '.', '!', '?', ';', '…' ] as $stop_char ) {
-			$position = strrpos( $content, $stop_char );
+			$position = mb_strrpos( $content, $stop_char, 0, 'UTF-8' );
 
 			if ( false !== $position && $cut_at < $position ) {
 				$cut_at = $position;
 			}
 		}
 
-		return substr( $content, 0, $cut_at + 1 );
+		return mb_substr( $content, 0, $cut_at + 1, 'UTF-8' );
 	}
 
 	/**
@@ -252,12 +248,123 @@ final class Strings {
 	}
 
 	/**
+	 * Repair a string into well-formed UTF-8
+	 *
+	 * Byte sequences that are not valid UTF-8 are substituted rather than
+	 * rejected, so an undecodable input still yields a usable string. The
+	 * substitute is pinned to U+FFFD for the conversion: left to the ambient
+	 * "mbstring.substitute_character", a value of "none" would drop the bad bytes
+	 * instead, letting the surrounding text close up and form a string the input
+	 * never contained.
+	 *
+	 * @param string $value Value to repair.
+	 *
+	 * @return string Value with every undecodable byte replaced by U+FFFD.
+	 */
+	public static function to_valid_utf8( string $value ): string {
+		if ( mb_check_encoding( $value, 'UTF-8' ) ) {
+			return $value;
+		}
+
+		$substitute_character = mb_substitute_character();
+		mb_substitute_character( 0xFFFD );
+
+		try {
+			return Type::ensure_string( mb_convert_encoding( $value, 'UTF-8', 'UTF-8' ) );
+		} finally {
+			mb_substitute_character( $substitute_character );
+		}
+	}
+
+	/**
+	 * Resolve a string that carries character entities down to its plain text
+	 *
+	 * WordPress writes character entities into strings meant to be *read* —
+	 * translatable UI copy above all — so a consumer that renders them as text
+	 * rather than as markup has to decode them first, or the entity shows up
+	 * verbatim on screen.
+	 *
+	 * Decoding also revives whatever markup characters the string happens to
+	 * carry, which matters wherever the result is embedded rather than escaped
+	 * on output: inside an inline script block, a revived "</script>" closes the
+	 * element early. Angle brackets are therefore dropped instead of trusted.
+	 * That is a deliberate narrowing of what this returns — plain text, never
+	 * markup — so do not reach for it to sanitize a value whose markup is
+	 * meaningful.
+	 *
+	 * @param string $value Value to resolve.
+	 *
+	 * @return string Value with its character entities decoded and its angle brackets removed.
+	 */
+	public static function to_plain_text( string $value ): string {
+		return str_replace( [ '<', '>' ], '', html_entity_decode( $value, ENT_QUOTES, 'UTF-8' ) );
+	}
+
+	/**
+	 * Reduce a string to the form case-insensitive substring comparisons run on
+	 *
+	 * Undecodable input is repaired rather than rejected — see
+	 * self::to_valid_utf8() — so it still yields a comparable string. Unicode
+	 * normalization needs the "intl" extension, which is not a declared
+	 * requirement of this package; without it, canonically equivalent spellings
+	 * stay distinct.
+	 *
+	 * @param string $value Value to canonicalize.
+	 *
+	 * @return string Value scrubbed to valid UTF-8, NFC-normalized and lowercased.
+	 */
+	public static function canonicalize( string $value ): string {
+		$value = self::to_valid_utf8( $value );
+
+		if ( class_exists( Normalizer::class ) ) {
+			$normalized = Normalizer::normalize( $value, Normalizer::FORM_C );
+
+			if ( is_string( $normalized ) ) {
+				$value = $normalized;
+			}
+		}
+
+		return mb_strtolower( $value, 'UTF-8' );
+	}
+
+	/**
+	 * Look for a needle in an already canonicalized haystack
+	 *
+	 * @param string $haystack           The string to search in, as given.
+	 * @param string $canonical_haystack The same string, canonicalized.
+	 * @param string $needle             The substring to search for in the haystack.
+	 *
+	 * @return bool Returns true if needle is in haystack ignoring case, false otherwise.
+	 */
+	private static function canonical_contains( string $haystack, string $canonical_haystack, string $needle ): bool {
+		if ( '' === $needle ) {
+			return true;
+		}
+
+		if ( ! mb_check_encoding( $needle, 'UTF-8' ) && false !== stripos( $haystack, $needle ) ) {
+			return true;
+		}
+
+		$canonical_needle = self::canonicalize( $needle );
+
+		return '' !== $canonical_needle && self::str_contains( $canonical_haystack, $canonical_needle );
+	}
+
+	/**
 	 * Case-insensitive variant of "str_contains"
 	 *
-	 * Empty needle returns true (consistent with PHP's str_contains).
-	 * Invalid UTF-8 in either input returns false so security-sensitive
-	 * callers (e.g., the restricted-phrases compliance check) don't trust a
-	 * substring match against a malformed encoding.
+	 * Both operands are compared in the canonical form described on
+	 * self::canonicalize(). A needle that is not valid UTF-8 is compared
+	 * byte-wise as well, because substituting its undecodable bytes can hide a
+	 * needle the haystack carries verbatim.
+	 *
+	 * An empty needle returns true, consistent with PHP's str_contains; a needle
+	 * that canonicalization empties does not inherit that, and matches byte-wise
+	 * only.
+	 *
+	 * The reverse direction is not covered: when the haystack carries undecodable
+	 * bytes, substituting them can split a valid needle straddling the substituted
+	 * region, and that needle goes unfound.
 	 *
 	 * @param string $haystack The string to search in.
 	 * @param string $needle   The substring to search for in the haystack.
@@ -265,15 +372,7 @@ final class Strings {
 	 * @return bool Returns true if needle is in haystack ignoring case, false otherwise.
 	 */
 	public static function str_icontains( string $haystack, string $needle ): bool {
-		if ( '' === $needle ) {
-			return true;
-		}
-
-		if ( ! mb_check_encoding( $haystack, 'UTF-8' ) || ! mb_check_encoding( $needle, 'UTF-8' ) ) {
-			return false;
-		}
-
-		return false !== mb_stripos( $haystack, $needle, 0, 'UTF-8' );
+		return self::canonical_contains( $haystack, self::canonicalize( $haystack ), $needle );
 	}
 
 	/**
@@ -285,8 +384,10 @@ final class Strings {
 	 * @return bool Returns true if any of the needles is in haystack ignoring case, false otherwise.
 	 */
 	public static function str_icontains_any( string $haystack, array $needles ): bool {
+		$canonical_haystack = self::canonicalize( $haystack );
+
 		foreach ( $needles as $needle ) {
-			if ( self::str_icontains( $haystack, $needle ) ) {
+			if ( self::canonical_contains( $haystack, $canonical_haystack, $needle ) ) {
 				return true;
 			}
 		}

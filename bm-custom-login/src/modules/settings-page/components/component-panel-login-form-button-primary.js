@@ -572,7 +572,6 @@ export const PanelLoginFormButtonPrimary = ( { context, presets, settings, setSe
 				) }
 				<hr />
 				<BoxControl
-					__nextHasNoMarginBottom
 					__next40pxDefaultSize
 					label={ __( 'Padding', 'bm-custom-login' ) }
 					values={ {
@@ -610,7 +609,6 @@ export const PanelLoginFormButtonPrimary = ( { context, presets, settings, setSe
 				/>
 				<hr />
 				<BoxControl
-					__nextHasNoMarginBottom
 					__next40pxDefaultSize
 					label={ __( 'Margin', 'bm-custom-login' ) }
 					values={ {
@@ -648,8 +646,6 @@ export const PanelLoginFormButtonPrimary = ( { context, presets, settings, setSe
 				/>
 				<hr />
 				<MultilingualTextControl
-					__nextHasNoMarginBottom
-					__next40pxDefaultSize
 					label={ __( '"Log In" button text', 'bm-custom-login' ) }
 					original={ translations?.[ 'Log In' ] }
 					values={ Object.fromEntries(
@@ -671,8 +667,6 @@ export const PanelLoginFormButtonPrimary = ( { context, presets, settings, setSe
 				/>
 				<hr />
 				<MultilingualTextControl
-					__nextHasNoMarginBottom
-					__next40pxDefaultSize
 					label={ __( '"Get New Password" button text', 'bm-custom-login' ) }
 					original={ translations?.[ 'Get New Password' ] }
 					values={ Object.fromEntries(
@@ -694,8 +688,6 @@ export const PanelLoginFormButtonPrimary = ( { context, presets, settings, setSe
 				/>
 				<hr />
 				<MultilingualTextControl
-					__nextHasNoMarginBottom
-					__next40pxDefaultSize
 					label={ __( '"Save Password" button text', 'bm-custom-login' ) }
 					original={ translations?.[ 'Save Password' ] }
 					values={ Object.fromEntries(
@@ -719,8 +711,6 @@ export const PanelLoginFormButtonPrimary = ( { context, presets, settings, setSe
 					<Fragment>
 						<hr />
 						<MultilingualTextControl
-							__nextHasNoMarginBottom
-							__next40pxDefaultSize
 							label={ __( '"Register" button text', 'bm-custom-login' ) }
 							original={ translations?.Register }
 							values={ Object.fromEntries(

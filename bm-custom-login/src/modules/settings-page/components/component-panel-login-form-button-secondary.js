@@ -506,7 +506,6 @@ export const PanelLoginFormButtonSecondary = ( { context, presets, settings, set
 				/>
 				<hr />
 				<BoxControl
-					__nextHasNoMarginBottom
 					__next40pxDefaultSize
 					label={ __( 'Padding', 'bm-custom-login' ) }
 					values={ {
@@ -544,8 +543,6 @@ export const PanelLoginFormButtonSecondary = ( { context, presets, settings, set
 				/>
 				<hr />
 				<MultilingualTextControl
-					__nextHasNoMarginBottom
-					__next40pxDefaultSize
 					label={ __( '"Change" button text', 'bm-custom-login' ) }
 					original={ translations?.Change }
 					values={ Object.fromEntries(
@@ -567,8 +564,6 @@ export const PanelLoginFormButtonSecondary = ( { context, presets, settings, set
 				/>
 				<hr />
 				<MultilingualTextControl
-					__nextHasNoMarginBottom
-					__next40pxDefaultSize
 					label={ __( '"Generate Password" button text', 'bm-custom-login' ) }
 					original={ translations?.GeneratePassword }
 					values={ Object.fromEntries(

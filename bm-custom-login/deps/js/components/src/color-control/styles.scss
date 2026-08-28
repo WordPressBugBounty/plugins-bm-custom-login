@@ -28,7 +28,7 @@
 		&--active,
 		&:hover,
 		&:focus {
-			color: var(--wp-components-color-accent, var(--wp-admin-theme-color, $wp-admin-default--accent));
+			color: var(--wp-admin-theme-color, $wp-admin-default--accent);
 		}
 	}
 

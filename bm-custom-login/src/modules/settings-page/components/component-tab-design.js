@@ -90,7 +90,9 @@ export const TabDesign = ( { settings, setSettings } ) => {
 		loginFormLabels: <PanelLoginFormLabels context={ context } presets={ presets } settings={ settings } setSettings={ setSettings } />,
 		loginFormInputFields: <PanelLoginFormInputFields context={ context } presets={ presets } settings={ settings } setSettings={ setSettings } />,
 		loginFormCheckboxFields: <PanelLoginFormCheckboxFields presets={ presets } settings={ settings } setSettings={ setSettings } />,
-		loginFormRememberMeCheckbox: <PanelLoginFormRememberMeCheckbox context={ context } settings={ settings } setSettings={ setSettings } />,
+		loginFormRememberMeCheckbox: (
+			<PanelLoginFormRememberMeCheckbox context={ context } presets={ presets } settings={ settings } setSettings={ setSettings } />
+		),
 		loginFormButtonPrimary: <PanelLoginFormButtonPrimary context={ context } presets={ presets } settings={ settings } setSettings={ setSettings } />,
 		loginFormButtonSecondary: <PanelLoginFormButtonSecondary context={ context } presets={ presets } settings={ settings } setSettings={ setSettings } />,
 		notices: <PanelNotices context={ context } presets={ presets } settings={ settings } setSettings={ setSettings } />,

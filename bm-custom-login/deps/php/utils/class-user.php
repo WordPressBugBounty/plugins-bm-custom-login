@@ -2,10 +2,10 @@
 /**
  * User class
  *
- * @package Teydea_Studio\Custom_Login\Dependencies\Utils
+ * @package Teydea_Studio\Login_Customizer\Dependencies\Utils
  */
 
-namespace Teydea_Studio\Custom_Login\Dependencies\Utils;
+namespace Teydea_Studio\Login_Customizer\Dependencies\Utils;
 
 use WP_Session_Tokens;
 use WP_User;
@@ -300,7 +300,17 @@ class User {
 	 * @return bool Boolean "true" if user has the super-admin capabilities, "false" otherwise.
 	 */
 	public function is_super_admin(): bool {
-		return null !== $this->get_user_id() && is_super_admin( $this->get_user_id() );
+		$user_id = $this->get_user_id();
+
+		/**
+		 * A `0` ID belongs to a synthetic, never-persisted `WP_User` (built to
+		 * resolve which password policy applies to a user being created). Core
+		 * `is_super_admin( 0 )` treats a falsy ID as "check the current user"
+		 * and falls back to `wp_get_current_user()`, which would report on
+		 * whoever is logged in rather than on this object — so guard the falsy
+		 * ID out before consulting core.
+		 */
+		return null !== $user_id && 0 < $user_id && is_super_admin( $user_id );
 	}
 
 	/**

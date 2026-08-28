@@ -2,16 +2,16 @@
 /**
  * Implement style and markup adjustments controlled by the "logo" fields group
  *
- * @package Teydea_Studio\Custom_Login
+ * @package Teydea_Studio\Login_Customizer
  */
 
-namespace Teydea_Studio\Custom_Login\Modules\Adjustments\Internal;
+namespace Teydea_Studio\Login_Customizer\Modules\Adjustments\Internal;
 
 use DOMDocument;
 use DOMXPath;
-use Teydea_Studio\Custom_Login\Dependencies\Utils;
-use Teydea_Studio\Custom_Login\Modules\Adjustments\Adjuster;
-use Teydea_Studio\Custom_Login\Settings;
+use Teydea_Studio\Login_Customizer\Dependencies\Utils;
+use Teydea_Studio\Login_Customizer\Modules\Adjustments\Adjuster;
+use Teydea_Studio\Login_Customizer\Settings;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // @codeCoverageIgnore
@@ -90,16 +90,14 @@ final class Adjuster_Logo extends Adjuster {
 					// Use default WordPress logo.
 					$logo_image = $doc->createElement( 'img' );
 
-					if ( false !== $logo_image ) {
-						$logo_image->setAttribute( 'src', esc_url( admin_url( $logo_file ) . '?ver=' . Utils\Environment::get_wp_version() ) );
-						$logo_image->setAttribute( 'width', '84' );
+					$logo_image->setAttribute( 'src', esc_url( admin_url( $logo_file ) . '?ver=' . Utils\Environment::get_wp_version() ) );
+					$logo_image->setAttribute( 'width', '84' );
 
-						/**
-						 * DOMDocument escapes attribute values on serialization, so the raw
-						 * site name is assigned to avoid double-encoding entities like "&".
-						 */
-						$logo_image->setAttribute( 'alt', get_bloginfo( 'name' ) );
-					}
+					/**
+					 * DOMDocument escapes attribute values on serialization, so the raw
+					 * site name is assigned to avoid double-encoding entities like "&".
+					 */
+					$logo_image->setAttribute( 'alt', get_bloginfo( 'name' ) );
 				} elseif ( 'site_icon' === $config['logo_source'] || 'custom' === $config['logo_source'] ) {
 					// Use site icon or custom logo.
 					$attachment_id = Utils\Type::ensure_int(
@@ -114,18 +112,16 @@ final class Adjuster_Logo extends Adjuster {
 						if ( false !== $attachment ) {
 							$logo_image = $doc->createElement( 'img' );
 
-							if ( false !== $logo_image ) {
-								$logo_image->setAttribute( 'src', esc_url( $attachment[0] ) );
-								$logo_image->setAttribute( 'alt', get_bloginfo( 'name' ) );
+							$logo_image->setAttribute( 'src', esc_url( $attachment[0] ) );
+							$logo_image->setAttribute( 'alt', get_bloginfo( 'name' ) );
 
-								if ( 0 === $config['strict_width'] ) {
-									// Use original image dimensions.
-									$logo_image->setAttribute( 'width', esc_attr( Utils\Type::ensure_string( $attachment[1] ) ) );
-									$logo_image->setAttribute( 'height', esc_attr( Utils\Type::ensure_string( $attachment[2] ) ) );
-								} else {
-									// Use strict width.
-									$logo_image->setAttribute( 'width', esc_attr( Utils\Type::ensure_string( $config['strict_width'] ) ) );
-								}
+							if ( 0 === $config['strict_width'] ) {
+								// Use original image dimensions.
+								$logo_image->setAttribute( 'width', esc_attr( Utils\Type::ensure_string( $attachment[1] ) ) );
+								$logo_image->setAttribute( 'height', esc_attr( Utils\Type::ensure_string( $attachment[2] ) ) );
+							} else {
+								// Use strict width.
+								$logo_image->setAttribute( 'width', esc_attr( Utils\Type::ensure_string( $config['strict_width'] ) ) );
 							}
 						}
 					}
@@ -137,19 +133,17 @@ final class Adjuster_Logo extends Adjuster {
 					if ( true === $config['as_link'] ) {
 						$logo_link = $doc->createElement( 'a' );
 
-						if ( false !== $logo_link ) {
-							$logo_link->setAttribute( 'href', esc_url( $config['link'] ) );
-							$logo_link->setAttribute( 'title', esc_attr( $config['link_title'] ) );
+						$logo_link->setAttribute( 'href', esc_url( $config['link'] ) );
+						$logo_link->setAttribute( 'title', esc_attr( $config['link_title'] ) );
 
-							// Should open in new tab?
-							if ( true === $config['open_in_new_tab'] ) {
-								$logo_link->setAttribute( 'target', '_blank' );
-								$logo_link->setAttribute( 'rel', 'noopener' );
-							}
-
-							$logo_link->appendChild( $logo_image );
-							$logo_tag->appendChild( $logo_link );
+						// Should open in new tab?
+						if ( true === $config['open_in_new_tab'] ) {
+							$logo_link->setAttribute( 'target', '_blank' );
+							$logo_link->setAttribute( 'rel', 'noopener' );
 						}
+
+						$logo_link->appendChild( $logo_image );
+						$logo_tag->appendChild( $logo_link );
 					} else {
 						$logo_tag->appendChild( $logo_image );
 					}

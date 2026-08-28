@@ -2,13 +2,13 @@
 /**
  * Closures class
  *
- * @package Teydea_Studio\Custom_Login\Dependencies\Validatable_Fields
+ * @package Teydea_Studio\Login_Customizer\Dependencies\Validatable_Fields
  */
 
-namespace Teydea_Studio\Custom_Login\Dependencies\Validatable_Fields;
+namespace Teydea_Studio\Login_Customizer\Dependencies\Validatable_Fields;
 
 use Closure;
-use Teydea_Studio\Custom_Login\Dependencies\Utils;
+use Teydea_Studio\Login_Customizer\Dependencies\Utils;
 use WP_Error;
 use WP_User_Query;
 
@@ -53,15 +53,34 @@ final class Closures {
 		/**
 		 * Restorer for the "character_tokens" dynamic field
 		 *
+		 * As a restorer this runs on the values the validator has just rejected, and
+		 * its result is stored without a second validation pass, so every entry the
+		 * validator would refuse has to be dropped here rather than repaired.
+		 *
+		 * Entries that are not well-formed UTF-8 are dropped rather than repaired,
+		 * unlike the sibling restricted-phrases closure: a token is a single
+		 * character, so repairing one would substitute U+FFFD for the undecodable
+		 * byte and mint a banned character the admin never chose — and because this
+		 * closure also sanitizes, that character would then be persisted. Empty
+		 * entries are dropped because an empty token is an empty needle, and an
+		 * empty needle matches every password.
+		 *
 		 * @param mixed $values Values to restore.
 		 *
 		 * @return string[] Restored value.
 		 */
 		return function ( $values ): array {
-			return array_map(
-				fn ( string $item ): string => mb_substr( $item, 0, 1 ),
-				Utils\Type::ensure_array_of_strings( $values, [] ),
-			);
+			$result = [];
+
+			foreach ( Utils\Type::ensure_array_of_strings( $values, [] ) as $value ) {
+				if ( '' === $value || ! mb_check_encoding( $value, 'UTF-8' ) ) {
+					continue;
+				}
+
+				$result[] = mb_substr( $value, 0, 1, 'UTF-8' );
+			}
+
+			return $result;
 		};
 	}
 
@@ -85,20 +104,36 @@ final class Closures {
 					'non_array_value',
 					sprintf(
 						// Translators: %s - type of the value given.
-						__( 'Value must be an array, %s given.', 'bm-custom-login' ),
+						__( 'The list of single characters could not be read; a list was expected, %s given.', 'bm-custom-login' ),
 						gettype( $values ),
 					),
 				);
 			}
 
+			$position = 0;
+
 			foreach ( $values as $value ) {
-				if ( ! is_string( $value ) || 1 !== mb_strlen( $value ) ) {
+				++$position;
+
+				if ( ! is_string( $value ) || ! mb_check_encoding( $value, 'UTF-8' ) ) {
 					return new WP_Error(
 						'field_value_incorrect',
 						sprintf(
-							// Translators: %s - invalid character token value.
-							__( '"%s" is not a valid character token.', 'bm-custom-login' ),
-							Utils\Type::ensure_string( $value ),
+							// Translators: %d - position of the offending entry in the list.
+							__( 'Entry %d in the list of single characters could not be read as text.', 'bm-custom-login' ),
+							$position,
+						),
+					);
+				}
+
+				if ( 1 !== mb_strlen( $value, 'UTF-8' ) ) {
+					return new WP_Error(
+						'field_value_incorrect',
+						sprintf(
+							// Translators: %1$d - position of the offending entry in the list, %2$s - the offending entry.
+							__( 'Entry %1$d in the list of single characters must be exactly one character; "%2$s" was given.', 'bm-custom-login' ),
+							$position,
+							$value,
 						),
 					);
 				}
@@ -117,6 +152,16 @@ final class Closures {
 		/**
 		 * Restorer / sanitizer for the "restricted_phrases" field
 		 *
+		 * Entries that are not well-formed UTF-8 are repaired rather than dropped,
+		 * unlike the sibling character-tokens closure: a phrase is free text, an
+		 * admin can already have one stored from before this list was validated, and
+		 * dropping it would silently shorten a security-relevant blocklist. The save
+		 * path rejects such input loudly through the matching validator; this path
+		 * only ever sees values already stored.
+		 *
+		 * The dedup key is the same canonical form match time compares on, so two
+		 * entries collapse here exactly when the checker could not tell them apart.
+		 *
 		 * @param mixed $values Values to normalize.
 		 *
 		 * @return string[] Normalized values.
@@ -127,20 +172,20 @@ final class Closures {
 			$result = [];
 
 			foreach ( $values as $value ) {
-				$trimmed = Utils\Strings::trim( $value );
+				$repaired = Utils\Strings::trim( Utils\Strings::to_valid_utf8( $value ) );
 
-				if ( '' === $trimmed || Utils\Strings::str_starts_with( $trimmed, '#' ) ) {
+				if ( '' === $repaired || Utils\Strings::str_starts_with( $repaired, '#' ) ) {
 					continue;
 				}
 
-				$normalized = mb_strtolower( $trimmed );
+				$key = Utils\Strings::canonicalize( $repaired );
 
-				if ( isset( $seen[ $normalized ] ) ) {
+				if ( isset( $seen[ $key ] ) ) {
 					continue;
 				}
 
-				$seen[ $normalized ] = true;
-				$result[]            = $trimmed;
+				$seen[ $key ] = true;
+				$result[]     = $repaired;
 			}
 
 			return $result;
@@ -169,7 +214,7 @@ final class Closures {
 					'non_array_value',
 					sprintf(
 						// Translators: %s - type of the value given.
-						__( 'Value must be an array, %s given.', 'bm-custom-login' ),
+						__( 'The list of words and phrases could not be read; a list was expected, %s given.', 'bm-custom-login' ),
 						gettype( $values ),
 					),
 				);
@@ -182,33 +227,49 @@ final class Closures {
 					'too_many_entries',
 					sprintf(
 						// Translators: %1$d - maximum allowed entries, %2$d - given entries.
-						__( 'Too many entries; maximum allowed is %1$d, %2$d given.', 'bm-custom-login' ),
+						__( 'The list of words and phrases holds %2$d entries; the maximum is %1$d.', 'bm-custom-login' ),
 						$max_entries,
 						$count,
 					),
 				);
 			}
 
+			$position = 0;
+
 			foreach ( $values as $value ) {
+				++$position;
+
 				if ( ! is_string( $value ) ) {
 					return new WP_Error(
 						'field_value_incorrect',
 						sprintf(
-							// Translators: %s - type of the value given.
-							__( 'Each entry must be a string, %s given.', 'bm-custom-login' ),
+							// Translators: %1$d - position of the offending entry in the list, %2$s - type of the value given.
+							__( 'Entry %1$d in the list of words and phrases is not text; %2$s given.', 'bm-custom-login' ),
+							$position,
 							gettype( $value ),
 						),
 					);
 				}
 
-				if ( mb_strlen( $value ) > $max_entry_length ) {
+				if ( ! mb_check_encoding( $value, 'UTF-8' ) ) {
+					return new WP_Error(
+						'field_value_incorrect',
+						sprintf(
+							// Translators: %d - position of the offending entry in the list.
+							__( 'Entry %d in the list of words and phrases could not be read as text.', 'bm-custom-login' ),
+							$position,
+						),
+					);
+				}
+
+				if ( mb_strlen( $value, 'UTF-8' ) > $max_entry_length ) {
 					return new WP_Error(
 						'entry_too_long',
 						sprintf(
-							// Translators: %1$d - maximum allowed characters, %2$s - offending entry.
-							__( 'Each entry must be %1$d characters or fewer; "%2$s" is too long.', 'bm-custom-login' ),
+							// Translators: %1$d - maximum allowed characters, %2$d - position of the offending entry in the list.
+							__( 'Entry %2$d in the list of words and phrases is longer than %1$d characters.', 'bm-custom-login' ),
 							$max_entry_length,
-							$value,
+							$position,
 						),
 					);
 				}

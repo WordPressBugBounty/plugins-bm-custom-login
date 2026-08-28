@@ -2,13 +2,14 @@
 /**
  * Fields_Group class
  *
- * @package Teydea_Studio\Custom_Login\Dependencies\Validatable_Fields
+ * @package Teydea_Studio\Login_Customizer\Dependencies\Validatable_Fields
  */
 
-namespace Teydea_Studio\Custom_Login\Dependencies\Validatable_Fields;
+namespace Teydea_Studio\Login_Customizer\Dependencies\Validatable_Fields;
 
 use Closure;
-use Teydea_Studio\Custom_Login\Dependencies\Utils;
+use stdClass;
+use Teydea_Studio\Login_Customizer\Dependencies\Utils;
 use WP_Error;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -282,14 +283,42 @@ class Fields_Group {
 	}
 
 	/**
-	 * Build a nested JSON Schema from the flat field definitions
+	 * Build a nested JSON Schema object from the flat field definitions
 	 *
-	 * @param array<string,string> $descriptions Optional descriptions keyed by field key.
-	 * @param string[]             $exclude      Field keys to exclude.
+	 * @param array<string,array{title?:string,description?:string}> $labels  Optional title and description per key; see get_nested_schema_properties().
+	 * @param string[]                                               $exclude Field keys to exclude.
 	 *
-	 * @return array<string,mixed> JSON Schema object.
+	 * @return array{type:string,properties:array<string,mixed>|stdClass} JSON Schema object.
 	 */
-	public function get_nested_schema( array $descriptions = [], array $exclude = [] ): array {
+	public function get_nested_schema( array $labels = [], array $exclude = [] ): array {
+		$properties = $this->get_nested_schema_properties( $labels, $exclude );
+
+		/**
+		 * PHP cannot tell an empty list from an empty map, so an empty array
+		 * would be encoded as `[]` — not a valid value for `properties`.
+		 */
+		return [
+			'type'       => 'object',
+			'properties' => [] === $properties
+				? new stdClass()
+				: $properties,
+		];
+	}
+
+	/**
+	 * Build the nested JSON Schema property map from the flat field definitions
+	 *
+	 * Dot-notation field keys become nested object properties. Titles and
+	 * descriptions are looked up by field key, and by the dot-notation prefix
+	 * for the intermediate objects the nesting creates; keys the map does not
+	 * cover are emitted without them.
+	 *
+	 * @param array<string,array{title?:string,description?:string}> $labels  Optional title and description keyed by field key or intermediate-object prefix.
+	 * @param string[]                                               $exclude Field keys to exclude.
+	 *
+	 * @return array<string,mixed> Property schemas keyed by property name.
+	 */
+	public function get_nested_schema_properties( array $labels = [], array $exclude = [] ): array {
 		$properties = [];
 
 		foreach ( $this->get_fields() as $field ) {
@@ -301,7 +330,7 @@ class Fields_Group {
 				continue;
 			}
 
-			$schema = $field->get_schema();
+			$schema = $this->apply_labels( $field->get_schema(), $labels, $field->get_key() );
 
 			if ( $field instanceof Field_Integer || $field instanceof Field_Float ) {
 				$schema['minimum'] = $field->get_minimum();
@@ -312,24 +341,22 @@ class Fields_Group {
 				}
 			}
 
-			if ( isset( $descriptions[ $field->get_key() ] ) ) {
-				$schema['description'] = $descriptions[ $field->get_key() ];
-			}
-
 			$segments      = explode( '.', $field->get_key() );
 			$segment_count = count( $segments );
+			$prefix        = '';
 
 			/** @var array<string,mixed> $current */
 			$current = &$properties;
 
 			for ( $i = 0; $i < $segment_count - 1; $i++ ) {
 				$segment = $segments[ $i ];
+				$prefix  = '' === $prefix ? $segment : $prefix . '.' . $segment;
 
 				if ( ! isset( $current[ $segment ] ) || ! is_array( $current[ $segment ] ) || ! isset( $current[ $segment ]['properties'] ) ) {
-					$current[ $segment ] = [
-						'type'       => 'object',
-						'properties' => [],
-					];
+					$current[ $segment ] = array_merge(
+						$this->apply_labels( [ 'type' => 'object' ], $labels, $prefix ),
+						[ 'properties' => [] ],
+					);
 				}
 
 				/** @var array{type:string,properties:array<string,mixed>} $nested */
@@ -341,10 +368,28 @@ class Fields_Group {
 			unset( $current );
 		}
 
-		return [
-			'type'       => 'object',
-			'properties' => $properties,
-		];
+		return $properties;
+	}
+
+	/**
+	 * Merge the configured title and description into a property schema
+	 *
+	 * @param array<string,mixed>                                    $schema Property schema.
+	 * @param array<string,array{title?:string,description?:string}> $labels Titles and descriptions keyed by field key.
+	 * @param string                                                 $key    Key to look the title and description up under.
+	 *
+	 * @return array<string,mixed> Property schema carrying whatever the map provided.
+	 */
+	private function apply_labels( array $schema, array $labels, string $key ): array {
+		$label = $labels[ $key ] ?? [];
+
+		foreach ( [ 'title', 'description' ] as $keyword ) {
+			if ( isset( $label[ $keyword ] ) ) {
+				$schema[ $keyword ] = $label[ $keyword ];
+			}
+		}
+
+		return $schema;
 	}
 
 	/**

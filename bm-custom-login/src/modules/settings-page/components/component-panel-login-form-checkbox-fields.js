@@ -788,7 +788,6 @@ export const PanelLoginFormCheckboxFields = ( { presets, settings, setSettings }
 					} }
 				/>
 				<BoxControl
-					__nextHasNoMarginBottom
 					__next40pxDefaultSize
 					label={ __( "Field's margin", 'bm-custom-login' ) }
 					values={ {
@@ -846,7 +845,6 @@ export const PanelLoginFormCheckboxFields = ( { presets, settings, setSettings }
 					} }
 				/>
 				<BoxControl
-					__nextHasNoMarginBottom
 					__next40pxDefaultSize
 					label={ __( "Icon's margin", 'bm-custom-login' ) }
 					values={ {

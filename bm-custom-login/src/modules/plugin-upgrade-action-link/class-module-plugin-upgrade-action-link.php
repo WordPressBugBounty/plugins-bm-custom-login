@@ -2,12 +2,12 @@
 /**
  * Add the plugin upgrade action link
  *
- * @package Teydea_Studio\Custom_Login
+ * @package Teydea_Studio\Login_Customizer
  */
 
-namespace Teydea_Studio\Custom_Login\Modules\Plugin_Upgrade_Action_Link;
+namespace Teydea_Studio\Login_Customizer\Modules\Plugin_Upgrade_Action_Link;
 
-use Teydea_Studio\Custom_Login\Dependencies\Universal_Modules;
+use Teydea_Studio\Login_Customizer\Dependencies\Universal_Modules;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // @codeCoverageIgnore
@@ -22,5 +22,5 @@ final class Module_Plugin_Upgrade_Action_Link extends Universal_Modules\Plugin_U
 	 *
 	 * @var string
 	 */
-	protected string $upgrade_link = 'https://wpcustomlogin.com/pricing/?utm_source=WP+Custom+Login';
+	protected string $upgrade_link = 'https://teydeastudio.com/plugins/login-customizer/pricing/?utm_source=Teydea+Login+Customizer';
 }

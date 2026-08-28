@@ -84,7 +84,6 @@ export const AlignmentMatrixControl = ( { label, onChange, value } ) => {
 					 */
 					renderToggle={ ( { isOpen, onToggle } ) => (
 						<Button
-							__nextHasNoMarginBottom
 							__next40pxDefaultSize
 							aria-expanded={ isOpen }
 							className="tsc-alignment-matrix-control__toggle"

@@ -2,12 +2,12 @@
 /**
  * Post meta utils class
  *
- * @package Teydea_Studio\Custom_Login\Dependencies\Utils
+ * @package Teydea_Studio\Login_Customizer\Dependencies\Utils
  */
 
-namespace Teydea_Studio\Custom_Login\Dependencies\Utils;
+namespace Teydea_Studio\Login_Customizer\Dependencies\Utils;
 
-use Teydea_Studio\Custom_Login\Dependencies\Validatable_Fields;
+use Teydea_Studio\Login_Customizer\Dependencies\Validatable_Fields;
 use WP_Post;
 
 if ( ! defined( 'ABSPATH' ) ) {

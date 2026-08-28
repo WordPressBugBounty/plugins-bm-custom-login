@@ -2,10 +2,10 @@
 /**
  * Set of methods to be inherited by REST endpoint modules
  *
- * @package Teydea_Studio\Custom_Login\Dependencies\Utils
+ * @package Teydea_Studio\Login_Customizer\Dependencies\Utils
  */
 
-namespace Teydea_Studio\Custom_Login\Dependencies\Utils;
+namespace Teydea_Studio\Login_Customizer\Dependencies\Utils;
 
 use WP_Error;
 
@@ -26,7 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * overrides rather than bypassing them (see the monorepo convention on
  * instantiating local `Utils\*` subclasses).
  *
- * @phpstan-ignore trait.unused (Consumed only by endpoint modules in other packages; composer-utils itself never mixes it in, and with no abstract method to anchor standalone analysis PHPStan reports it as unused here. The body is analysed in every consumer package that uses it.)
+ * @phpstan-ignore trait.unused (Consumed only by endpoint modules in other packages; composer-utils itself never mixes it in, and with no abstract method to anchor standalone analysis PHPStan reports it as unused here. The body is analyzed in every consumer package that uses it.)
  */
 trait With_REST_Helpers {
 	/**

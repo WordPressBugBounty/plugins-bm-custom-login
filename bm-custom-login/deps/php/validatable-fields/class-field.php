@@ -2,10 +2,10 @@
 /**
  * Field class
  *
- * @package Teydea_Studio\Custom_Login\Dependencies\Validatable_Fields
+ * @package Teydea_Studio\Login_Customizer\Dependencies\Validatable_Fields
  */
 
-namespace Teydea_Studio\Custom_Login\Dependencies\Validatable_Fields;
+namespace Teydea_Studio\Login_Customizer\Dependencies\Validatable_Fields;
 
 use Closure;
 use WP_Error;
@@ -109,7 +109,7 @@ abstract class Field {
 	/**
 	 * Get schema for the REST API
 	 *
-	 * @return array{type:string,items?:array{type:string}} Schema array.
+	 * @return array{type:string,items?:array{type:string},enum?:array<int,int|string>} Schema array.
 	 */
 	public function get_schema(): array {
 		return [

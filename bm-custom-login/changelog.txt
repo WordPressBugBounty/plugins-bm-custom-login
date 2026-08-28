@@ -1,5 +1,16 @@
 == Changelog ==
 
+= 3.3.0 (2026-08-28) =
+* Plugin renamed to "Teydea Login Customizer"; settings, hooks, and stored data are unchanged
+* Compatibility with WordPress 7.1 confirmed
+* New controls for the "Remember Me" help tooltip introduced in WordPress 7.1: show or hide it, replace its text, and set the icon and bubble colors
+* The "Remember Me" help text now defaults to WordPress' own wording in each installed language
+* Fixed the login page preview corrupting attribute values containing style-like text
+* Fixed missing descriptions and labels on several settings controls
+* Refreshed plugin icons, banners, and screenshots
+* Dependencies updated
+* Code improvements
+
 = 3.2.1 (2026-06-25) =
 * Fixed images and template slider backgrounds not rendering in the sandboxed login-page preview
 
@@ -55,7 +66,7 @@
 * Fix PHP error for missing settings
 
 = 2.3 (2021-03-09) =
-* Display the "powered by" text underneath the login form to ensure it is visible. It can be targetted with CSS using `.cl-powered-by`
+* Display the "powered by" text underneath the login form to ensure it is visible. It can be targeted with CSS using `.cl-powered-by`
 
 = 2.2.5 (2020-06-17) =
 * Fix implode parameter order
@@ -131,7 +142,7 @@
 * Delete outdated images
 
 = 1.5.2 (2011-09-21) =
-* Fix message colors when loggin in or out
+* Fix message colors when logging in or out
 * Update instructions
 * Force the background color to always be what is set in the admin
 * Make the register and lost password screens work properly (remove the white background etc.)

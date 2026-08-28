@@ -66,7 +66,6 @@ export const PanelLanguageSwitcher = ( { presets, settings, setSettings } ) => {
 			<FieldsGroup>
 				<ToggleControl
 					__nextHasNoMarginBottom
-					__next40pxDefaultSize
 					label={ __( 'Allow the language switcher/dropdown', 'bm-custom-login' ) }
 					help={ __(
 						'If your website supports multiple languages, users can switch to their preferred language using the dropdown below the login form; that functionality can be disabled here.',
@@ -88,7 +87,7 @@ export const PanelLanguageSwitcher = ( { presets, settings, setSettings } ) => {
 				{ show && (
 					<Fragment>
 						<hr />
-						<Notice __nextHasNoMarginBottom __next40pxDefaultSize isDismissible={ false } status="info">
+						<Notice isDismissible={ false } status="info">
 							{ __(
 								'Note: the select field\'s (language dropdown) styles inherit styles defined in the "Login form input fields" panel above.',
 								'bm-custom-login',
@@ -121,7 +120,6 @@ export const PanelLanguageSwitcher = ( { presets, settings, setSettings } ) => {
 						</FieldsGroup>
 						<hr />
 						<BoxControl
-							__nextHasNoMarginBottom
 							__next40pxDefaultSize
 							label={ __( 'Padding', 'bm-custom-login' ) }
 							values={ {
@@ -159,7 +157,6 @@ export const PanelLanguageSwitcher = ( { presets, settings, setSettings } ) => {
 						/>
 						<hr />
 						<BoxControl
-							__nextHasNoMarginBottom
 							__next40pxDefaultSize
 							label={ __( 'Margin', 'bm-custom-login' ) }
 							values={ {

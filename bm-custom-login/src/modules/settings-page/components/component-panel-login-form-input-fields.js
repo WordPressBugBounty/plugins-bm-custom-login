@@ -583,7 +583,6 @@ export const PanelLoginFormInputFields = ( { context, presets, settings, setSett
 				/>
 				<hr />
 				<BoxControl
-					__nextHasNoMarginBottom
 					__next40pxDefaultSize
 					label={ __( 'Padding', 'bm-custom-login' ) }
 					values={ {
@@ -621,7 +620,6 @@ export const PanelLoginFormInputFields = ( { context, presets, settings, setSett
 				/>
 				<hr />
 				<BoxControl
-					__nextHasNoMarginBottom
 					__next40pxDefaultSize
 					label={ __( 'Margin', 'bm-custom-login' ) }
 					values={ {
@@ -659,8 +657,6 @@ export const PanelLoginFormInputFields = ( { context, presets, settings, setSett
 				/>
 				<hr />
 				<MultilingualTextControl
-					__nextHasNoMarginBottom
-					__next40pxDefaultSize
 					label={ __( '"Username or Email Address" field\'s placeholder', 'bm-custom-login' ) }
 					values={ Object.fromEntries(
 						languages.map( ( language ) => [
@@ -686,8 +682,6 @@ export const PanelLoginFormInputFields = ( { context, presets, settings, setSett
 				/>
 				<hr />
 				<MultilingualTextControl
-					__nextHasNoMarginBottom
-					__next40pxDefaultSize
 					label={ __( '"Password" field\'s placeholder', 'bm-custom-login' ) }
 					values={ Object.fromEntries(
 						languages.map( ( language ) => [ language, loginFormInputFields?.[ sprintf( 'placeholderPassword.%s', language ) ] ?? '' ] ),
@@ -710,8 +704,6 @@ export const PanelLoginFormInputFields = ( { context, presets, settings, setSett
 					<Fragment>
 						<hr />
 						<MultilingualTextControl
-							__nextHasNoMarginBottom
-							__next40pxDefaultSize
 							label={ __( '"Username" field\'s placeholder', 'bm-custom-login' ) }
 							values={ Object.fromEntries(
 								languages.map( ( language ) => [ language, loginFormInputFields?.[ sprintf( 'placeholderUsername.%s', language ) ] ?? '' ] ),
@@ -734,8 +726,6 @@ export const PanelLoginFormInputFields = ( { context, presets, settings, setSett
 						/>
 						<hr />
 						<MultilingualTextControl
-							__nextHasNoMarginBottom
-							__next40pxDefaultSize
 							label={ __( '"Email" field\'s placeholder', 'bm-custom-login' ) }
 							values={ Object.fromEntries(
 								languages.map( ( language ) => [ language, loginFormInputFields?.[ sprintf( 'placeholderEmail.%s', language ) ] ?? '' ] ),

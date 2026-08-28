@@ -141,7 +141,6 @@ export const PanelSocialMediaLinks = ( { presets, settings, setSettings } ) => {
 			<FieldsGroup>
 				<ToggleControl
 					__nextHasNoMarginBottom
-					__next40pxDefaultSize
 					label={ __( 'Display social media links', 'bm-custom-login' ) }
 					help={ __( 'Social media links will be displayed at the bottom of the login screen.', 'bm-custom-login' ) }
 					checked={ show }
@@ -429,7 +428,6 @@ export const PanelSocialMediaLinks = ( { presets, settings, setSettings } ) => {
 						</FieldsGroup>
 						<hr />
 						<UnitControl
-							__nextHasNoMarginBottom
 							__next40pxDefaultSize
 							label={ __( 'Icon width & height', 'bm-custom-login' ) }
 
@@ -449,7 +447,6 @@ export const PanelSocialMediaLinks = ( { presets, settings, setSettings } ) => {
 						/>
 						<hr />
 						<UnitControl
-							__nextHasNoMarginBottom
 							__next40pxDefaultSize
 							label={ __( 'Gap between the icons', 'bm-custom-login' ) }
 
@@ -669,7 +666,6 @@ export const PanelSocialMediaLinks = ( { presets, settings, setSettings } ) => {
 						/>
 						<hr />
 						<BoxControl
-							__nextHasNoMarginBottom
 							__next40pxDefaultSize
 							label={ __( 'Padding', 'bm-custom-login' ) }
 							values={ {
@@ -707,7 +703,6 @@ export const PanelSocialMediaLinks = ( { presets, settings, setSettings } ) => {
 						/>
 						<hr />
 						<BoxControl
-							__nextHasNoMarginBottom
 							__next40pxDefaultSize
 							label={ __( 'Margin', 'bm-custom-login' ) }
 							values={ {

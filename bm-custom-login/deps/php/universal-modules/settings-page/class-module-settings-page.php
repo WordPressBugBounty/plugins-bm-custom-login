@@ -2,12 +2,12 @@
 /**
  * Settings page
  *
- * @package Teydea_Studio\Custom_Login\Dependencies\Universal_Modules
+ * @package Teydea_Studio\Login_Customizer\Dependencies\Universal_Modules
  */
 
-namespace Teydea_Studio\Custom_Login\Dependencies\Universal_Modules\Settings_Page;
+namespace Teydea_Studio\Login_Customizer\Dependencies\Universal_Modules\Settings_Page;
 
-use Teydea_Studio\Custom_Login\Dependencies\Utils;
+use Teydea_Studio\Login_Customizer\Dependencies\Utils;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // @codeCoverageIgnore

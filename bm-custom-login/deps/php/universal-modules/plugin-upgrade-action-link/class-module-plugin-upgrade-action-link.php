@@ -2,12 +2,12 @@
 /**
  * Add the plugin upgrade action link
  *
- * @package Teydea_Studio\Custom_Login\Dependencies\Universal_Modules
+ * @package Teydea_Studio\Login_Customizer\Dependencies\Universal_Modules
  */
 
-namespace Teydea_Studio\Custom_Login\Dependencies\Universal_Modules\Plugin_Upgrade_Action_Link;
+namespace Teydea_Studio\Login_Customizer\Dependencies\Universal_Modules\Plugin_Upgrade_Action_Link;
 
-use Teydea_Studio\Custom_Login\Dependencies\Utils;
+use Teydea_Studio\Login_Customizer\Dependencies\Utils;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // @codeCoverageIgnore

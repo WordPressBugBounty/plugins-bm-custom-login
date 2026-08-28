@@ -13,7 +13,6 @@ import { Component } from '@wordpress/element';
  * DetectOutside component
  */
 export const DetectOutside = withFocusOutside(
-	// eslint-disable-next-line react/display-name
 	class extends Component {
 		/**
 		 * Handle focus outside event
@@ -23,7 +22,7 @@ export const DetectOutside = withFocusOutside(
 		 * @return {void}
 		 */
 		handleFocusOutside( event ) {
-			this.props.onFocusOutside( event ); // eslint-disable-line react/prop-types
+			this.props.onFocusOutside( event );
 		}
 
 		/**
@@ -32,7 +31,7 @@ export const DetectOutside = withFocusOutside(
 		 * @return {Element} Component to render.
 		 */
 		render() {
-			return this.props.children; // eslint-disable-line react/prop-types
+			return this.props.children;
 		}
 	},
 );

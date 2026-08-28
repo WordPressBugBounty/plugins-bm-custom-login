@@ -1,23 +1,23 @@
 <?php
 /**
- * Plugin Name: WP Custom Login
- * Plugin URI: https://wpcustomlogin.com/?utm_source=WP+Custom+Login
+ * Plugin Name: Teydea Login Customizer - Custom Login Page, Branding & Styling
+ * Plugin URI: https://teydeastudio.com/plugins/login-customizer/?utm_source=Teydea+Login+Customizer
  * Description: Customize the WordPress login screen quickly and easily.
- * Version: 3.2.1
+ * Version: 3.3.0
  * Text Domain: bm-custom-login
  * Requires PHP: 7.4
  * Requires at least: 6.6
- * Tested up to: 7.0
+ * Tested up to: 7.1
  * Author: Teydea Studio
- * Author URI: https://teydeastudio.com/?utm_source=WP+Custom+Login
+ * Author URI: https://teydeastudio.com/?utm_source=Teydea+Login+Customizer
  * Network: true
  * License: GPLv3
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
  *
- * @package Teydea_Studio\Custom_Login
+ * @package Teydea_Studio\Login_Customizer
  */
 
-namespace Teydea_Studio\Custom_Login;
+namespace Teydea_Studio\Login_Customizer;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // @codeCoverageIgnore

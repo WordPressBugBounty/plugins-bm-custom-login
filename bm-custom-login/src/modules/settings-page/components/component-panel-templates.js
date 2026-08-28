@@ -54,7 +54,7 @@ export const PanelTemplates = () => {
 		<PanelBody initialOpen={ false } title={ __( 'Templates (Quick Start)', 'bm-custom-login' ) }>
 			<p>{ __( 'Apply a preset style instantly. All settings remain editable.', 'bm-custom-login' ) }</p>
 			{ isNetworkAdmin && (
-				<Notice __nextHasNoMarginBottom __next40pxDefaultSize isDismissible={ false } status="info">
+				<Notice isDismissible={ false } status="info">
 					{ __(
 						'Image-related features are limited in the Network Admin because the Media Library is not available in this context.',
 						'bm-custom-login',
@@ -71,14 +71,7 @@ export const PanelTemplates = () => {
 							<div className="bm-custom-login-settings-page__template-info">
 								<h3>{ name }</h3>
 								<div className="bm-custom-login-settings-page__template-actions">
-									<Button
-										__nextHasNoMarginBottom
-										__next40pxDefaultSize
-										variant="primary"
-										size="compact"
-										onClick={ () => {} }
-										disabled={ true }
-									>
+									<Button __next40pxDefaultSize variant="primary" size="compact" onClick={ () => {} } disabled={ true }>
 										{ __( 'Use this template', 'bm-custom-login' ) }
 									</Button>
 								</div>
@@ -88,7 +81,7 @@ export const PanelTemplates = () => {
 				} ) }
 				<div className="bm-custom-login-settings-page__templates-overlay">
 					<a
-						href="https://wpcustomlogin.com/pricing/?utm_source=WP+Custom+Login"
+						href="https://teydeastudio.com/plugins/login-customizer/pricing/?utm_source=Teydea+Login+Customizer"
 						target="_blank"
 						rel="noreferrer noopener"
 						className="components-button is-primary is-compact"

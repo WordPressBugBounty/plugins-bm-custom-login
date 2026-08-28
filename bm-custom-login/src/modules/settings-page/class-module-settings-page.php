@@ -2,14 +2,14 @@
 /**
  * Plugin settings page
  *
- * @package Teydea_Studio\Custom_Login
+ * @package Teydea_Studio\Login_Customizer
  */
 
-namespace Teydea_Studio\Custom_Login\Modules\Settings_Page;
+namespace Teydea_Studio\Login_Customizer\Modules\Settings_Page;
 
-use Teydea_Studio\Custom_Login\Dependencies\Universal_Modules;
-use Teydea_Studio\Custom_Login\Dependencies\Utils;
-use Teydea_Studio\Custom_Login\Styles;
+use Teydea_Studio\Login_Customizer\Dependencies\Universal_Modules;
+use Teydea_Studio\Login_Customizer\Dependencies\Utils;
+use Teydea_Studio\Login_Customizer\Styles;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // @codeCoverageIgnore
@@ -41,10 +41,10 @@ final class Module_Settings_Page extends Universal_Modules\Settings_Page\Module_
 	 */
 	public function setup_class_properties(): void {
 		// Define the page title.
-		$this->page_title = __( 'WP Custom Login', 'bm-custom-login' );
+		$this->page_title = __( 'Teydea Login Customizer', 'bm-custom-login' );
 
 		// Define the menu title.
-		$this->menu_title = __( 'Custom Login', 'bm-custom-login' );
+		$this->menu_title = __( 'Login Customizer', 'bm-custom-login' );
 
 		// Define the list of help & support links.
 		$this->help_links = [
@@ -53,7 +53,7 @@ final class Module_Settings_Page extends Universal_Modules\Settings_Page\Module_
 				'title' => __( 'Support forum', 'bm-custom-login' ),
 			],
 			[
-				'url'   => 'https://wpcustomlogin.com/contact/?utm_source=WP+Custom+Login',
+				'url'   => 'https://teydeastudio.com/contact/?utm_source=Teydea+Login+Customizer',
 				'title' => __( 'Contact plugin author', 'bm-custom-login' ),
 			],
 			[
@@ -61,7 +61,7 @@ final class Module_Settings_Page extends Universal_Modules\Settings_Page\Module_
 				'title' => __( 'Plugin on WordPress.org directory', 'bm-custom-login' ),
 			],
 			[
-				'url'   => 'https://teydeastudio.com/?utm_source=WP+Custom+Login',
+				'url'   => 'https://teydeastudio.com/?utm_source=Teydea+Login+Customizer',
 				'title' => __( 'Teydea Studio\'s website', 'bm-custom-login' ),
 			],
 		];
@@ -118,6 +118,7 @@ final class Module_Settings_Page extends Universal_Modules\Settings_Page\Module_
 			'Register For This Site',
 			'Remember Me',
 			'Save Password',
+			'Selecting "Remember Me" increases the length of time until you&#8217;re asked to log in again on this device. To keep your account secure, use this option only on your personal devices.',
 			'Username or Email Address',
 			'Username',
 		];
@@ -126,7 +127,7 @@ final class Module_Settings_Page extends Universal_Modules\Settings_Page\Module_
 
 		foreach ( $installed_languages as $lang ) {
 			foreach ( $tokens as $token ) {
-				$translations[ $token ][ Utils\Strings::to_camel_case( $lang ) ] = $languages->get_single_translation( $token, $lang );
+				$translations[ $token ][ Utils\Strings::to_camel_case( $lang ) ] = Utils\Strings::to_plain_text( $languages->get_single_translation( $token, $lang ) );
 			}
 		}
 

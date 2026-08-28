@@ -1,19 +1,19 @@
-=== WP Custom Login ===
+=== Teydea Login Customizer - Custom Login Page, Branding & Styling ===
 Contributors: teydeastudio, bartoszgadomski, BinaryMoon
 Tags: custom login, login page, login customizer, branding, login logo
 Requires at least: 6.6
-Tested up to: 7.0
+Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 3.2.1
+Stable tag: 3.3.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
-Plugin URI: https://wpcustomlogin.com/?utm_source=WP+Custom+Login
+Plugin URI: https://teydeastudio.com/plugins/login-customizer/?utm_source=Teydea+Login+Customizer
 
 Customize the WordPress login screen with your own colors, logo, backgrounds, and form styles.
 
 == Description ==
 
-**WP Custom Login lets you fully customize the WordPress login page to match your brand identity.**
+**Teydea Login Customizer lets you fully customize the WordPress login page to match your brand identity.**
 
 Whether you run a single site or a multisite network, this plugin gives you control over every visual element of the login screen -- from the logo and background to form fields, buttons, links, and more.
 
@@ -24,9 +24,9 @@ Whether you run a single site or a multisite network, this plugin gives you cont
 * Support for multilingual sites with per-language text customization for labels, buttons, and notices.
 * Works with WordPress multisite networks for consistent branding across all sites.
 
-WP Custom Login is a good fit for freelancers, agencies, and organizations that want a professional, branded login page. It includes a live preview in the admin settings, so you can see your changes before they go live.
+Teydea Login Customizer is a good fit for freelancers, agencies, and organizations that want a professional, branded login page. It includes a live preview in the admin settings, so you can see your changes before they go live.
 
-Learn more at [wpcustomlogin.com](https://wpcustomlogin.com/?utm_source=WP+Custom+Login).
+Learn more at [teydeastudio.com/plugins/login-customizer](https://teydeastudio.com/plugins/login-customizer/?utm_source=Teydea+Login+Customizer).
 
 == Features ==
 
@@ -53,19 +53,20 @@ Learn more at [wpcustomlogin.com](https://wpcustomlogin.com/?utm_source=WP+Custo
 * **Disable autocomplete** -- Prevent browsers from auto-filling the login form.
 * **Per-language text** -- Customize labels, placeholders, button text, and notices for each language on multilingual sites.
 * **"Remember Me" customization** -- Show or hide the "Remember Me" checkbox and set custom label text per language.
+* **Help tooltip control** -- Style, rewrite, or remove the help tooltip WordPress 7.1 shows beside the "Remember Me" label.
 
 = PRO Features =
 
-* **[Pre-designed templates](https://wpcustomlogin.com/?utm_source=WP+Custom+Login)** -- Choose from 20+ ready-made login page designs and apply them with one click.
-* **[Advanced backgrounds](https://wpcustomlogin.com/?utm_source=WP+Custom+Login)** -- Use animated gradients, image slideshows, or split-screen layouts as your login page background.
-* **[Post-login redirects](https://wpcustomlogin.com/?utm_source=WP+Custom+Login)** -- Redirect users to specific pages after login based on their roles.
-* **[Premium support](https://wpcustomlogin.com/?utm_source=WP+Custom+Login)** -- Get direct support from the development team.
+* **[Pre-designed templates](https://teydeastudio.com/plugins/login-customizer/?utm_source=Teydea+Login+Customizer)** -- Choose from 20+ ready-made login page designs and apply them with one click.
+* **[Advanced backgrounds](https://teydeastudio.com/plugins/login-customizer/?utm_source=Teydea+Login+Customizer)** -- Use animated gradients, image slideshows, or split-screen layouts as your login page background.
+* **[Post-login redirects](https://teydeastudio.com/plugins/login-customizer/?utm_source=Teydea+Login+Customizer)** -- Redirect users to specific pages after login based on their roles.
+* **[Premium support](https://teydeastudio.com/plugins/login-customizer/?utm_source=Teydea+Login+Customizer)** -- Get direct support from the development team.
 
 == Installation ==
 
 1. Upload the `bm-custom-login` directory to `/wp-content/plugins/`.
 2. Activate the plugin through the "Plugins" menu in WordPress.
-3. Go to "Settings" > "WP Custom Login" to open the settings page.
+3. Go to "Settings" > "Login Customizer" to open the settings page.
 4. Use the visual controls to customize your login page. Changes are shown in the live preview on the right side of the settings page.
 5. Save your settings. Your customized login page is now live.
 
@@ -73,11 +74,11 @@ Learn more at [wpcustomlogin.com](https://wpcustomlogin.com/?utm_source=WP+Custo
 
 = How do I access the settings? =
 
-After activation, go to "Settings" > "WP Custom Login" in the WordPress admin. The settings page provides visual controls for every element of the login page, along with a live preview.
+After activation, go to "Settings" > "Login Customizer" in the WordPress admin. The settings page provides visual controls for every element of the login page, along with a live preview.
 
 = Does this plugin work with WordPress multisite? =
 
-Yes. WP Custom Login supports WordPress multisite networks and can be activated network-wide. Each site in the network can have its own login page customization.
+Yes. Teydea Login Customizer supports WordPress multisite networks and can be activated network-wide. Each site in the network can have its own login page customization.
 
 = Can I customize login page text for multiple languages? =
 
@@ -89,7 +90,7 @@ No. All your settings are stored in the WordPress database and are not affected 
 
 = What is the difference between the free and PRO versions? =
 
-The free version gives you full control over colors, fonts, layout, logo, social icons, and form styling. The PRO version adds pre-designed templates, advanced background options (animated gradients, slideshows, split-screen), post-login redirects by user role, and premium support. See the [pricing page](https://wpcustomlogin.com/pricing/?utm_source=WP+Custom+Login) for details.
+The free version gives you full control over colors, fonts, layout, logo, social icons, and form styling. The PRO version adds pre-designed templates, advanced background options (animated gradients, slideshows, split-screen), post-login redirects by user role, and premium support. See the [pricing page](https://teydeastudio.com/plugins/login-customizer/pricing/?utm_source=Teydea+Login+Customizer) for details.
 
 = Can I add custom CSS to the login page? =
 
@@ -108,6 +109,17 @@ All source ships with the plugin: the plugin's own JavaScript is in `src/`, and 
 5. Primary button styling with color controls for normal, hover, and focus states, plus font family and weight options.
 
 == Changelog ==
+
+= 3.3.0 (2026-08-28) =
+* Plugin renamed to "Teydea Login Customizer"; settings, hooks, and stored data are unchanged
+* Compatibility with WordPress 7.1 confirmed
+* New controls for the "Remember Me" help tooltip introduced in WordPress 7.1: show or hide it, replace its text, and set the icon and bubble colors
+* The "Remember Me" help text now defaults to WordPress' own wording in each installed language
+* Fixed the login page preview corrupting attribute values containing style-like text
+* Fixed missing descriptions and labels on several settings controls
+* Refreshed plugin icons, banners, and screenshots
+* Dependencies updated
+* Code improvements
 
 = 3.2.1 (2026-06-25) =
 * Fixed images and template slider backgrounds not rendering in the sandboxed login-page preview
@@ -163,12 +175,9 @@ All source ships with the plugin: the plugin's own JavaScript is in `src/`, and 
 * Fix PHP error for missing settings
 
 = 2.3 (2021-03-09) =
-* Display the "powered by" text underneath the login form to ensure it is visible. It can be targetted with CSS using `.cl-powered-by`
+* Display the "powered by" text underneath the login form to ensure it is visible. It can be targeted with CSS using `.cl-powered-by`
 
 = 2.2.5 (2020-06-17) =
 * Fix implode parameter order
-
-= 2.2.4 (2020-03-05) =
-* Update CSSTidy to latest version
 
 (For older records, see the `changelog.txt` file).

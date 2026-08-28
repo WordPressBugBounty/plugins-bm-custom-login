@@ -2,12 +2,12 @@
 /**
  * Styles controller
  *
- * @package Teydea_Studio\Custom_Login
+ * @package Teydea_Studio\Login_Customizer
  */
 
-namespace Teydea_Studio\Custom_Login;
+namespace Teydea_Studio\Login_Customizer;
 
-use Teydea_Studio\Custom_Login\Dependencies\Utils;
+use Teydea_Studio\Login_Customizer\Dependencies\Utils;
 use WP_Theme_JSON_Resolver;
 
 if ( ! defined( 'ABSPATH' ) ) {

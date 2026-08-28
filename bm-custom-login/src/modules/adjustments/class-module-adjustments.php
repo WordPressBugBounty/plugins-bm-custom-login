@@ -2,30 +2,30 @@
 /**
  * Apply custom styles defined in plugin settings onto the login page
  *
- * @package Teydea_Studio\Custom_Login
+ * @package Teydea_Studio\Login_Customizer
  */
 
-namespace Teydea_Studio\Custom_Login\Modules\Adjustments;
+namespace Teydea_Studio\Login_Customizer\Modules\Adjustments;
 
 use DOMDocument;
 use DOMXPath;
-use Teydea_Studio\Custom_Login\Dependencies\Utils;
-use Teydea_Studio\Custom_Login\Modules\Adjustments\Internal\Adjuster_Background;
-use Teydea_Studio\Custom_Login\Modules\Adjustments\Internal\Adjuster_Footer;
-use Teydea_Studio\Custom_Login\Modules\Adjustments\Internal\Adjuster_Language_Switcher;
-use Teydea_Studio\Custom_Login\Modules\Adjustments\Internal\Adjuster_Login_Form_Button_Primary;
-use Teydea_Studio\Custom_Login\Modules\Adjustments\Internal\Adjuster_Login_Form_Button_Secondary;
-use Teydea_Studio\Custom_Login\Modules\Adjustments\Internal\Adjuster_Login_Form_Checkbox_Fields;
-use Teydea_Studio\Custom_Login\Modules\Adjustments\Internal\Adjuster_Login_Form_Container;
-use Teydea_Studio\Custom_Login\Modules\Adjustments\Internal\Adjuster_Login_Form_Input_Fields;
-use Teydea_Studio\Custom_Login\Modules\Adjustments\Internal\Adjuster_Login_Form_Labels;
-use Teydea_Studio\Custom_Login\Modules\Adjustments\Internal\Adjuster_Login_Form_Remember_Me_Checkbox;
-use Teydea_Studio\Custom_Login\Modules\Adjustments\Internal\Adjuster_Logo;
-use Teydea_Studio\Custom_Login\Modules\Adjustments\Internal\Adjuster_Notices;
-use Teydea_Studio\Custom_Login\Modules\Adjustments\Internal\Adjuster_Privacy_Policy_Link;
-use Teydea_Studio\Custom_Login\Modules\Adjustments\Internal\Adjuster_Social_Media_Links;
-use Teydea_Studio\Custom_Login\Modules\Adjustments\Internal\Adjuster_Under_Form_Links;
-use Teydea_Studio\Custom_Login\Styles;
+use Teydea_Studio\Login_Customizer\Dependencies\Utils;
+use Teydea_Studio\Login_Customizer\Modules\Adjustments\Internal\Adjuster_Background;
+use Teydea_Studio\Login_Customizer\Modules\Adjustments\Internal\Adjuster_Footer;
+use Teydea_Studio\Login_Customizer\Modules\Adjustments\Internal\Adjuster_Language_Switcher;
+use Teydea_Studio\Login_Customizer\Modules\Adjustments\Internal\Adjuster_Login_Form_Button_Primary;
+use Teydea_Studio\Login_Customizer\Modules\Adjustments\Internal\Adjuster_Login_Form_Button_Secondary;
+use Teydea_Studio\Login_Customizer\Modules\Adjustments\Internal\Adjuster_Login_Form_Checkbox_Fields;
+use Teydea_Studio\Login_Customizer\Modules\Adjustments\Internal\Adjuster_Login_Form_Container;
+use Teydea_Studio\Login_Customizer\Modules\Adjustments\Internal\Adjuster_Login_Form_Input_Fields;
+use Teydea_Studio\Login_Customizer\Modules\Adjustments\Internal\Adjuster_Login_Form_Labels;
+use Teydea_Studio\Login_Customizer\Modules\Adjustments\Internal\Adjuster_Login_Form_Remember_Me_Checkbox;
+use Teydea_Studio\Login_Customizer\Modules\Adjustments\Internal\Adjuster_Logo;
+use Teydea_Studio\Login_Customizer\Modules\Adjustments\Internal\Adjuster_Notices;
+use Teydea_Studio\Login_Customizer\Modules\Adjustments\Internal\Adjuster_Privacy_Policy_Link;
+use Teydea_Studio\Login_Customizer\Modules\Adjustments\Internal\Adjuster_Social_Media_Links;
+use Teydea_Studio\Login_Customizer\Modules\Adjustments\Internal\Adjuster_Under_Form_Links;
+use Teydea_Studio\Login_Customizer\Styles;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // @codeCoverageIgnore

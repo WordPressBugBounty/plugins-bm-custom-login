@@ -2,10 +2,10 @@
 /**
  * Users class
  *
- * @package Teydea_Studio\Custom_Login\Dependencies\Utils
+ * @package Teydea_Studio\Login_Customizer\Dependencies\Utils
  */
 
-namespace Teydea_Studio\Custom_Login\Dependencies\Utils;
+namespace Teydea_Studio\Login_Customizer\Dependencies\Utils;
 
 use WP_Site;
 use WP_User;

@@ -200,7 +200,6 @@ export const PanelUnderFormLinks = ( { presets, settings, setSettings } ) => {
 				<hr />
 				<CheckboxControl
 					__nextHasNoMarginBottom
-					__next40pxDefaultSize
 					label={ __( 'Disable the "← Go to…" back link', 'bm-custom-login' ) }
 					help={ __( 'This link redirects to the home page.', 'bm-custom-login' ) }
 					checked={ disableBackLink }
@@ -396,7 +395,6 @@ export const PanelUnderFormLinks = ( { presets, settings, setSettings } ) => {
 				/>
 				<hr />
 				<BoxControl
-					__nextHasNoMarginBottom
 					__next40pxDefaultSize
 					label={ __( 'Padding', 'bm-custom-login' ) }
 					values={ {
@@ -434,7 +432,6 @@ export const PanelUnderFormLinks = ( { presets, settings, setSettings } ) => {
 				/>
 				<hr />
 				<BoxControl
-					__nextHasNoMarginBottom
 					__next40pxDefaultSize
 					label={ __( 'Margin', 'bm-custom-login' ) }
 					values={ {

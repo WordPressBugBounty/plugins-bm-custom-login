@@ -40,8 +40,14 @@ export const IntegerControl = ( { label, help, min, max, value, defaultValue, di
 	// Manage edited value.
 	const [ editedValue, setEditedValue ] = useState( value.toString() );
 
-	// Stable id so the validation notice can be wired to the input via `aria-describedby`.
-	const noticeId = useInstanceId( IntegerControl, 'tsc-integer-control-notice' );
+	/**
+	 * Own the input's id so both descriptions can be referenced at once. `TextControl` sets
+	 * `aria-describedby` before spreading our props, so passing ours would otherwise drop the
+	 * help text it points at; `${ id }__help` is the id `BaseControl` gives that help node.
+	 */
+	const controlId = useInstanceId( IntegerControl, 'tsc-integer-control' );
+	const noticeId = `${ controlId }-notice`;
+	const describedBy = [ help ? `${ controlId }__help` : null, '' !== fieldNotice ? noticeId : null ].filter( Boolean ).join( ' ' ) || undefined;
 
 	/**
 	 * Ensure data consistency
@@ -121,12 +127,13 @@ export const IntegerControl = ( { label, help, min, max, value, defaultValue, di
 				<TextControl
 					__nextHasNoMarginBottom
 					__next40pxDefaultSize
+					id={ controlId }
 					label={ label }
 					help={ help }
 					value={ editedValue }
 					type="number"
 					disabled={ disabled }
-					aria-describedby={ '' !== fieldNotice ? noticeId : undefined }
+					aria-describedby={ describedBy }
 
 					/**
 					 * Update the value

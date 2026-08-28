@@ -5,7 +5,7 @@ import apiFetch from '@wordpress/api-fetch';
 import { Button, Notice, SnackbarList } from '@wordpress/components';
 import { createHigherOrderComponent } from '@wordpress/compose';
 import { useEffect, useReducer } from '@wordpress/element';
-import { applyFilters, doActionAsync } from '@wordpress/hooks';
+import { applyFilters, doAction, doActionAsync } from '@wordpress/hooks';
 import { __, sprintf } from '@wordpress/i18n';
 
 /**
@@ -155,10 +155,10 @@ const dataStateReducer = ( state, action ) => {
 export const withSettings = createHigherOrderComponent( ( Component ) => {
 	return ( props ) => {
 		// Destructure the props object.
-		const { product, LoadingContainer } = props; // eslint-disable-line react/prop-types
+		const { product, LoadingContainer } = props;
 
 		// Destructure the product object.
-		const { key: productKey, type: productType } = product; // eslint-disable-line react/prop-types
+		const { key: productKey, type: productType } = product;
 
 		// Collect the necessary data.
 		const { slug } = window.teydeaStudio[ productKey ][ productType ];
@@ -194,8 +194,15 @@ export const withSettings = createHigherOrderComponent( ( Component ) => {
 						 * Allow other modules to handle custom
 						 * actions after the plugin settings
 						 * has been saved
+						 *
+						 * WordPress 6.7 is what added the async hook
+						 * dispatchers. On 6.6 - the oldest version
+						 * these plugins support - "doActionAsync" is
+						 * undefined, and calling it throws before any
+						 * handler runs, which turns a save that
+						 * succeeded into an error notice.
 						 */
-						await doActionAsync( 'custom_login__settings_saved' );
+						await ( doActionAsync ?? doAction )( 'custom_login__settings_saved' );
 
 						// Continue the response chain.
 						return response;
@@ -236,7 +243,6 @@ export const withSettings = createHigherOrderComponent( ( Component ) => {
 		 */
 		const SaveSettingsButton = () => (
 			<Button
-				__nextHasNoMarginBottom
 				__next40pxDefaultSize
 				disabled={ dataState.isSavingSettings || ! dataState.hasFetchedSettings || dataState.isSettingsFetchFailed }
 				isBusy={ dataState.isSavingSettings }
@@ -266,7 +272,7 @@ export const withSettings = createHigherOrderComponent( ( Component ) => {
 		if ( true === dataState.isSettingsFetchFailed ) {
 			return (
 				<LoadingContainer>
-					<Notice __nextHasNoMarginBottom __next40pxDefaultSize status="error" isDismissible={ false }>
+					<Notice status="error" isDismissible={ false }>
 						<p>{ __( 'Settings fetch failed.', 'bm-custom-login' ) }</p>
 						<p>{ __( 'Please try again; if the issue keeps repeating, reach out to our support team.', 'bm-custom-login' ) }</p>
 					</Notice>

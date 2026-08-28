@@ -2,12 +2,12 @@
 /**
  * Set of methods and properties to be inherited by objects that uses Settings class instance
  *
- * @package Teydea_Studio\Custom_Login\Dependencies\Utils
+ * @package Teydea_Studio\Login_Customizer\Dependencies\Utils
  */
 
-namespace Teydea_Studio\Custom_Login\Dependencies\Utils;
+namespace Teydea_Studio\Login_Customizer\Dependencies\Utils;
 
-use Teydea_Studio\Custom_Login\Settings;
+use Teydea_Studio\Login_Customizer\Settings;
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // @codeCoverageIgnore
 }

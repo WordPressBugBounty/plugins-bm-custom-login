@@ -2,13 +2,13 @@
 /**
  * Field_Integer_Of_Choice class
  *
- * @package Teydea_Studio\Custom_Login\Dependencies\Validatable_Fields
+ * @package Teydea_Studio\Login_Customizer\Dependencies\Validatable_Fields
  */
 
-namespace Teydea_Studio\Custom_Login\Dependencies\Validatable_Fields;
+namespace Teydea_Studio\Login_Customizer\Dependencies\Validatable_Fields;
 
 use Closure;
-use Teydea_Studio\Custom_Login\Dependencies\Utils;
+use Teydea_Studio\Login_Customizer\Dependencies\Utils;
 use WP_Error;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -20,11 +20,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 final class Field_Integer_Of_Choice extends Field {
 	/**
-	 * Array of allowed values
-	 *
-	 * @var int[]
+	 * Constrain the value to one of the allowed values
 	 */
-	protected array $allowed_values;
+	use Choice_Constrained;
 
 	/**
 	 * Construct the object

@@ -101,7 +101,6 @@ export const SocialMediaLink = ( { data, onChange } ) => {
 				/>
 				<ToggleControl
 					__nextHasNoMarginBottom
-					__next40pxDefaultSize
 					label={ __( 'Open link in new tab', 'bm-custom-login' ) }
 					checked={ openInNewTab }
 

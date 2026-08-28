@@ -70,7 +70,6 @@ export const PanelLogo = ( { context, settings, setSettings } ) => {
 			<FieldsGroup>
 				<ToggleControl
 					__nextHasNoMarginBottom
-					__next40pxDefaultSize
 					label={ __( 'Show logo above the login form', 'bm-custom-login' ) }
 					checked={ show }
 
@@ -247,7 +246,6 @@ export const PanelLogo = ( { context, settings, setSettings } ) => {
 						/>
 						<hr />
 						<BoxControl
-							__nextHasNoMarginBottom
 							__next40pxDefaultSize
 							label={ __( 'Margin', 'bm-custom-login' ) }
 							values={ {
@@ -286,7 +284,6 @@ export const PanelLogo = ( { context, settings, setSettings } ) => {
 						<hr />
 						<ToggleControl
 							__nextHasNoMarginBottom
-							__next40pxDefaultSize
 							label={ __( 'Make logo a link', 'bm-custom-login' ) }
 							checked={ asLink }
 
@@ -305,7 +302,6 @@ export const PanelLogo = ( { context, settings, setSettings } ) => {
 							<FieldsGroup>
 								<ToggleControl
 									__nextHasNoMarginBottom
-									__next40pxDefaultSize
 									label={ __( 'Open link in new tab', 'bm-custom-login' ) }
 									checked={ openInNewTab }
 
@@ -339,8 +335,6 @@ export const PanelLogo = ( { context, settings, setSettings } ) => {
 									} }
 								/>
 								<MultilingualTextControl
-									__nextHasNoMarginBottom
-									__next40pxDefaultSize
 									label={ __( 'Logo link title', 'bm-custom-login' ) }
 									original={ translations?.[ 'Powered by WordPress' ] }
 									values={ Object.fromEntries(

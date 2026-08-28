@@ -39,8 +39,14 @@ export const URLControl = ( { label, help, value, onChange } ) => {
 	// Manage the notice state.
 	const [ fieldNotice, setFieldNotice ] = useState( '' );
 
-	// Stable id so the validation notice can be wired to the input via `aria-describedby`.
-	const noticeId = useInstanceId( URLControl, 'tsc-url-control-notice' );
+	/**
+	 * Own the input's id so both descriptions can be referenced at once. `TextControl` sets
+	 * `aria-describedby` before spreading our props, so passing ours would otherwise drop the
+	 * help text it points at; `${ id }__help` is the id `BaseControl` gives that help node.
+	 */
+	const controlId = useInstanceId( URLControl, 'tsc-url-control' );
+	const noticeId = `${ controlId }-notice`;
+	const describedBy = [ help ? `${ controlId }__help` : null, '' !== fieldNotice ? noticeId : null ].filter( Boolean ).join( ' ' ) || undefined;
 
 	/**
 	 * Return component
@@ -77,10 +83,11 @@ export const URLControl = ( { label, help, value, onChange } ) => {
 				<TextControl
 					__nextHasNoMarginBottom
 					__next40pxDefaultSize
+					id={ controlId }
 					label={ label }
 					help={ help }
 					value={ value }
-					aria-describedby={ '' !== fieldNotice ? noticeId : undefined }
+					aria-describedby={ describedBy }
 
 					/**
 					 * Update the value

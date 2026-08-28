@@ -187,15 +187,7 @@ export const SettingsTabs = ( { product, settings, setSettings } ) => {
 	 */
 	return (
 		<div className="tsc-settings-tabs">
-			<TabPanel
-				__nextHasNoMarginBottom
-				__next40pxDefaultSize
-				key={ remountKey }
-				initialTabName={ activeTabName }
-				onSelect={ handleSelect }
-				tabs={ tabsConfig }
-				className="tsc-settings-tabs__wrapper"
-			>
+			<TabPanel key={ remountKey } initialTabName={ activeTabName } onSelect={ handleSelect } tabs={ tabsConfig } className="tsc-settings-tabs__wrapper">
 				{
 					/**
 					 * Render single tab

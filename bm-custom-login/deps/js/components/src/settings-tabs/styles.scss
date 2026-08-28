@@ -38,7 +38,7 @@
 			height: 1px;
 			position: fixed;
 			right: 0;
-			top: 145px;
+			top: calc(113px + var(--wp-admin--admin-bar--height));
 			width: calc(100% - var(--tsc-admin-menu-width));
 		}
 
@@ -48,7 +48,7 @@
 			height: 10px;
 			position: fixed;
 			right: 0;
-			top: 146px;
+			top: calc(114px + var(--wp-admin--admin-bar--height));
 			width: calc(100% - var(--tsc-admin-menu-width));
 		}
 	}

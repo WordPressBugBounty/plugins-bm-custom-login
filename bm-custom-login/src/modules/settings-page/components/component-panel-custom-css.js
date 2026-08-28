@@ -52,7 +52,6 @@ export const PanelCustomCSS = ( { settings, setSettings } ) => {
 		<PanelBody initialOpen={ false } title={ __( 'Custom CSS', 'bm-custom-login' ) }>
 			<TextareaControl
 				__nextHasNoMarginBottom
-				__next40pxDefaultSize
 				label={ __( 'Additional, custom CSS', 'bm-custom-login' ) }
 				value={ css }
 

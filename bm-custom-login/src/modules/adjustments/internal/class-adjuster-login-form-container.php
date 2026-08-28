@@ -2,14 +2,14 @@
 /**
  * Implement style and markup adjustments controlled by the "login_form_container" fields group
  *
- * @package Teydea_Studio\Custom_Login
+ * @package Teydea_Studio\Login_Customizer
  */
 
-namespace Teydea_Studio\Custom_Login\Modules\Adjustments\Internal;
+namespace Teydea_Studio\Login_Customizer\Modules\Adjustments\Internal;
 
 use DOMDocument;
 use DOMXPath;
-use Teydea_Studio\Custom_Login\Modules\Adjustments\Adjuster;
+use Teydea_Studio\Login_Customizer\Modules\Adjustments\Adjuster;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // @codeCoverageIgnore
@@ -73,7 +73,7 @@ final class Adjuster_Login_Form_Container extends Adjuster {
 		 */
 		if ( false === $config['wrap_logo_in_container'] ) {
 			$login_container = $xpath->query( '//div[@id="login"]' );
-			$logo            = $xpath->query( '//h1[@class="wp-login-logo"]' );
+			$logo            = $xpath->query( '//h1[contains(@class, "wp-login-logo")]' );
 
 			if ( false !== $login_container && false !== $logo && ! empty( $login_container[0] ) && ! empty( $logo[0] ) ) {
 				$login_container = $login_container[0];
@@ -90,7 +90,7 @@ final class Adjuster_Login_Form_Container extends Adjuster {
 		 */
 		if ( true === $config['wrap_logo_in_container'] && false === $config['wrap_links_in_container'] ) {
 			$login_form = $xpath->query( '//form[@id="loginform"]' );
-			$logo       = $xpath->query( '//h1[@class="wp-login-logo"]' );
+			$logo       = $xpath->query( '//h1[contains(@class, "wp-login-logo")]' );
 
 			if ( false !== $login_form && false !== $logo && ! empty( $login_form[0] ) && ! empty( $logo[0] ) ) {
 				$login_form = $login_form[0];

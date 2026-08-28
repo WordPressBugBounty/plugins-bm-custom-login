@@ -2,14 +2,14 @@
 /**
  * Plugin settings
  *
- * @package Teydea_Studio\Custom_Login
+ * @package Teydea_Studio\Login_Customizer
  */
 
-namespace Teydea_Studio\Custom_Login;
+namespace Teydea_Studio\Login_Customizer;
 
-use Teydea_Studio\Custom_Login\Dependencies\Utils;
-use Teydea_Studio\Custom_Login\Dependencies\Validatable_Fields;
-use Teydea_Studio\Custom_Login\Styles;
+use Teydea_Studio\Login_Customizer\Dependencies\Utils;
+use Teydea_Studio\Login_Customizer\Dependencies\Validatable_Fields;
+use Teydea_Studio\Login_Customizer\Styles;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // @codeCoverageIgnore
@@ -212,6 +212,26 @@ class Settings extends Utils\Settings {
 	 */
 	public function resolve_for_generation( array $values ) {
 		return $values[ $this->get_login_style_generation() ];
+	}
+
+	/**
+	 * Get core's own translation of a token, in the form a field default stores
+	 *
+	 * Core writes HTML character entities into some of these strings — the
+	 * apostrophe in the "Remember Me" tooltip is one — and they are decoded here
+	 * so the site owner edits the character rather than its entity. Escaping on
+	 * the way out is unaffected: esc_html() encodes the decoded character, and
+	 * would have left the entity alone, so the rendered result is the same either
+	 * way. The settings page normalizes the same tokens for its "Original:" hints.
+	 *
+	 * @param Utils\Languages $languages Languages instance to resolve the token with.
+	 * @param string          $token     Token to translate, spelled as core spells it.
+	 * @param string          $lang      Language to translate the token into.
+	 *
+	 * @return string Translated token, as plain text.
+	 */
+	private function get_core_translation( Utils\Languages $languages, string $token, string $lang ): string {
+		return Utils\Strings::to_plain_text( $languages->get_single_translation( $token, $lang ) );
 	}
 
 	/**
@@ -880,11 +900,17 @@ class Settings extends Utils\Settings {
 			'login_form_remember_me_checkbox' => [
 				'type'   => Validatable_Fields\Fields_Group::TYPE,
 				'config' => [
-					'margin_bottom' => Validatable_Fields\Configuration::unit_field( '0px' ),
-					'margin_left'   => Validatable_Fields\Configuration::unit_field( '0px' ),
-					'margin_right'  => Validatable_Fields\Configuration::unit_field( '0px' ),
-					'margin_top'    => Validatable_Fields\Configuration::unit_field( '0px' ),
-					'visibility'    => Validatable_Fields\Configuration::string_of_choice_field( 'visible', [ 'visible', 'hidden-checked', 'hidden-unchecked' ] ),
+					'help_bubble_background_color' => Validatable_Fields\Configuration::color_field( '#ffffff' ),
+					'help_bubble_border_color'     => Validatable_Fields\Configuration::color_field( '#c3c4c7' ),
+					'help_bubble_text_color'       => Validatable_Fields\Configuration::color_field( '#1d2327' ),
+					'help_icon_color'              => Validatable_Fields\Configuration::color_field( '#50575e' ),
+					'help_icon_color_on_hover'     => Validatable_Fields\Configuration::color_field( '#3858e9' ),
+					'margin_bottom'                => Validatable_Fields\Configuration::unit_field( '0px' ),
+					'margin_left'                  => Validatable_Fields\Configuration::unit_field( '0px' ),
+					'margin_right'                 => Validatable_Fields\Configuration::unit_field( '0px' ),
+					'margin_top'                   => Validatable_Fields\Configuration::unit_field( '0px' ),
+					'show_help'                    => Validatable_Fields\Configuration::boolean_field( true ),
+					'visibility'                   => Validatable_Fields\Configuration::string_of_choice_field( 'visible', [ 'visible', 'hidden-checked', 'hidden-unchecked' ] ),
 				],
 			],
 			'login_form_button_primary'       => [
@@ -1704,13 +1730,13 @@ class Settings extends Utils\Settings {
 		 */
 		foreach ( $installed_languages as $lang ) {
 			// For "logo" group.
-			$fields_config['logo']['config'][ sprintf( 'link_title.%s', $lang ) ] = Validatable_Fields\Configuration::string_field( $languages->get_single_translation( 'Powered by WordPress', $lang ) );
+			$fields_config['logo']['config'][ sprintf( 'link_title.%s', $lang ) ] = Validatable_Fields\Configuration::string_field( $this->get_core_translation( $languages, 'Powered by WordPress', $lang ) );
 
 			// For "login form labels" group.
-			$fields_config['login_form_labels']['config'][ sprintf( 'label_email.%s', $lang ) ]                     = Validatable_Fields\Configuration::string_field( $languages->get_single_translation( 'Email', $lang ) );
-			$fields_config['login_form_labels']['config'][ sprintf( 'label_password.%s', $lang ) ]                  = Validatable_Fields\Configuration::string_field( $languages->get_single_translation( 'Password', $lang ) );
-			$fields_config['login_form_labels']['config'][ sprintf( 'label_username.%s', $lang ) ]                  = Validatable_Fields\Configuration::string_field( $languages->get_single_translation( 'Username', $lang ) );
-			$fields_config['login_form_labels']['config'][ sprintf( 'label_username_or_email_address.%s', $lang ) ] = Validatable_Fields\Configuration::string_field( $languages->get_single_translation( 'Username or Email Address', $lang ) );
+			$fields_config['login_form_labels']['config'][ sprintf( 'label_email.%s', $lang ) ]                     = Validatable_Fields\Configuration::string_field( $this->get_core_translation( $languages, 'Email', $lang ) );
+			$fields_config['login_form_labels']['config'][ sprintf( 'label_password.%s', $lang ) ]                  = Validatable_Fields\Configuration::string_field( $this->get_core_translation( $languages, 'Password', $lang ) );
+			$fields_config['login_form_labels']['config'][ sprintf( 'label_username.%s', $lang ) ]                  = Validatable_Fields\Configuration::string_field( $this->get_core_translation( $languages, 'Username', $lang ) );
+			$fields_config['login_form_labels']['config'][ sprintf( 'label_username_or_email_address.%s', $lang ) ] = Validatable_Fields\Configuration::string_field( $this->get_core_translation( $languages, 'Username or Email Address', $lang ) );
 
 			// For "login form input fields" group.
 			$fields_config['login_form_input_fields']['config'][ sprintf( 'placeholder_email.%s', $lang ) ]                     = Validatable_Fields\Configuration::string_field();
@@ -1719,22 +1745,29 @@ class Settings extends Utils\Settings {
 			$fields_config['login_form_input_fields']['config'][ sprintf( 'placeholder_username_or_email_address.%s', $lang ) ] = Validatable_Fields\Configuration::string_field();
 
 			// For "login form remember me checkbox" group.
-			$fields_config['login_form_remember_me_checkbox']['config'][ sprintf( 'label_remember_me.%s', $lang ) ] = Validatable_Fields\Configuration::string_field( $languages->get_single_translation( 'Remember Me', $lang ) );
+			$fields_config['login_form_remember_me_checkbox']['config'][ sprintf( 'label_remember_me.%s', $lang ) ] = Validatable_Fields\Configuration::string_field( $this->get_core_translation( $languages, 'Remember Me', $lang ) );
+
+			/**
+			 * Clearing this field is what hands the tooltip back to core: the
+			 * adjuster returns core's own copy for an empty value, and core drops
+			 * the whole toggletip when the filter yields an empty string.
+			 */
+			$fields_config['login_form_remember_me_checkbox']['config'][ sprintf( 'help_text.%s', $lang ) ] = Validatable_Fields\Configuration::string_field( $this->get_core_translation( $languages, 'Selecting "Remember Me" increases the length of time until you&#8217;re asked to log in again on this device. To keep your account secure, use this option only on your personal devices.', $lang ) );
 
 			// For "login form button primary" group.
-			$fields_config['login_form_button_primary']['config'][ sprintf( 'label_get_new_password.%s', $lang ) ] = Validatable_Fields\Configuration::string_field( $languages->get_single_translation( 'Get New Password', $lang ) );
-			$fields_config['login_form_button_primary']['config'][ sprintf( 'label_log_in.%s', $lang ) ]           = Validatable_Fields\Configuration::string_field( $languages->get_single_translation( 'Log In', $lang ) );
-			$fields_config['login_form_button_primary']['config'][ sprintf( 'label_register.%s', $lang ) ]         = Validatable_Fields\Configuration::string_field( $languages->get_single_translation( 'Register', $lang ) );
-			$fields_config['login_form_button_primary']['config'][ sprintf( 'label_save_password.%s', $lang ) ]    = Validatable_Fields\Configuration::string_field( $languages->get_single_translation( 'Save Password', $lang ) );
+			$fields_config['login_form_button_primary']['config'][ sprintf( 'label_get_new_password.%s', $lang ) ] = Validatable_Fields\Configuration::string_field( $this->get_core_translation( $languages, 'Get New Password', $lang ) );
+			$fields_config['login_form_button_primary']['config'][ sprintf( 'label_log_in.%s', $lang ) ]           = Validatable_Fields\Configuration::string_field( $this->get_core_translation( $languages, 'Log In', $lang ) );
+			$fields_config['login_form_button_primary']['config'][ sprintf( 'label_register.%s', $lang ) ]         = Validatable_Fields\Configuration::string_field( $this->get_core_translation( $languages, 'Register', $lang ) );
+			$fields_config['login_form_button_primary']['config'][ sprintf( 'label_save_password.%s', $lang ) ]    = Validatable_Fields\Configuration::string_field( $this->get_core_translation( $languages, 'Save Password', $lang ) );
 
 			// For "login form button secondary" group.
-			$fields_config['login_form_button_secondary']['config'][ sprintf( 'label_change.%s', $lang ) ]            = Validatable_Fields\Configuration::string_field( $languages->get_single_translation( 'Change', $lang ) );
-			$fields_config['login_form_button_secondary']['config'][ sprintf( 'label_generate_password.%s', $lang ) ] = Validatable_Fields\Configuration::string_field( $languages->get_single_translation( 'Generate Password', $lang ) );
+			$fields_config['login_form_button_secondary']['config'][ sprintf( 'label_change.%s', $lang ) ]            = Validatable_Fields\Configuration::string_field( $this->get_core_translation( $languages, 'Change', $lang ) );
+			$fields_config['login_form_button_secondary']['config'][ sprintf( 'label_generate_password.%s', $lang ) ] = Validatable_Fields\Configuration::string_field( $this->get_core_translation( $languages, 'Generate Password', $lang ) );
 
 			// For "notices" group.
 			$fields_config['notices']['config'][ sprintf( 'notice_custom.%s', $lang ) ]         = Validatable_Fields\Configuration::string_field();
-			$fields_config['notices']['config'][ sprintf( 'notice_password_reset.%s', $lang ) ] = Validatable_Fields\Configuration::string_field( $languages->get_single_translation( 'Please enter your username or email address. You will receive an email message with instructions on how to reset your password.', $lang ) );
-			$fields_config['notices']['config'][ sprintf( 'notice_register.%s', $lang ) ]       = Validatable_Fields\Configuration::string_field( $languages->get_single_translation( 'Register For This Site', $lang ) );
+			$fields_config['notices']['config'][ sprintf( 'notice_password_reset.%s', $lang ) ] = Validatable_Fields\Configuration::string_field( $this->get_core_translation( $languages, 'Please enter your username or email address. You will receive an email message with instructions on how to reset your password.', $lang ) );
+			$fields_config['notices']['config'][ sprintf( 'notice_register.%s', $lang ) ]       = Validatable_Fields\Configuration::string_field( $this->get_core_translation( $languages, 'Register For This Site', $lang ) );
 		}
 
 		/**

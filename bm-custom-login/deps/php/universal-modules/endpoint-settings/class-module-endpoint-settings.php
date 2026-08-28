@@ -2,13 +2,13 @@
 /**
  * REST API endpoint for getting and updating settings
  *
- * @package Teydea_Studio\Custom_Login\Dependencies\Universal_Modules
+ * @package Teydea_Studio\Login_Customizer\Dependencies\Universal_Modules
  */
 
-namespace Teydea_Studio\Custom_Login\Dependencies\Universal_Modules\Endpoint_Settings;
+namespace Teydea_Studio\Login_Customizer\Dependencies\Universal_Modules\Endpoint_Settings;
 
-use Teydea_Studio\Custom_Login\Settings;
-use Teydea_Studio\Custom_Login\Dependencies\Utils;
+use Teydea_Studio\Login_Customizer\Settings;
+use Teydea_Studio\Login_Customizer\Dependencies\Utils;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;

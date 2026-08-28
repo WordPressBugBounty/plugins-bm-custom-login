@@ -2,10 +2,10 @@
 /**
  * File utils class
  *
- * @package Teydea_Studio\Custom_Login\Dependencies\Utils
+ * @package Teydea_Studio\Login_Customizer\Dependencies\Utils
  */
 
-namespace Teydea_Studio\Custom_Login\Dependencies\Utils;
+namespace Teydea_Studio\Login_Customizer\Dependencies\Utils;
 
 use WP_Filesystem_Base;
 
@@ -17,6 +17,17 @@ if ( ! defined( 'ABSPATH' ) ) {
  * File utils class
  */
 final class File {
+	/**
+	 * Check whether a file exists
+	 *
+	 * @param string $file_path Path to the file.
+	 *
+	 * @return bool Whether the file exists.
+	 */
+	public static function exists( string $file_path ): bool {
+		return file_exists( $file_path );
+	}
+
 	/**
 	 * Get the last modification time of a file
 	 *

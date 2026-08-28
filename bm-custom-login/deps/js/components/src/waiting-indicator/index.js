@@ -36,7 +36,7 @@ export const WaitingIndicator = ( { message, isCentered = false, withPadding = f
 
 	return (
 		<div className={ classNames.join( ' ' ) }>
-			<Spinner __nextHasNoMarginBottom __next40pxDefaultSize />
+			<Spinner />
 			<p>{ message }</p>
 		</div>
 	);

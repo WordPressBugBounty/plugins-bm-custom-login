@@ -89,8 +89,8 @@ addFilter(
 		<PromotedPluginsPanel
 			plugins={ [
 				{
-					url: 'https://wppasswordpolicy.com/?utm_source=WP+Custom+Login',
-					name: __( 'WP Password Policy', 'bm-custom-login' ),
+					url: 'https://teydeastudio.com/plugins/login-security/?utm_source=Teydea+Login+Customizer',
+					name: __( 'Teydea Login Security', 'bm-custom-login' ),
 					description: __(
 						"Define advanced password policies, enforce strong password requirements, and improve your WordPress site's security.",
 						'bm-custom-login',
@@ -120,19 +120,19 @@ addFilter(
 		if ( ! window?.teydeaStudio?.bmCustomLogin?.plugin?.isPro ) {
 			panel = (
 				<UpsellPanel
-					url="https://wpcustomlogin.com/pricing/?utm_source=WP+Custom+Login"
+					url="https://teydeastudio.com/plugins/login-customizer/pricing/?utm_source=Teydea+Login+Customizer"
 					benefits={ [
 						<a
 							key="pre-designed-templates"
-							href="https://wpcustomlogin.com/features/pre-designed-templates/?utm_source=WP+Custom+Login"
+							href="https://teydeastudio.com/plugins/login-customizer/features/pre-designed-templates/?utm_source=Teydea+Login+Customizer"
 							target="_blank"
 							rel="noreferrer"
 						>
 							{ __( '20+ predefined templates to choose from for a quick start', 'bm-custom-login' ) }
 						</a>,
 						<a
-							key="advanced-backgrounds-layouts"
-							href="https://wpcustomlogin.com/features/advanced-backgrounds-layouts/?utm_source=WP+Custom+Login"
+							key="advanced-backgrounds-and-layouts"
+							href="https://teydeastudio.com/plugins/login-customizer/features/advanced-backgrounds-and-layouts/?utm_source=Teydea+Login+Customizer"
 							target="_blank"
 							rel="noreferrer"
 						>
@@ -140,7 +140,7 @@ addFilter(
 						</a>,
 						<a
 							key="post-login-redirects"
-							href="https://wpcustomlogin.com/features/post-login-redirects/?utm_source=WP+Custom+Login"
+							href="https://teydeastudio.com/plugins/login-customizer/features/post-login-redirects/?utm_source=Teydea+Login+Customizer"
 							target="_blank"
 							rel="noreferrer"
 						>
@@ -148,7 +148,7 @@ addFilter(
 						</a>,
 						<a
 							key="custom-login-url"
-							href="https://wpcustomlogin.com/features/custom-login-url/?utm_source=WP+Custom+Login"
+							href="https://teydeastudio.com/plugins/login-customizer/features/custom-login-url/?utm_source=Teydea+Login+Customizer"
 							target="_blank"
 							rel="noreferrer"
 						>

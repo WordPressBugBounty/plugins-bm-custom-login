@@ -3,12 +3,12 @@
  * Ensure settings from the old version of the plugin
  * are adopted properly to the new settings structure
  *
- * @package Teydea_Studio\Custom_Login
+ * @package Teydea_Studio\Login_Customizer
  */
 
-namespace Teydea_Studio\Custom_Login\Modules\Settings_Adopter;
+namespace Teydea_Studio\Login_Customizer\Modules\Settings_Adopter;
 
-use Teydea_Studio\Custom_Login\Dependencies\Utils;
+use Teydea_Studio\Login_Customizer\Dependencies\Utils;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // @codeCoverageIgnore
@@ -723,10 +723,10 @@ final class Module_Settings_Adopter extends Utils\Module {
 	/**
 	 * Adjust brightness of a color
 	 *
-	 * @param string $hex   Hex colour to adjust.
-	 * @param int    $steps Amount to adjust colour brightness.
+	 * @param string $hex   Hex color to adjust.
+	 * @param int    $steps Amount to adjust color brightness.
 	 *
-	 * @return string Hex colour, or an empty string if the result is invalid.
+	 * @return string Hex color, or an empty string if the result is invalid.
 	 */
 	private function adjust_brightness( string $hex, int $steps ): string {
 		$steps = max( -255, min( 255, $steps ) );

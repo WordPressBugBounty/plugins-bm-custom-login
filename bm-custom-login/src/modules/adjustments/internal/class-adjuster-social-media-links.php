@@ -2,17 +2,17 @@
 /**
  * Implement style and markup adjustments controlled by the "social_media_links" fields group
  *
- * @package Teydea_Studio\Custom_Login
+ * @package Teydea_Studio\Login_Customizer
  */
 
-namespace Teydea_Studio\Custom_Login\Modules\Adjustments\Internal;
+namespace Teydea_Studio\Login_Customizer\Modules\Adjustments\Internal;
 
 use DOMDocument;
 use DOMElement;
 use DOMXPath;
-use Teydea_Studio\Custom_Login\Dependencies\Utils;
-use Teydea_Studio\Custom_Login\Dependencies\Validatable_Fields;
-use Teydea_Studio\Custom_Login\Modules\Adjustments\Adjuster;
+use Teydea_Studio\Login_Customizer\Dependencies\Utils;
+use Teydea_Studio\Login_Customizer\Dependencies\Validatable_Fields;
+use Teydea_Studio\Login_Customizer\Modules\Adjustments\Adjuster;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // @codeCoverageIgnore
@@ -95,7 +95,7 @@ final class Adjuster_Social_Media_Links extends Adjuster {
 				$sibling = $sibling[0];
 
 				/**
-				 * Create the wrapper container as a labelled navigation landmark
+				 * Create the wrapper container as a labeled navigation landmark
 				 * so assistive tech can perceive and skip the group of links.
 				 */
 				$wrapper = $doc->createElement( 'nav' );
@@ -108,7 +108,7 @@ final class Adjuster_Social_Media_Links extends Adjuster {
 					/**
 					 * Each link is icon-only, so it needs an accessible name. Fall
 					 * back to a name derived from the icon when none was provided,
-					 * so the link is never left unlabelled.
+					 * so the link is never left unlabeled.
 					 */
 					$aria_label = trim( Utils\Type::ensure_string( $link_data['aria_label'] ) );
 

@@ -90,8 +90,6 @@
 }
 
 .bm-custom-login-settings-page__templates-overlay {
-	--wp-components-color-accent-darker-10: #111;
-	--wp-components-color-accent: #262626;
 	align-items: center;
 	background: linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 1) 97%);
 	content: "";
@@ -102,6 +100,22 @@
 	position: absolute;
 	top: 0;
 	width: 100%;
+
+	/**
+	 * The upsell call to action is deliberately darker than the admin accent
+	 * color. Core's primary button paints itself from
+	 * `--wp-components-color-accent`, a transitional alias, so the background is
+	 * declared outright instead of through that alias; `:not(:disabled)` is what
+	 * lifts the specificity past core's own hover and active rules.
+	 */
+	a.components-button {
+		background: #262626;
+
+		&:hover:not(:disabled),
+		&:active:not(:disabled) {
+			background: #111;
+		}
+	}
 }
 
 .bm-custom-login-settings-page__template {
@@ -162,7 +176,8 @@
 	gap: 0.5rem;
 
 	svg {
-		fill: #307d07;
+		// Icons render with fill="currentColor", so the tint comes from "color", not "fill".
+		color: #307d07;
 		transition: opacity 0.5s ease-out;
 
 		&.is-fading-out {

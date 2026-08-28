@@ -58,7 +58,6 @@ const SortableContainerItem = ( { context, data, id, ItemComponent, onChange, on
 			</div>
 			<ItemComponent context={ context } data={ data } onChange={ onChange } presets={ presets } />
 			<Button
-				__nextHasNoMarginBottom
 				__next40pxDefaultSize
 				aria-label={ __( 'Delete item', 'bm-custom-login' ) }
 				className="tsc-sortable-container__delete"
@@ -229,7 +228,7 @@ export const SortableContainer = ( {
 				{ addComponent ? (
 					addComponent
 				) : (
-					<Button __nextHasNoMarginBottom __next40pxDefaultSize onClick={ onAdd } size="compact" variant="secondary">
+					<Button __next40pxDefaultSize onClick={ onAdd } size="compact" variant="secondary">
 						{ addLabel ?? __( 'Add new', 'bm-custom-login' ) }
 					</Button>
 				) }

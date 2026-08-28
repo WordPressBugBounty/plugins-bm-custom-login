@@ -55,7 +55,7 @@ export const FieldsGroup = ( {
 	if ( withBaseControl ) {
 		// Get the base control props.
 		const { baseControlProps, controlProps } = useBaseControlProps( {
-			preferredId: buildId( 'npm-components', 'fields-group', cleanForSlug( label ) ),
+			id: buildId( 'npm-components', 'fields-group', cleanForSlug( label ) ),
 		} );
 
 		return (

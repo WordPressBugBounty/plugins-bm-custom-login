@@ -2,14 +2,14 @@
 /**
  * REST API endpoint for login screen preview
  *
- * @package Teydea_Studio\Custom_Login
+ * @package Teydea_Studio\Login_Customizer
  */
 
-namespace Teydea_Studio\Custom_Login\Modules\Endpoint_Preview;
+namespace Teydea_Studio\Login_Customizer\Modules\Endpoint_Preview;
 
-use Teydea_Studio\Custom_Login\Dependencies\Utils;
-use Teydea_Studio\Custom_Login\Modules\Endpoint_Preview\Internal\Asset_Inliner;
-use Teydea_Studio\Custom_Login\Settings;
+use Teydea_Studio\Login_Customizer\Dependencies\Utils;
+use Teydea_Studio\Login_Customizer\Modules\Endpoint_Preview\Internal\Asset_Inliner;
+use Teydea_Studio\Login_Customizer\Settings;
 use WP_REST_Request;
 use WP_REST_Server;
 

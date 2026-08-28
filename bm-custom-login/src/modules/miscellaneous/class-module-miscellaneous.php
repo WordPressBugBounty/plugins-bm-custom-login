@@ -2,15 +2,15 @@
 /**
  * Apply miscellaneous adjustments to the login page
  *
- * @package Teydea_Studio\Custom_Login
+ * @package Teydea_Studio\Login_Customizer
  */
 
-namespace Teydea_Studio\Custom_Login\Modules\Miscellaneous;
+namespace Teydea_Studio\Login_Customizer\Modules\Miscellaneous;
 
 use DOMDocument;
 use DOMElement;
 use DOMXPath;
-use Teydea_Studio\Custom_Login\Dependencies\Utils;
+use Teydea_Studio\Login_Customizer\Dependencies\Utils;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // @codeCoverageIgnore

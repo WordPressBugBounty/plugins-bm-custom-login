@@ -2,13 +2,13 @@
 /**
  * Load plugin tokens and dependencies
  *
- * @package Teydea_Studio\Custom_Login
+ * @package Teydea_Studio\Login_Customizer
  */
 
-namespace Teydea_Studio\Custom_Login;
+namespace Teydea_Studio\Login_Customizer;
 
-use Teydea_Studio\Custom_Login\Dependencies\Universal_Modules;
-use Teydea_Studio\Custom_Login\Dependencies\Utils;
+use Teydea_Studio\Login_Customizer\Dependencies\Universal_Modules;
+use Teydea_Studio\Login_Customizer\Dependencies\Utils;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // @codeCoverageIgnore
@@ -26,7 +26,11 @@ spl_autoload_register(
 	 * @return void
 	 */
 	function ( string $class_name ): void {
-		$class_map = include __DIR__ . '/classmap.php';
+		static $class_map = null;
+
+		if ( null === $class_map ) {
+			$class_map = include __DIR__ . '/classmap.php';
+		}
 
 		if ( isset( $class_map[ $class_name ] ) ) {
 			require_once __DIR__ . $class_map[ $class_name ];
@@ -48,11 +52,11 @@ function get_container(): Utils\Plugin {
 
 		$plugin->set_data_prefix( 'custom_login' );
 		$plugin->set_main_dir( __DIR__ );
-		$plugin->set_name( 'Custom Login' );
+		$plugin->set_name( 'Teydea Login Customizer' );
 		$plugin->set_slug( 'bm-custom-login' );
 		$plugin->set_supports_network( true );
 		$plugin->set_text_domain( 'bm-custom-login' );
-		$plugin->set_version( '3.2.1' );
+		$plugin->set_version( '3.3.0' );
 
 		// Login form markup adjustments rely on DOMDocument/DOMXPath.
 		$plugin->add_required_extension( 'dom' );

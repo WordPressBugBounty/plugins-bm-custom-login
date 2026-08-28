@@ -87,7 +87,6 @@ export const PanelLoginFormLabels = ( { context, presets, settings, setSettings 
 			<FieldsGroup>
 				<ToggleControl
 					__nextHasNoMarginBottom
-					__next40pxDefaultSize
 					label={ __( 'Show labels above the login form fields', 'bm-custom-login' ) }
 					checked={ show }
 
@@ -158,7 +157,6 @@ export const PanelLoginFormLabels = ( { context, presets, settings, setSettings 
 						/>
 						<hr />
 						<BoxControl
-							__nextHasNoMarginBottom
 							__next40pxDefaultSize
 							label={ __( 'Padding', 'bm-custom-login' ) }
 							values={ {
@@ -196,7 +194,6 @@ export const PanelLoginFormLabels = ( { context, presets, settings, setSettings 
 						/>
 						<hr />
 						<BoxControl
-							__nextHasNoMarginBottom
 							__next40pxDefaultSize
 							label={ __( 'Margin', 'bm-custom-login' ) }
 							values={ {
@@ -234,8 +231,6 @@ export const PanelLoginFormLabels = ( { context, presets, settings, setSettings 
 						/>
 						<hr />
 						<MultilingualTextControl
-							__nextHasNoMarginBottom
-							__next40pxDefaultSize
 							label={ __( '"Username or Email Address" field\'s label', 'bm-custom-login' ) }
 							original={ translations?.[ 'Username or Email Address' ] }
 							values={ Object.fromEntries(
@@ -259,8 +254,6 @@ export const PanelLoginFormLabels = ( { context, presets, settings, setSettings 
 						/>
 						<hr />
 						<MultilingualTextControl
-							__nextHasNoMarginBottom
-							__next40pxDefaultSize
 							label={ __( '"Password" field\'s label', 'bm-custom-login' ) }
 							original={ translations?.Password }
 							values={ Object.fromEntries(
@@ -286,8 +279,6 @@ export const PanelLoginFormLabels = ( { context, presets, settings, setSettings 
 							<Fragment>
 								<hr />
 								<MultilingualTextControl
-									__nextHasNoMarginBottom
-									__next40pxDefaultSize
 									label={ __( '"Username" field\'s label', 'bm-custom-login' ) }
 									original={ translations?.Username }
 									values={ Object.fromEntries(
@@ -311,8 +302,6 @@ export const PanelLoginFormLabels = ( { context, presets, settings, setSettings 
 								/>
 								<hr />
 								<MultilingualTextControl
-									__nextHasNoMarginBottom
-									__next40pxDefaultSize
 									label={ __( '"Email" field\'s label', 'bm-custom-login' ) }
 									original={ translations?.Email }
 									values={ Object.fromEntries(

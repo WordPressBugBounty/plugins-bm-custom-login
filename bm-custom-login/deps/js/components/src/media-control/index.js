@@ -187,7 +187,7 @@ export const MediaControl = ( {
 		<MediaUploadCheck
 			isNetworkAdmin={ isNetworkAdmin }
 			fallback={
-				<Notice __nextHasNoMarginBottom __next40pxDefaultSize isDismissible={ false } status={ isNetworkAdmin ? 'info' : 'warning' }>
+				<Notice isDismissible={ false } status={ isNetworkAdmin ? 'info' : 'warning' }>
 					{ isNetworkAdmin
 						? __(
 								"The Media Library is not available in the Network Admin dashboard. To use custom images, configure image settings from an individual site's dashboard.",
@@ -241,7 +241,7 @@ export const MediaControl = ( {
 									</button>
 								) ) }
 							<FieldsGroup withReducedGap>
-								<Button __nextHasNoMarginBottom __next40pxDefaultSize onClick={ open } variant="tertiary">
+								<Button __next40pxDefaultSize onClick={ open } variant="tertiary">
 									{ hasMediaId
 										? sprintf(
 												// Translators: %s - label.
@@ -256,7 +256,6 @@ export const MediaControl = ( {
 								</Button>
 								{ hasMediaId && (
 									<Button
-										__nextHasNoMarginBottom
 										__next40pxDefaultSize
 										onClick={ () => {
 											setMedia( normalizeMedia() );

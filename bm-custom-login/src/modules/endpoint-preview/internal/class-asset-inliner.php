@@ -2,12 +2,12 @@
 /**
  * Asset-rewriting engine for the login screen preview
  *
- * @package Teydea_Studio\Custom_Login
+ * @package Teydea_Studio\Login_Customizer
  */
 
-namespace Teydea_Studio\Custom_Login\Modules\Endpoint_Preview\Internal;
+namespace Teydea_Studio\Login_Customizer\Modules\Endpoint_Preview\Internal;
 
-use Teydea_Studio\Custom_Login\Dependencies\Utils;
+use Teydea_Studio\Login_Customizer\Dependencies\Utils;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // @codeCoverageIgnore
@@ -199,9 +199,15 @@ final class Asset_Inliner {
 				$segment,
 			) ?? $segment;
 
-			// Rewrite url() inside style="" attributes.
+			/**
+			 * Rewrite url() inside real style="" attributes. The pattern anchors
+			 * to an element's opening tag and skips quoted attribute values, so a
+			 * literal style="…" sitting inside another attribute's value (e.g. a
+			 * data-* attribute that carries markup) is never mistaken for a style
+			 * attribute and corrupted.
+			 */
 			$segments[ $index ] = preg_replace_callback(
-				'/(\sstyle\s*=\s*)(["\'])(.*?)\2/is',
+				'/(<[a-z](?:[^>"\']|"[^"]*"|\'[^\']*\')*?\sstyle\s*=\s*)(["\'])(.*?)\2/is',
 				static function ( array $matches ) use ( $rewrite_css_urls ): string {
 					return $matches[1] . $matches[2] . $rewrite_css_urls( $matches[3] ) . $matches[2];
 				},
@@ -239,7 +245,7 @@ final class Asset_Inliner {
 			return $tag;
 		}
 
-		$quoted_src = $src_match[3][0];
+		$quoted_src = $src_match[3][0] ?? '';
 		$src        = '' !== $quoted_src ? $quoted_src : ( $src_match[4][0] ?? '' );
 		$data_uri   = self::url_to_data_uri( html_entity_decode( $src, ENT_QUOTES ), $cache );
 
@@ -253,10 +259,11 @@ final class Asset_Inliner {
 		 * identical text elsewhere in the tag is touched. The span excludes
 		 * the captured "<img …" prefix (group 1), starting at "src".
 		 */
-		$quote      = '' !== $src_match[2][0] ? $src_match[2][0] : '"';
-		$src_offset = $src_match[0][1] + strlen( $src_match[1][0] );
-		$src_length = strlen( $src_match[0][0] ) - strlen( $src_match[1][0] );
-		$tag        = substr_replace( $tag, 'src=' . $quote . $data_uri . $quote, $src_offset, $src_length );
+		$matched_quote = $src_match[2][0] ?? '';
+		$quote         = '' !== $matched_quote ? $matched_quote : '"';
+		$src_offset    = $src_match[0][1] + strlen( $src_match[1][0] );
+		$src_length    = strlen( $src_match[0][0] ) - strlen( $src_match[1][0] );
+		$tag           = substr_replace( $tag, 'src=' . $quote . $data_uri . $quote, $src_offset, $src_length );
 
 		/**
 		 * Strip srcset/sizes (anchored past the quoted attribute values, same

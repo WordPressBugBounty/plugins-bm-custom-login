@@ -2,13 +2,14 @@
 /**
  * Configuration class
  *
- * @package Teydea_Studio\Custom_Login\Dependencies\Validatable_Fields
+ * @package Teydea_Studio\Login_Customizer\Dependencies\Validatable_Fields
  */
 
-namespace Teydea_Studio\Custom_Login\Dependencies\Validatable_Fields;
+namespace Teydea_Studio\Login_Customizer\Dependencies\Validatable_Fields;
 
 use Closure;
-use Teydea_Studio\Custom_Login\Dependencies\Utils;
+use InvalidArgumentException;
+use Teydea_Studio\Login_Customizer\Dependencies\Utils;
 use WP_Error;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -19,6 +20,32 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Configuration class
  */
 final class Configuration {
+	/**
+	 * Refuse a choice field that allows nothing
+	 *
+	 * Such a field is unusable in a way that reports itself inconsistently: the
+	 * validator rejects every value including the field's own default, while
+	 * the REST schema advertises no constraint at all, because `enum` has to
+	 * carry at least one member and WordPress skips validation for an empty
+	 * one. Refusing the configuration is the only place the two can be made to
+	 * agree, and it surfaces the mistake where it was written.
+	 *
+	 * The message names no field, because none is known here — these helpers
+	 * receive a field's configuration, not its key. The stack trace's first
+	 * frame is the offending call, which identifies it exactly.
+	 *
+	 * @param array<int,int|string> $allowed_values Array of allowed values.
+	 *
+	 * @throws InvalidArgumentException When no value is allowed.
+	 *
+	 * @return void
+	 */
+	private static function assert_allows_a_value( array $allowed_values ): void {
+		if ( [] === $allowed_values ) {
+			throw new InvalidArgumentException( 'A field constrained to a list of allowed values must allow at least one.' );
+		}
+	}
+
 	/**
 	 * Configure the "array of strings" field
 	 *
@@ -325,9 +352,13 @@ final class Configuration {
 	 * @param ?Closure $sanitizer      Additional sanitizer function.
 	 * @param ?Closure $validator      Additional validation function.
 	 *
+	 * @throws InvalidArgumentException When no value is allowed.
+	 *
 	 * @return array{type:'integer_of_choice',default_value:int,allowed_values:int[],restorer:?Closure,sanitizer:?Closure,validator:?Closure} Field configuration array.
 	 */
 	public static function integer_of_choice_field( int $default_value = 0, array $allowed_values = [], ?Closure $restorer = null, ?Closure $sanitizer = null, ?Closure $validator = null ): array {
+		self::assert_allows_a_value( $allowed_values );
+
 		return [
 			'type'           => 'integer_of_choice',
 			'default_value'  => $default_value,
@@ -413,9 +444,13 @@ final class Configuration {
 	 * @param ?Closure $sanitizer      Additional sanitizer function.
 	 * @param ?Closure $validator      Additional validation function.
 	 *
+	 * @throws InvalidArgumentException When no value is allowed.
+	 *
 	 * @return array{type:'string_of_choice',default_value:string,allowed_values:string[],restorer:?Closure,sanitizer:?Closure,validator:?Closure} Field configuration array.
 	 */
 	public static function string_of_choice_field( string $default_value = '', array $allowed_values = [], ?Closure $restorer = null, ?Closure $sanitizer = null, ?Closure $validator = null ): array {
+		self::assert_allows_a_value( $allowed_values );
+
 		return [
 			'type'           => 'string_of_choice',
 			'default_value'  => $default_value,

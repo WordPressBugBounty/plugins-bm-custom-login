@@ -54,7 +54,6 @@ export const PanelMiscellaneous = ( { settings, setSettings } ) => {
 			<FieldsGroup>
 				<CheckboxControl
 					__nextHasNoMarginBottom
-					__next40pxDefaultSize
 					label={ __( 'Disable autocomplete on the login form fields', 'bm-custom-login' ) }
 					help={ __(
 						'Ask the browser not to remember the values for the login form fields. This is a hint to browsers; some may not comply with this choice.',
@@ -75,7 +74,6 @@ export const PanelMiscellaneous = ( { settings, setSettings } ) => {
 				/>
 				<CheckboxControl
 					__nextHasNoMarginBottom
-					__next40pxDefaultSize
 					label={ __( 'Disable autofocus on the "username" login form field', 'bm-custom-login' ) }
 					help={ __(
 						'When entering the login screen, the "username" field of the login form field is automatically focused; that functionality can be disabled here.',
@@ -96,7 +94,6 @@ export const PanelMiscellaneous = ( { settings, setSettings } ) => {
 				/>
 				<CheckboxControl
 					__nextHasNoMarginBottom
-					__next40pxDefaultSize
 					label={ __( 'Disable shake effect on login form fields', 'bm-custom-login' ) }
 					help={ __( 'The "shake" effect comes from a WordPress core and is used if a value of a field is incorrect.', 'bm-custom-login' ) }
 					checked={ disableShakeEffect }

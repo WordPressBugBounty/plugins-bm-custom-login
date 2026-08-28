@@ -2,16 +2,16 @@
 /**
  * Abstraction with utility functions for adjusters
  *
- * @package Teydea_Studio\Custom_Login
+ * @package Teydea_Studio\Login_Customizer
  */
 
-namespace Teydea_Studio\Custom_Login\Modules\Adjustments;
+namespace Teydea_Studio\Login_Customizer\Modules\Adjustments;
 
 use DOMDocument;
 use DOMXPath;
-use Teydea_Studio\Custom_Login\Dependencies\Utils;
-use Teydea_Studio\Custom_Login\Settings;
-use Teydea_Studio\Custom_Login\Styles;
+use Teydea_Studio\Login_Customizer\Dependencies\Utils;
+use Teydea_Studio\Login_Customizer\Settings;
+use Teydea_Studio\Login_Customizer\Styles;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // @codeCoverageIgnore

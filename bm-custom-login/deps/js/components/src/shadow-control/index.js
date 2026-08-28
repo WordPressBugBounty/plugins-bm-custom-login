@@ -44,7 +44,6 @@ export const ShadowControl = ( { label, onChange, presets, value } ) => (
 		<div className="tsc-shadow-control__presets">
 			{ presets.map( ( preset, index ) => (
 				<Button
-					__nextHasNoMarginBottom
 					__next40pxDefaultSize
 					key={ `${ cleanForSlug( preset.label ) }-${ index }` }
 					onClick={ () => {

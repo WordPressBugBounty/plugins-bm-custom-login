@@ -2,10 +2,10 @@
 /**
  * Settings-page URL helpers
  *
- * @package Teydea_Studio\Custom_Login\Dependencies\Utils
+ * @package Teydea_Studio\Login_Customizer\Dependencies\Utils
  */
 
-namespace Teydea_Studio\Custom_Login\Dependencies\Utils;
+namespace Teydea_Studio\Login_Customizer\Dependencies\Utils;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // @codeCoverageIgnore
@@ -72,7 +72,7 @@ class Settings_Page_URLs {
 	 * Mirrors {@see self::settings_page()} on the predicate side: derives the
 	 * same `{slug}-settings-page` key and matches it against the active
 	 * `WP_Screen` (network-aware via {@see Screen::is()}). Lets cross-module
-	 * consumers gate behaviour on the settings page without reconstructing the
+	 * consumers gate behavior on the settings page without reconstructing the
 	 * page-key convention or reaching into the settings-page module.
 	 *
 	 * @param Container $container Plugin container.

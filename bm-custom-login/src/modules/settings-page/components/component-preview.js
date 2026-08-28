@@ -138,7 +138,7 @@ export const Preview = ( { settings } ) => {
 				 * Loading failed notice
 				 */
 				loadingError && (
-					<Notice __nextHasNoMarginBottom __next40pxDefaultSize isDismissible={ false } status="error">
+					<Notice isDismissible={ false } status="error">
 						{ loadingError }
 					</Notice>
 				)

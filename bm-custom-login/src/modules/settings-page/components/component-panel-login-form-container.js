@@ -135,7 +135,6 @@ export const PanelLoginFormContainer = ( { presets, settings, setSettings } ) =>
 			<FieldsGroup>
 				<ToggleControl
 					__nextHasNoMarginBottom
-					__next40pxDefaultSize
 					label={ __( 'Place logo inside the form container', 'bm-custom-login' ) }
 					checked={ wrapLogoInContainer }
 
@@ -152,7 +151,6 @@ export const PanelLoginFormContainer = ( { presets, settings, setSettings } ) =>
 				/>
 				<ToggleControl
 					__nextHasNoMarginBottom
-					__next40pxDefaultSize
 					label={ __( 'Place footer links inside the form container', 'bm-custom-login' ) }
 					checked={ wrapLinksInContainer }
 
@@ -186,7 +184,6 @@ export const PanelLoginFormContainer = ( { presets, settings, setSettings } ) =>
 				/>
 				{ 'default' !== alignment && (
 					<BoxControl
-						__nextHasNoMarginBottom
 						__next40pxDefaultSize
 						label={ __( "Wrapper's padding", 'bm-custom-login' ) }
 						values={ {
@@ -494,7 +491,6 @@ export const PanelLoginFormContainer = ( { presets, settings, setSettings } ) =>
 				/>
 				<hr />
 				<BoxControl
-					__nextHasNoMarginBottom
 					__next40pxDefaultSize
 					label={ __( 'Padding', 'bm-custom-login' ) }
 					values={ {
@@ -532,7 +528,6 @@ export const PanelLoginFormContainer = ( { presets, settings, setSettings } ) =>
 				/>
 				<hr />
 				<BoxControl
-					__nextHasNoMarginBottom
 					__next40pxDefaultSize
 					label={ __( 'Margin', 'bm-custom-login' ) }
 					values={ {

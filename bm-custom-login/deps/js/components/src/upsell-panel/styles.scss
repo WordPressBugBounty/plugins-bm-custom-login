@@ -41,10 +41,21 @@
 		margin-top: 1rem;
 	}
 
+	/**
+	 * The call to action is deliberately darker than the admin accent color.
+	 * Core's primary button paints itself from `--wp-components-color-accent`,
+	 * a transitional alias, so the background is declared outright instead of
+	 * through that alias; `:not(:disabled)` is what lifts the specificity past
+	 * core's own hover and active rules.
+	 */
 	a.components-button {
-		--wp-components-color-accent: #262626;
-		--wp-components-color-accent-darker-10: #111;
+		background: #262626;
 		position: relative;
+
+		&:hover:not(:disabled),
+		&:active:not(:disabled) {
+			background: #111;
+		}
 	}
 
 	&__background-icon {

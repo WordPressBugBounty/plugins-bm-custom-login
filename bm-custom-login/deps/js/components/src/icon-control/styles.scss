@@ -47,7 +47,7 @@
 		&:hover .tsc-icon-control__label,
 		&:focus .tsc-icon-control__label,
 		&--edited > .tsc-icon-control__label {
-			color: var(--wp-components-color-accent, var(--wp-admin-theme-color, #3858e9));
+			color: var(--wp-admin-theme-color, $wp-admin-default--accent);
 		}
 	}
 

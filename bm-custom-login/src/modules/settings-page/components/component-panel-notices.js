@@ -512,7 +512,6 @@ export const PanelNotices = ( { context, presets, settings, setSettings } ) => {
 				/>
 				<hr />
 				<BoxControl
-					__nextHasNoMarginBottom
 					__next40pxDefaultSize
 					label={ __( 'Padding', 'bm-custom-login' ) }
 					values={ {
@@ -550,7 +549,6 @@ export const PanelNotices = ( { context, presets, settings, setSettings } ) => {
 				/>
 				<hr />
 				<BoxControl
-					__nextHasNoMarginBottom
 					__next40pxDefaultSize
 					label={ __( 'Margin', 'bm-custom-login' ) }
 					values={ {
@@ -588,8 +586,6 @@ export const PanelNotices = ( { context, presets, settings, setSettings } ) => {
 				/>
 				<hr />
 				<MultilingualTextControl
-					__nextHasNoMarginBottom
-					__next40pxDefaultSize
 					label={ __( 'Notice content for the password reset screen', 'bm-custom-login' ) }
 					original={
 						translations?.[
@@ -617,8 +613,6 @@ export const PanelNotices = ( { context, presets, settings, setSettings } ) => {
 					<Fragment>
 						<hr />
 						<MultilingualTextControl
-							__nextHasNoMarginBottom
-							__next40pxDefaultSize
 							label={ __( '"Register For This Site" notice content', 'bm-custom-login' ) }
 							original={ translations?.[ 'Register For This Site.' ] }
 							values={ Object.fromEntries(
@@ -645,7 +639,6 @@ export const PanelNotices = ( { context, presets, settings, setSettings } ) => {
 				<hr />
 				<ToggleControl
 					__nextHasNoMarginBottom
-					__next40pxDefaultSize
 					label={ __( 'Show custom notice above the login form', 'bm-custom-login' ) }
 					checked={ showCustomNotice }
 
@@ -696,8 +689,6 @@ export const PanelNotices = ( { context, presets, settings, setSettings } ) => {
 							} }
 						/>
 						<MultilingualTextControl
-							__nextHasNoMarginBottom
-							__next40pxDefaultSize
 							label={ __( 'Content of the custom notice', 'bm-custom-login' ) }
 							values={ Object.fromEntries(
 								languages.map( ( language ) => [ language, notices?.[ sprintf( 'noticeCustom.%s', language ) ] ?? '' ] ),
